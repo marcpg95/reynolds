@@ -110,19 +110,23 @@ public class Principal extends JFrame {
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
 		
-		JInternalFrame taules = new JInternalFrame("Taules");
+		JInternalFrame taules = new JInternalFrame("Mesas");
 		taules.setClosable(true);
 		taules.setBounds(228, 85, 452, 331);
 		internalFrames.add(taules);
 		taules.getContentPane().setLayout(null);
 		
-		JButton btnCrearTaules = new JButton("Crear Taules");
-		btnCrearTaules.setBounds(100, 268, 104, 23);
+		JButton btnCrearTaules = new JButton("Crear Mesas");
+		btnCrearTaules.setBounds(40, 268, 104, 23);
 		taules.getContentPane().add(btnCrearTaules);
 		
-		JButton btnQuitarTaules = new JButton("Treure Taules");
-		btnQuitarTaules.setBounds(225, 268, 104, 23);
+		JButton btnQuitarTaules = new JButton("Quitar Mesas");
+		btnQuitarTaules.setBounds(165, 268, 104, 23);
 		taules.getContentPane().add(btnQuitarTaules);
+		
+		JButton btnBorrarTaules = new JButton("Borrar Todas");
+		btnBorrarTaules.setBounds(290, 268, 104, 23);
+		taules.getContentPane().add(btnBorrarTaules);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 11, 416, 246);
@@ -236,6 +240,35 @@ public class Principal extends JFrame {
 						panel.remove(contadorMesas-1);
 						
 						contadorMesas--;
+						revalidate();
+						repaint();
+						}
+					else {
+						
+						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
+						
+					}
+					
+				
+				
+				
+				
+				
+
+				
+
+			}
+		});
+		
+		btnBorrarTaules.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+					
+					if (contadorMesas>0) {
+						panel.removeAll();
+						
+						contadorMesas=0;
 						revalidate();
 						repaint();
 						}
