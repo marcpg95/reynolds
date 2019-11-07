@@ -1,9 +1,11 @@
 package interfaz;
 
 import java.awt.BorderLayout;
+import java.awt.Button;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -18,6 +20,8 @@ import javax.swing.JSeparator;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
@@ -30,10 +34,15 @@ public class Principal extends JFrame {
 
 	private JPanel contentPane;
 	private JTextField numeroTaules;
+	private ArrayList<JButton> aLTaules = new ArrayList<JButton>();
 
 	/**
 	 * Launch the application.
 	 */
+	
+	
+	public int contadorMesas=0;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -105,23 +114,22 @@ public class Principal extends JFrame {
 		internalFrames.add(taules);
 		taules.getContentPane().setLayout(null);
 		
-		JButton btnEditarTaules = new JButton("Editar Taules");
-		btnEditarTaules.setBounds(150, 268, 104, 23);
-		taules.getContentPane().add(btnEditarTaules);
+		JButton btnCrearTaules = new JButton("Crear Taules");
+		btnCrearTaules.setBounds(100, 268, 104, 23);
+		taules.getContentPane().add(btnCrearTaules);
+		
+		JButton btnQuitarTaules = new JButton("Treure Taules");
+		btnQuitarTaules.setBounds(225, 268, 104, 23);
+		taules.getContentPane().add(btnQuitarTaules);
 		
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 11, 416, 246);
 		taules.getContentPane().add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
 		
-		JButton btnTaula = new JButton("Taula1");
-		panel.add(btnTaula);
 		
-		numeroTaules = new JTextField();
-		numeroTaules.setText("5");
-		numeroTaules.setBounds(264, 269, 86, 20);
-		taules.getContentPane().add(numeroTaules);
-		numeroTaules.setColumns(10);
+		
+		
 		taules.setVisible(false);
 
 		JInternalFrame bebidas = new JInternalFrame("Bebidas");
@@ -147,6 +155,8 @@ public class Principal extends JFrame {
 		postres.setMaximizable(true);
 		postres.setClosable(true);
 		postres.setVisible(false);
+		
+	
 
 		// Abre el internal frame de bebidas y lo cambia entre visible y no visible
 		btnBebidas.addActionListener(new ActionListener() {
@@ -194,8 +204,37 @@ public class Principal extends JFrame {
 
 			}
 		});
-		btnEditarTaules.addActionListener(new ActionListener() {
+		
+		
+		btnCrearTaules.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
+				//aLTaules.add(new JButton(Integer.toString(contadorMesas)));
+				JButton btnTaulaAuto = new JButton(Integer.toString(contadorMesas));
+				panel.add(btnTaulaAuto);
+				
+				contadorMesas++;
+				revalidate();
+				repaint();
+				
+				
+
+				
+
+			}
+		});
+		
+		btnQuitarTaules.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				
+				panel.remove(contadorMesas-1);
+				
+				contadorMesas--;
+				revalidate();
+				repaint();
+				
 
 				
 
