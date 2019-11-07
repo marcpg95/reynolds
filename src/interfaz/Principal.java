@@ -27,6 +27,8 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
 import java.awt.Rectangle;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
+
 import javax.swing.BoxLayout;
 import javax.swing.JTextField;
 
@@ -62,7 +64,7 @@ public class Principal extends JFrame {
 	public Principal() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(500, 500, 916, 747);
+		setBounds(250, 10, 916, 747);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -125,7 +127,8 @@ public class Principal extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 11, 416, 246);
 		taules.getContentPane().add(panel);
-		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		panel.setLayout(new GridLayout(9, 8, 5, 10));
+		
 		
 		
 		
@@ -228,12 +231,24 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				
+					
+					if (contadorMesas>0) {
+						panel.remove(contadorMesas-1);
+						
+						contadorMesas--;
+						revalidate();
+						repaint();
+						}
+					else {
+						
+						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
+						
+					}
+					
 				
-				panel.remove(contadorMesas-1);
 				
-				contadorMesas--;
-				revalidate();
-				repaint();
+				
+				
 				
 
 				
