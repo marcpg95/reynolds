@@ -51,7 +51,7 @@ public class Principal extends JFrame {
 	 */
 	
 	
-	public int contadorMesas=0;
+	
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -86,17 +86,11 @@ public class Principal extends JFrame {
 		JMenu menu = new JMenu("Archivo");
 		menuBar.add(menu);
 
-		JMenuItem menuItem = new JMenuItem("Nuevo");
-		menu.add(menuItem);
+		JMenuItem menuCocina = new JMenuItem("Cocina");
+		menu.add(menuCocina);
 
-		JMenuItem menuItem_1 = new JMenuItem("Abrir");
-		menu.add(menuItem_1);
-
-		JMenuItem menuItem_2 = new JMenuItem("Guardar");
-		menu.add(menuItem_2);
-
-		JMenuItem menuItem_3 = new JMenuItem("Guardar como...");
-		menu.add(menuItem_3);
+		JMenuItem menuBarra = new JMenuItem("Barra");
+		menu.add(menuBarra);
 
 		JSeparator separator = new JSeparator();
 		menu.add(separator);
@@ -104,79 +98,53 @@ public class Principal extends JFrame {
 		JMenuItem menuItem_4 = new JMenuItem("Salir");
 		menu.add(menuItem_4);
 
-		JButton btnPostres = new JButton("Postres");
-		menuBar.add(btnPostres);
-
-		JButton btnBebidas = new JButton("Bebidas");
-		menuBar.add(btnBebidas);
-		
-		JButton btnTaules = new JButton("Taules");
-		menuBar.add(btnTaules);
+	
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
 		
-		JInternalFrame taules = new JInternalFrame("Mesas");
+		JInternalFrame taules = new JInternalFrame("Mesas Cocina");
 		taules.setClosable(true);
-		taules.setBounds(228, 85, 452, 331);
+		taules.setBounds(10, 11, 844, 512);
 		internalFrames.add(taules);
 		taules.getContentPane().setLayout(null);
 		
-		JButton btnCrearTaules = new JButton("Crear Mesas");
-		btnCrearTaules.setBounds(40, 268, 104, 23);
-		taules.getContentPane().add(btnCrearTaules);
+				
+				
+				
+				table = new JTable();
+				//Para que se pueda seleccionar varias filas
+				table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				
+				JScrollPane scroll = new JScrollPane(table);
+				scroll.setBounds(0, 0, 828, 472);
+				taules.getContentPane().add(scroll);
+				
+				        table.setModel(new DefaultTableModel(
+				        	new Object[][] {
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        		{null, null, null},
+				        	},
+				        	new String[] {
+				        		"New column", "New column", "New column"
+				        	}
+				        ));
 		
-		JButton btnQuitarTaules = new JButton("Quitar Mesas");
-		btnQuitarTaules.setBounds(165, 268, 104, 23);
-		taules.getContentPane().add(btnQuitarTaules);
 		
-		JButton btnBorrarTaules = new JButton("Borrar Todas");
-		btnBorrarTaules.setBounds(290, 268, 104, 23);
-		taules.getContentPane().add(btnBorrarTaules);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 416, 246);
-		taules.getContentPane().add(panel);
-		panel.setLayout(new GridLayout(9, 8, 5, 10));
 		
 		
 		
 		
 		
 		taules.setVisible(false);
-
-		JInternalFrame bebidas = new JInternalFrame("Bebidas");
-		bebidas.setBounds(227, 89, 447, 327);
-		internalFrames.add(bebidas);
-		bebidas.setNormalBounds(new Rectangle(0, 50, 0, 0));
-		bebidas.setResizable(true);
-		bebidas.setMaximizable(true);
-		bebidas.setBackground(new Color(240, 240, 240));
-		bebidas.setClosable(true);
-		GroupLayout groupLayout = new GroupLayout(bebidas.getContentPane());
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 419, Short.MAX_VALUE));
-		groupLayout
-				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 237, Short.MAX_VALUE));
-		bebidas.getContentPane().setLayout(groupLayout);
-		bebidas.setVisible(false);
-
-		JInternalFrame postres = new JInternalFrame("Postres");
-		postres.setBounds(227, 85, 453, 335);
-		internalFrames.add(postres);
-		postres.setResizable(true);
-		postres.setMaximizable(true);
-		postres.setClosable(true);
-		postres.setVisible(false);
-		
-		
-		table = new JTable();
-		//Para que se pueda seleccionar varias filas
-		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		
-		JScrollPane scroll = new JScrollPane(table);
 		
         //se crea un TableModel con algunos datos y se asigna al JTable
 
@@ -197,16 +165,6 @@ public class Principal extends JFrame {
         { true, "shinji ikari", "15", "No se sabe" } }, new Object[] {
 
         "CheckBox", "Nombre", "Edad", "Sexo" });
-
-        table.setModel(TableModel);
-
-        //Se crea el JCheckBox en la columna indicada en getColumn, en este caso, la primera columna
-
-        table.getColumnModel().getColumn( 0 ).setCellEditor( new Celda_CheckBox() );
-                
-        //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
-
-        table.getColumnModel().getColumn( 0 ).setCellRenderer(new Render_CheckBox());
 		
 		JButton btnRecoger = new JButton("Recojo comanda");
 		btnRecoger.addActionListener(new ActionListener() {
@@ -242,19 +200,15 @@ public class Principal extends JFrame {
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 565, GroupLayout.PREFERRED_SIZE)
-						.addComponent(btnRecoger))
-					.addContainerGap(56, Short.MAX_VALUE))
+					.addComponent(btnRecoger)
+					.addContainerGap(779, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(21)
-					.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
+					.addGap(249)
 					.addComponent(btnRecoger)
-					.addContainerGap(154, Short.MAX_VALUE))
+					.addContainerGap(437, Short.MAX_VALUE))
 		);
 		contentPane.setLayout(gl_contentPane);
 		
@@ -268,46 +222,13 @@ public class Principal extends JFrame {
 		
 	
 
-		// Abre el internal frame de bebidas y lo cambia entre visible y no visible
-		btnBebidas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (!bebidas.isVisible()) {
-					bebidas.setVisible(true);
-					postres.setVisible(false);
-					taules.setVisible(false);
-					taules.setBounds(228, 85, 452, 331);
-					postres.setBounds(227, 85, 453, 335);
-				} else {
-					bebidas.setVisible(false);
-				}
-
-			}
-		});
-		btnPostres.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (!postres.isVisible()) {
-					postres.setVisible(true);
-					bebidas.setVisible(false);
-					taules.setVisible(false);
-					taules.setBounds(228, 85, 452, 331);
-					bebidas.setBounds(227, 89, 447, 327);
-				} else {
-					postres.setVisible(false);
-				}
-
-			}
-		});
-		btnTaules.addActionListener(new ActionListener() {
+		
+		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				if (!taules.isVisible()) {
 					taules.setVisible(true);
-					bebidas.setVisible(false);
-					postres.setVisible(false);
-					bebidas.setBounds(228, 85, 452, 331);
-					bebidas.setBounds(227, 89, 447, 327);
+					
 				} else {
 					taules.setVisible(false);
 				}
@@ -316,97 +237,7 @@ public class Principal extends JFrame {
 		});
 		
 		
-		btnCrearTaules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				//aLTaules.add(new JButton(Integer.toString(contadorMesas)));
-				JButton btnTaulaAuto = new JButton(Integer.toString(contadorMesas+1));
-				panel.add(btnTaulaAuto);
-				
-				
-				
-				contadorMesas++;
-				revalidate();
-				repaint();
-				
-				
-
-				
-
-			}
-		});
 		
-		btnQuitarTaules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-					
-					if (contadorMesas>0) {
-						panel.remove(contadorMesas-1);
-						
-						contadorMesas--;
-						revalidate();
-						repaint();
-						}
-					else {
-						
-						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
-						
-						
-					}
-					
-				
-				
-				
-				
-				
-
-				
-
-			}
-		});
-		
-		btnBorrarTaules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (contadorMesas>0) {
-				int n = JOptionPane.showOptionDialog(new JFrame(), "Estas seguro de quieres borrar todas las mesas", 
-				        "Borrar todo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
-				        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
-
-				        if (n == JOptionPane.YES_OPTION) {
-				            System.out.println("Yes");
-				            panel.removeAll();
-							
-							contadorMesas=0;
-							revalidate();
-							repaint();
-							
-				        } else if (n == JOptionPane.NO_OPTION) {
-				            System.out.println("No");
-				        } else if (n == JOptionPane.CLOSED_OPTION) {
-				            System.out.println("No");
-				        }
-				
-					
-					
-						
-						}
-					else {
-						
-						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
-						
-					}
-					
-				
-				
-				
-				
-				
-
-				
-
-			}
-		});
 
 	}
 }
