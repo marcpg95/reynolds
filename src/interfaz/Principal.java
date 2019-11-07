@@ -1,42 +1,50 @@
 package interfaz;
 
-import java.awt.BorderLayout;
-import java.awt.Button;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
+
+import tablaConCheckBox.Celda_CheckBox;
+import tablaConCheckBox.Render_CheckBox;
 
 import javax.swing.JInternalFrame;
-import javax.swing.JToolBar;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
+import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+
 import java.awt.Color;
-import java.awt.Component;
+
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
 import java.awt.Rectangle;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 
-import javax.swing.BoxLayout;
-import javax.swing.JTextField;
-
 public class Principal extends JFrame {
+	
 
+
+	
+	private static final long serialVersionUID = 1L;
+
+
+	private JTable table;
 	private JPanel contentPane;
-	private JTextField numeroTaules;
-	private ArrayList<JButton> aLTaules = new ArrayList<JButton>();
+	
+	
 
 	/**
 	 * Launch the application.
@@ -163,6 +171,101 @@ public class Principal extends JFrame {
 		postres.setClosable(true);
 		postres.setVisible(false);
 		
+		
+		table = new JTable();
+		//Para que se pueda seleccionar varias filas
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		
+		JScrollPane scroll = new JScrollPane(table);
+		
+        //se crea un TableModel con algunos datos y se asigna al JTable
+
+        DefaultTableModel TableModel = new DefaultTableModel();
+
+        TableModel.setDataVector(new Object[][] {
+
+        { false, "Juan Perez", "12", "Hombre" },
+
+        { false, "Homero J. Simpsons", "40", "Hombre" },
+
+        { true, "Ned Flanders", "35", "Hombre" },
+
+        { true, "Asuka Langley", "15", "Si gracias" },
+
+        { false, "Rei Ayanami", "16", "Mujer" },
+
+        { true, "shinji ikari", "15", "No se sabe" } }, new Object[] {
+
+        "CheckBox", "Nombre", "Edad", "Sexo" });
+
+        table.setModel(TableModel);
+
+        //Se crea el JCheckBox en la columna indicada en getColumn, en este caso, la primera columna
+
+        table.getColumnModel().getColumn( 0 ).setCellEditor( new Celda_CheckBox() );
+                
+        //para pintar la columna con el CheckBox en la tabla, en este caso, la primera columna
+
+        table.getColumnModel().getColumn( 0 ).setCellRenderer(new Render_CheckBox());
+		
+		JButton btnRecoger = new JButton("Recojo comanda");
+		btnRecoger.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println("BOTON:::");
+				//Pongo el color de fondo que tiene la celda programada
+				int cantFilas=table.getModel().getRowCount();
+				for(int i=0;i<cantFilas;i++) {
+					JCheckBox check = (JCheckBox)((Render_CheckBox)table.getCellRenderer(i, 0)).getComponent();
+					boolean bol = (boolean)table.getValueAt(i, 0);
+					System.out.println(bol);
+					if( bol)  {
+						//check.setBackground(Color.green);
+						//((Render_CheckBox)table.getCellRenderer(i, 0)).setBackground(Color.green);
+						System.out.println("Color es verde");
+					}
+					else {
+						//check.setBackground(Color.red);
+						//((Render_CheckBox)table.getCellRenderer(i, 0)).setBackground(Color.red);
+						System.out.println("Color es rojo");
+					}
+					check.setEnabled(false);
+					((Render_CheckBox)table.getCellRenderer(i, 0)).saludo();
+				}
+				
+			}
+		});
+		
+		
+		
+		GroupLayout gl_contentPane = new GroupLayout(contentPane);
+		gl_contentPane.setHorizontalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addContainerGap()
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 565, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnRecoger))
+					.addContainerGap(56, Short.MAX_VALUE))
+		);
+		gl_contentPane.setVerticalGroup(
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
+					.addGap(21)
+					.addComponent(scroll, GroupLayout.PREFERRED_SIZE, 210, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnRecoger)
+					.addContainerGap(154, Short.MAX_VALUE))
+		);
+		contentPane.setLayout(gl_contentPane);
+		
+		
+		
+		
+		
+		
+		
+		
+		
 	
 
 		// Abre el internal frame de bebidas y lo cambia entre visible y no visible
@@ -217,8 +320,10 @@ public class Principal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				
 				//aLTaules.add(new JButton(Integer.toString(contadorMesas)));
-				JButton btnTaulaAuto = new JButton(Integer.toString(contadorMesas));
+				JButton btnTaulaAuto = new JButton(Integer.toString(contadorMesas+1));
 				panel.add(btnTaulaAuto);
+				
+				
 				
 				contadorMesas++;
 				revalidate();
@@ -247,6 +352,7 @@ public class Principal extends JFrame {
 						
 						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
 						
+						
 					}
 					
 				
@@ -262,15 +368,28 @@ public class Principal extends JFrame {
 		
 		btnBorrarTaules.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				if (contadorMesas>0) {
+				int n = JOptionPane.showOptionDialog(new JFrame(), "Estas seguro de quieres borrar todas las mesas", 
+				        "Borrar todo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
+				        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
+
+				        if (n == JOptionPane.YES_OPTION) {
+				            System.out.println("Yes");
+				            panel.removeAll();
+							
+							contadorMesas=0;
+							revalidate();
+							repaint();
+							
+				        } else if (n == JOptionPane.NO_OPTION) {
+				            System.out.println("No");
+				        } else if (n == JOptionPane.CLOSED_OPTION) {
+				            System.out.println("No");
+				        }
 				
 					
-					if (contadorMesas>0) {
-						panel.removeAll();
+					
 						
-						contadorMesas=0;
-						revalidate();
-						repaint();
 						}
 					else {
 						
