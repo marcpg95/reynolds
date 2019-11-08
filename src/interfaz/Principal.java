@@ -1,16 +1,30 @@
 package interfaz;
 
 import java.awt.EventQueue;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import tablaConCheckBox.JCheckBox_Cell;
+import tablaConCheckBox.JCheckBox_Rendered;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import tablaConCheckBox.Celda_CheckBox;
-import tablaConCheckBox.Render_CheckBox;
+
 
 import javax.swing.JInternalFrame;
 
@@ -24,35 +38,28 @@ import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
 import java.awt.Rectangle;
 import java.awt.GridLayout;
+import javax.swing.JTabbedPane;
 
 public class Principal extends JFrame {
-	
 
-
-	
 	private static final long serialVersionUID = 1L;
-
 
 	private JTable table;
 	private JPanel contentPane;
-	
-	
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
 	 */
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -83,161 +90,140 @@ public class Principal extends JFrame {
 		menuBar.setBounds(0, 0, 900, 21);
 		contentPane.add(menuBar);
 
-		JMenu menu = new JMenu("Archivo");
-		menuBar.add(menu);
+		JMenu mnBarracocina = new JMenu("Barra/Cocina");
+		menuBar.add(mnBarracocina);
 
 		JMenuItem menuCocina = new JMenuItem("Cocina");
-		menu.add(menuCocina);
+		mnBarracocina.add(menuCocina);
 
 		JMenuItem menuBarra = new JMenuItem("Barra");
-		menu.add(menuBarra);
+		mnBarracocina.add(menuBarra);
 
 		JSeparator separator = new JSeparator();
-		menu.add(separator);
+		mnBarracocina.add(separator);
 
 		JMenuItem menuItem_4 = new JMenuItem("Salir");
-		menu.add(menuItem_4);
-
-	
+		mnBarracocina.add(menuItem_4);
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
 		
-		JInternalFrame taules = new JInternalFrame("Mesas Cocina");
-		taules.setClosable(true);
-		taules.setBounds(10, 11, 844, 512);
-		internalFrames.add(taules);
-		taules.getContentPane().setLayout(null);
 		
-				
-				
-				
-				table = new JTable();
-				//Para que se pueda seleccionar varias filas
-				table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-				
-				JScrollPane scroll = new JScrollPane(table);
-				scroll.setBounds(0, 0, 828, 472);
-				taules.getContentPane().add(scroll);
-				
-				        table.setModel(new DefaultTableModel(
-				        	new Object[][] {
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        		{null, null, null},
-				        	},
-				        	new String[] {
-				        		"New column", "New column", "New column"
-				        	}
-				        ));
-		
-		
-		
-		
-		
-		
-		
-		taules.setVisible(false);
-		
-        //se crea un TableModel con algunos datos y se asigna al JTable
+				JInternalFrame taules = new JInternalFrame("Mesas Cocina");
+				taules.setBounds(10, 11, 844, 512);
+				internalFrames.add(taules);
+				taules.setClosable(true);
+				taules.getContentPane().setLayout(null);
+						
+						
+						JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+						tabbedPane.setBounds(0, 0, 828, 28);
+						taules.getContentPane().add(tabbedPane);
+						
+						
+								
+								
+						
+						
 
-        DefaultTableModel TableModel = new DefaultTableModel();
 
-        TableModel.setDataVector(new Object[][] {
+		JInternalFrame barra = new JInternalFrame("Barra");
+		barra.setClosable(true);
+		barra.setBounds(10, 11, 844, 512);
+		internalFrames.add(barra);
+		barra.getContentPane().setLayout(null);
 
-        { false, "Juan Perez", "12", "Hombre" },
+		JPanel panelMesas = new JPanel();
+		panelMesas.setBounds(566, 226, 252, 246);
+		barra.getContentPane().add(panelMesas);
+		panelMesas.setLayout(new GridLayout(3, 5, 5, 10));
 
-        { false, "Homero J. Simpsons", "40", "Hombre" },
+		try {
+			File archivo = new File("archivos/config.xml");
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+			Document document = documentBuilder.parse(archivo);
+			document.getDocumentElement().normalize();
+			NodeList listaConfig = document.getElementsByTagName("mesas");
+			Node mesasXML = listaConfig.item(0);
+			Element cantidadMesas = (Element) mesasXML;
+			System.out.println(cantidadMesas);
+			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
+			System.out.println(totalMesas);
+			for (int i = 0; i < totalMesas; i++) {
 
-        { true, "Ned Flanders", "35", "Hombre" },
+				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
+				tabbedPane.addTab("Mesa " + (i + 1), null, tabbedPaneMesa, null);
 
-        { true, "Asuka Langley", "15", "Si gracias" },
+				JButton btnTaula = new JButton("Mesa " + Integer.toString(i + 1));
+				panelMesas.add(btnTaula);
 
-        { false, "Rei Ayanami", "16", "Mujer" },
-
-        { true, "shinji ikari", "15", "No se sabe" } }, new Object[] {
-
-        "CheckBox", "Nombre", "Edad", "Sexo" });
-		
-		JButton btnRecoger = new JButton("Recojo comanda");
-		btnRecoger.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				System.out.println("BOTON:::");
-				//Pongo el color de fondo que tiene la celda programada
-				int cantFilas=table.getModel().getRowCount();
-				for(int i=0;i<cantFilas;i++) {
-					JCheckBox check = (JCheckBox)((Render_CheckBox)table.getCellRenderer(i, 0)).getComponent();
-					boolean bol = (boolean)table.getValueAt(i, 0);
-					System.out.println(bol);
-					if( bol)  {
-						//check.setBackground(Color.green);
-						//((Render_CheckBox)table.getCellRenderer(i, 0)).setBackground(Color.green);
-						System.out.println("Color es verde");
-					}
-					else {
-						//check.setBackground(Color.red);
-						//((Render_CheckBox)table.getCellRenderer(i, 0)).setBackground(Color.red);
-						System.out.println("Color es rojo");
-					}
-					check.setEnabled(false);
-					((Render_CheckBox)table.getCellRenderer(i, 0)).saludo();
-				}
-				
 			}
-		});
-		
-		
-		
-		GroupLayout gl_contentPane = new GroupLayout(contentPane);
-		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(btnRecoger)
-					.addContainerGap(779, Short.MAX_VALUE))
-		);
-		gl_contentPane.setVerticalGroup(
-			gl_contentPane.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_contentPane.createSequentialGroup()
-					.addGap(249)
-					.addComponent(btnRecoger)
-					.addContainerGap(437, Short.MAX_VALUE))
-		);
-		contentPane.setLayout(gl_contentPane);
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			JTable tableComanda = new JTable();
+			tableComanda.setShowVerticalLines(false);
+			
+			tableComanda.setBounds(10, 153, 441, 263);
+			taules.getContentPane().add(tableComanda);
+			
+			
+			
+			tableComanda.setModel(new DefaultTableModel(
+				new Object[][] {
+					{"CocaCola", false},
+					{"Cerveza", false},
+					{"Bravas", false},
+					{"Chocos", false},
+					{"Fanta", false},
+					{"Entrecot", false},
+					{"Lejia", false},
+				
+				},
+				new String[] {
+					"Producto", "Listo"
+				}
+			));
+			
+			JScrollPane scrollPane = new JScrollPane(tableComanda);
+			scrollPane.setBounds(45, 83, 276, 314);
+			taules.getContentPane().add(scrollPane);
+			tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
+			tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
 	
 
-		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				if (!taules.isVisible()) {
 					taules.setVisible(true);
-					
+					barra.setVisible(false);
+
 				} else {
 					taules.setVisible(false);
 				}
 
 			}
 		});
-		
-		
-		
+
+		menuBarra.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				if (!barra.isVisible()) {
+					barra.setVisible(true);
+					taules.setVisible(false);
+
+				} else {
+
+					barra.setVisible(false);
+				}
+
+			}
+		});
 
 	}
 }
