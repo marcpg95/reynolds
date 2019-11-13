@@ -177,8 +177,7 @@ public class Principal extends JFrame {
 					{"Chocos", false},
 					{"Fanta", false},
 					{"Entrecot", false},
-					{"Lejia", false},
-					{"MataRatas",true},
+					
 				
 				},
 				new String[] {
