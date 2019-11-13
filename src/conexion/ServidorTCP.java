@@ -22,37 +22,37 @@ public class ServidorTCP {
 		super();
 	}
 
-	public void iniciarServidor() {
+	public void conexion() {
 		try {
-			ss = new ServerSocket(20); // INICIO EL SOCKET SERVIDOR
-			System.out.println("IP: " + getIP());
-			buscarComandas();
+			System.out.println("LocalHost = " + InetAddress.getLocalHost().toString()); // MUESTRO LA IP DEL SERVER
+		} catch (UnknownHostException uhe) {
+
+		}
+
+		// CREAMOS UN SOCKET DE SERVIDOR
+		ServerSocket ss = null;
+		try {
+			ss = new ServerSocket(puerto);
 		} catch (IOException ioe) {
-			JOptionPane.showMessageDialog(null, "No se ha podido iniciar el servidor.", "ATENCION",
-					JOptionPane.PLAIN_MESSAGE);
-		}
-	}
 
-	public String getIP() {
-		try {
-			return InetAddress.getLocalHost().toString();
-		} catch (UnknownHostException e) {
-			return null;
 		}
-	}
 
-	@SuppressWarnings("resource")
-	private void buscarComandas() {
+		int entrada;
+
 		while (true) {
 			try {
+				// ESPERAMOS QUE EL MOVIL ENVIE DATOS
 				Socket sock = ss.accept();
+
+				// LEO LOS DATOS
 				DataInputStream dis = new DataInputStream(sock.getInputStream());
-				while(true) {
-					System.out.println("Leido: " + dis.readInt());
-				}
-			} catch (IOException e) {
-				JOptionPane.showMessageDialog(null, "Se ha producido un error leyendo la comanda.", "ATENCION",
-						JOptionPane.PLAIN_MESSAGE);
+				entrada = dis.readInt();
+
+				System.out.println("ENTRADA: " + entrada);
+				dis.close();
+				sock.close();
+			} catch (Exception e) {
+				
 			}
 		}
 	}

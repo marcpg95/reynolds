@@ -63,7 +63,7 @@ public class Principal extends JFrame {
 
 	public static void main(String[] args) {
 		ServidorTCP st = new ServidorTCP();
-		st.iniciarServidor();
+		st.conexion();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
