@@ -9,6 +9,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import conexion.ServidorTCP;
 import tablaConCheckBox.JCheckBox_Cell;
 import tablaConCheckBox.JCheckBox_Rendered;
 
@@ -61,6 +62,8 @@ public class Principal extends JFrame {
 	 */
 
 	public static void main(String[] args) {
+		ServidorTCP st = new ServidorTCP();
+		st.iniciarServidor();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -128,6 +131,17 @@ public class Principal extends JFrame {
 						
 						
 
+
+
+		JInternalFrame postres = new JInternalFrame("Postres");
+		postres.setBounds(227, 85, 453, 335);
+		internalFrames.add(postres);
+		postres.setResizable(true);
+		postres.setMaximizable(true);
+		postres.setClosable(true);
+		postres.setVisible(false);
+		
+		
 
 		JInternalFrame barra = new JInternalFrame("Barra");
 		barra.setClosable(true);
