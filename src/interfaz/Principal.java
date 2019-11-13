@@ -186,6 +186,8 @@ public class Principal extends JFrame {
 				}
 			));
 			
+			
+			
 			JScrollPane scrollPane = new JScrollPane(tableComanda);
 			scrollPane.setBounds(45, 83, 276, 314);
 			taules.getContentPane().add(scrollPane);
