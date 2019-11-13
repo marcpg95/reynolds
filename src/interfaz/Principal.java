@@ -1,16 +1,31 @@
 package interfaz;
 
 import java.awt.EventQueue;
+import java.io.File;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import conexion.ServidorTCP;
+import tablaConCheckBox.JCheckBox_Cell;
+import tablaConCheckBox.JCheckBox_Rendered;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
-import tablaConCheckBox.Celda_CheckBox;
-import tablaConCheckBox.Render_CheckBox;
+
 
 import javax.swing.JInternalFrame;
 
@@ -24,36 +39,31 @@ import javax.swing.JMenuBar;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
-
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.SystemColor;
 import java.awt.Rectangle;
 import java.awt.GridLayout;
+import javax.swing.JTabbedPane;
 
 public class Principal extends JFrame {
-	
 
-
-	
 	private static final long serialVersionUID = 1L;
-
 
 	private JTable table;
 	private JPanel contentPane;
-	
-	
+	private JTable table_1;
 
 	/**
 	 * Launch the application.
 	 */
-	
-	
-	public int contadorMesas=0;
-	
+
 	public static void main(String[] args) {
+		ServidorTCP st = new ServidorTCP();
+		st.iniciarServidor();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -83,85 +93,45 @@ public class Principal extends JFrame {
 		menuBar.setBounds(0, 0, 900, 21);
 		contentPane.add(menuBar);
 
-		JMenu menu = new JMenu("Archivo");
-		menuBar.add(menu);
+		JMenu mnBarracocina = new JMenu("Barra/Cocina");
+		menuBar.add(mnBarracocina);
 
-		JMenuItem menuItem = new JMenuItem("Nuevo");
-		menu.add(menuItem);
+		JMenuItem menuCocina = new JMenuItem("Cocina");
+		mnBarracocina.add(menuCocina);
 
-		JMenuItem menuItem_1 = new JMenuItem("Abrir");
-		menu.add(menuItem_1);
-
-		JMenuItem menuItem_2 = new JMenuItem("Guardar");
-		menu.add(menuItem_2);
-
-		JMenuItem menuItem_3 = new JMenuItem("Guardar como...");
-		menu.add(menuItem_3);
+		JMenuItem menuBarra = new JMenuItem("Barra");
+		mnBarracocina.add(menuBarra);
 
 		JSeparator separator = new JSeparator();
-		menu.add(separator);
+		mnBarracocina.add(separator);
 
 		JMenuItem menuItem_4 = new JMenuItem("Salir");
-		menu.add(menuItem_4);
-
-		JButton btnPostres = new JButton("Postres");
-		menuBar.add(btnPostres);
-
-		JButton btnBebidas = new JButton("Bebidas");
-		menuBar.add(btnBebidas);
-		
-		JButton btnTaules = new JButton("Taules");
-		menuBar.add(btnTaules);
+		mnBarracocina.add(menuItem_4);
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
 		
-		JInternalFrame taules = new JInternalFrame("Mesas");
-		taules.setClosable(true);
-		taules.setBounds(228, 85, 452, 331);
-		internalFrames.add(taules);
-		taules.getContentPane().setLayout(null);
 		
-		JButton btnCrearTaules = new JButton("Crear Mesas");
-		btnCrearTaules.setBounds(40, 268, 104, 23);
-		taules.getContentPane().add(btnCrearTaules);
-		
-		JButton btnQuitarTaules = new JButton("Quitar Mesas");
-		btnQuitarTaules.setBounds(165, 268, 104, 23);
-		taules.getContentPane().add(btnQuitarTaules);
-		
-		JButton btnBorrarTaules = new JButton("Borrar Todas");
-		btnBorrarTaules.setBounds(290, 268, 104, 23);
-		taules.getContentPane().add(btnBorrarTaules);
-		
-		JPanel panel = new JPanel();
-		panel.setBounds(10, 11, 416, 246);
-		taules.getContentPane().add(panel);
-		panel.setLayout(new GridLayout(9, 8, 5, 10));
-		
-		
-		
-		
-		
-		taules.setVisible(false);
+				JInternalFrame taules = new JInternalFrame("Mesas Cocina");
+				taules.setBounds(10, 11, 844, 512);
+				internalFrames.add(taules);
+				taules.setClosable(true);
+				taules.getContentPane().setLayout(null);
+						
+						
+						JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+						tabbedPane.setBounds(0, 0, 828, 28);
+						taules.getContentPane().add(tabbedPane);
+						
+						
+								
+								
+						
+						
 
-		JInternalFrame bebidas = new JInternalFrame("Bebidas");
-		bebidas.setBounds(227, 89, 447, 327);
-		internalFrames.add(bebidas);
-		bebidas.setNormalBounds(new Rectangle(0, 50, 0, 0));
-		bebidas.setResizable(true);
-		bebidas.setMaximizable(true);
-		bebidas.setBackground(new Color(240, 240, 240));
-		bebidas.setClosable(true);
-		GroupLayout groupLayout = new GroupLayout(bebidas.getContentPane());
-		groupLayout
-				.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 419, Short.MAX_VALUE));
-		groupLayout
-				.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING).addGap(0, 237, Short.MAX_VALUE));
-		bebidas.getContentPane().setLayout(groupLayout);
-		bebidas.setVisible(false);
+
 
 		JInternalFrame postres = new JInternalFrame("Postres");
 		postres.setBounds(227, 85, 453, 335);
@@ -173,143 +143,100 @@ public class Principal extends JFrame {
 		
 		
 
+		JInternalFrame barra = new JInternalFrame("Barra");
+		barra.setClosable(true);
+		barra.setBounds(10, 11, 844, 512);
+		internalFrames.add(barra);
+		barra.getContentPane().setLayout(null);
 
-		// Abre el internal frame de bebidas y lo cambia entre visible y no visible
-		btnBebidas.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
+		JPanel panelMesas = new JPanel();
+		panelMesas.setBounds(566, 226, 252, 246);
+		barra.getContentPane().add(panelMesas);
+		panelMesas.setLayout(new GridLayout(3, 5, 5, 10));
 
-				if (!bebidas.isVisible()) {
-					bebidas.setVisible(true);
-					postres.setVisible(false);
-					taules.setVisible(false);
-					taules.setBounds(228, 85, 452, 331);
-					postres.setBounds(227, 85, 453, 335);
-				} else {
-					bebidas.setVisible(false);
-				}
+		try {
+			File archivo = new File("archivos/config.xml");
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
+			Document document = documentBuilder.parse(archivo);
+			document.getDocumentElement().normalize();
+			NodeList listaConfig = document.getElementsByTagName("mesas");
+			Node mesasXML = listaConfig.item(0);
+			Element cantidadMesas = (Element) mesasXML;
+			System.out.println(cantidadMesas);
+			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
+			System.out.println(totalMesas);
+			for (int i = 0; i < totalMesas; i++) {
+
+				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
+				tabbedPane.addTab("Mesa " + (i + 1), null, tabbedPaneMesa, null);
+
+				JButton btnTaula = new JButton("Mesa " + Integer.toString(i + 1));
+				panelMesas.add(btnTaula);
 
 			}
-		});
-		btnPostres.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-
-				if (!postres.isVisible()) {
-					postres.setVisible(true);
-					bebidas.setVisible(false);
-					taules.setVisible(false);
-					taules.setBounds(228, 85, 452, 331);
-					bebidas.setBounds(227, 89, 447, 327);
-				} else {
-					postres.setVisible(false);
+			JTable tableComanda = new JTable();
+			tableComanda.setShowVerticalLines(false);
+			
+			tableComanda.setBounds(10, 153, 441, 263);
+			taules.getContentPane().add(tableComanda);
+			
+			
+			
+			tableComanda.setModel(new DefaultTableModel(
+				new Object[][] {
+					{"CocaCola", false},
+					{"Cerveza", false},
+					{"Bravas", false},
+					{"Chocos", false},
+					{"Fanta", false},
+					{"Entrecot", false},
+					
+				
+				},
+				new String[] {
+					"Producto", "Listo"
 				}
+			));
+			
+			
+			
+			JScrollPane scrollPane = new JScrollPane(tableComanda);
+			scrollPane.setBounds(45, 83, 276, 314);
+			taules.getContentPane().add(scrollPane);
+			tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
+			tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
+	
 
-			}
-		});
-		btnTaules.addActionListener(new ActionListener() {
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
 				if (!taules.isVisible()) {
 					taules.setVisible(true);
-					bebidas.setVisible(false);
-					postres.setVisible(false);
-					bebidas.setBounds(228, 85, 452, 331);
-					bebidas.setBounds(227, 89, 447, 327);
+					barra.setVisible(false);
+
 				} else {
 					taules.setVisible(false);
 				}
 
 			}
 		});
-		
-		
-		btnCrearTaules.addActionListener(new ActionListener() {
+
+		menuBarra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				//aLTaules.add(new JButton(Integer.toString(contadorMesas)));
-				JButton btnTaulaAuto = new JButton(Integer.toString(contadorMesas+1));
-				panel.add(btnTaulaAuto);
-				
-				
-				
-				contadorMesas++;
-				revalidate();
-				repaint();
-				
-				
 
-				
+				if (!barra.isVisible()) {
+					barra.setVisible(true);
+					taules.setVisible(false);
 
-			}
-		});
-		
-		btnQuitarTaules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-					
-					if (contadorMesas>0) {
-						panel.remove(contadorMesas-1);
-						
-						contadorMesas--;
-						revalidate();
-						repaint();
-						}
-					else {
-						
-						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
-						
-						
-					}
-					
-				
-				
-				
-				
-				
+				} else {
 
-				
-
-			}
-		});
-		
-		btnBorrarTaules.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (contadorMesas>0) {
-				int n = JOptionPane.showOptionDialog(new JFrame(), "Estas seguro de quieres borrar todas las mesas", 
-				        "Borrar todo", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, 
-				        null, new Object[] {"Yes", "No"}, JOptionPane.YES_OPTION);
-
-				        if (n == JOptionPane.YES_OPTION) {
-				            System.out.println("Yes");
-				            panel.removeAll();
-							
-							contadorMesas=0;
-							revalidate();
-							repaint();
-							
-				        } else if (n == JOptionPane.NO_OPTION) {
-				            System.out.println("No");
-				        } else if (n == JOptionPane.CLOSED_OPTION) {
-				            System.out.println("No");
-				        }
-				
-					
-					
-						
-						}
-					else {
-						
-						JOptionPane.showMessageDialog(null, "No puedes borrar mas mesas");
-						
-					}
-					
-				
-				
-				
-				
-				
-
-				
+					barra.setVisible(false);
+				}
 
 			}
 		});
