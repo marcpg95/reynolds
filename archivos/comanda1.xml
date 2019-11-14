@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<Comanda>
+  
+    <mesa id="1">
+    	<producto cantidad="2">Agua grande</producto>
+    	<producto cantidad="1">Entrecot</producto>
+    	<producto cantidad="3">Lejia</producto>
+    	<producto cantidad="4">Guindillas</producto>
+    	<producto cantidad="10">Bravas</producto>
+    	
+    
+    
+    
+    </mesa>
+       
+</Comanda>

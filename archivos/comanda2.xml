@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<Comanda>
+  
+    <mesa id="2">
+    	<producto cantidad="5">Agua Pequeña</producto>
+    	<producto cantidad="2">Patatas Fritas</producto>
+    	<producto cantidad="19">Matarratas</producto>
+    	
+    	
+    
+    
+    
+    </mesa>
+       
+</Comanda>
