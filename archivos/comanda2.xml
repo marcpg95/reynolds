@@ -3,9 +3,19 @@
 <Comanda>
   
     <mesa id="2">
-    	<producto cantidad="5">Agua Pequeña</producto>
-    	<producto cantidad="2">Patatas Fritas</producto>
-    	<producto cantidad="19">Matarratas</producto>
+    	<producto cantidad="2">
+    		<nombre>Agua pequeña</nombre>
+    		<precio>0,5</precio>
+    	</producto>
+    	<producto cantidad="1">
+    		<nombre>Patatas Fritas</nombre>
+    		<precio>4</precio>
+    	</producto>
+    	<producto cantidad="3">
+			<nombre>MataRatas</nombre>
+    		<precio>5</precio>
+		</producto>
+    	
     	
     	
     

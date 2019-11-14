@@ -58,7 +58,7 @@ public class Principal extends JFrame {
 	private JTable table;
 	private JPanel contentPane;
 	private JTable table_1;
-	int numeroMesa=1;
+	int numeroMesa = 1;
 
 	/**
 	 * Launch the application.
@@ -132,7 +132,6 @@ public class Principal extends JFrame {
 		internalFrames.add(taules);
 		taules.setClosable(true);
 		taules.getContentPane().setLayout(null);
-		
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
@@ -153,14 +152,9 @@ public class Principal extends JFrame {
 		taules.getContentPane().add(scrollPane);
 		tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 		tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
-		
-		JTable tableComandaBarra = new JTable();
-		tableComandaBarra.setShowVerticalLines(false);
 
-		tableComandaBarra.setBounds(10, 153, 441, 263);
-		barra.getContentPane().add(tableComandaBarra);
 		
-		
+
 		try {
 			File archivo = new File("archivos/config.xml");
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -170,9 +164,9 @@ public class Principal extends JFrame {
 			NodeList listaConfig = document.getElementsByTagName("mesas");
 			Node mesasXML = listaConfig.item(0);
 			Element cantidadMesas = (Element) mesasXML;
-			
+
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
-			
+
 			for (int i = 0; i < totalMesas; i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
@@ -182,62 +176,57 @@ public class Principal extends JFrame {
 				panelMesas.add(btnTaula);
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						String nombreMesa=((JButton) e.getSource()).getText();
-						System.out.println(nombreMesa);
-						numeroMesa=Integer.parseInt(nombreMesa.substring(nombreMesa.length()-1));
-						System.out.println(numeroMesa);
-						
+
+						String nombreMesa = ((JButton) e.getSource()).getText();
+						//System.out.println(nombreMesa);
+						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
+						//System.out.println(numeroMesa);
+						ArrayList<String> arrayComandaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa);
+
+						//for (int i = 0; i < arrayComandaBarra.size(); i++) {
+						//	System.out.print(arrayComandaBarra.get(i));
+						//}
+						int contadorProducto = 0;
+						int contadorCantidad = 1;
+						int contadorPrecio=2;
+						Object[][] o = new Object[arrayComandaBarra.size() / 2][4];
+						for (int i = 0; i < arrayComandaBarra.size() / 2; i++) {
+
+							o[i][0] = arrayComandaBarra.get(i + contadorProducto);
+
+							o[i][1] = arrayComandaBarra.get(i + contadorCantidad);
+							o[i][2] =  null;
+							o[i][3] = false;
+							contadorCantidad++;
+							contadorProducto++;
+							
+
+						}
+						JTable tableComandaBarra = new JTable();
+						tableComandaBarra.setShowVerticalLines(false);
+
+						tableComandaBarra.setBounds(10, 153, 441, 263);
+						barra.getContentPane().add(tableComandaBarra);
+						tableComandaBarra.setModel(
+								new DefaultTableModel(o, new String[] { "Producto", "Cantidad", "Precio", "Cobrar" }));
+
+						JScrollPane scrollPaneBarra = new JScrollPane(tableComandaBarra);
+						scrollPaneBarra.setBounds(53, 226, 386, 231);
+						barra.getContentPane().add(scrollPaneBarra);
+						tableComandaBarra.getColumnModel().getColumn(3)
+								.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
+						tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
+
+						tableComandaBarra.setVisible(true);
+
 					}
 				});
 
-				
-
 			}
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		
- ArrayList<String> arrayComandaBarra= new GenerarComanda().GenerarComandaBarra(numeroMesa);
-		 
-		 for(int i = 0; i < arrayComandaBarra.size(); i++) {   
-			    System.out.print(arrayComandaBarra.get(i));
-			} 
-		 int contadorProducto=0;
-		 int contadorCantidad=1;
-		 Object[][] o = new Object[arrayComandaBarra.size()/2][4];
-		 for (int i=0;i<arrayComandaBarra.size()/2;i++) {
-			
-			 o[i][0] = arrayComandaBarra.get(i+contadorProducto);
-			 
-			 o[i][1] = arrayComandaBarra.get(i+contadorCantidad);
-			 o[i][2] = null;
-			 o[i][3] = false;
-			 contadorCantidad++;
-			 contadorProducto++;
-			
-			 
-		 }
-		
-
-		tableComandaBarra.setModel(new DefaultTableModel(o,
-			new String[] {
-				"Producto", "Cantidad", "Precio", "Cobrar"
-			}
-		));
-
-		JScrollPane scrollPaneBarra = new JScrollPane(tableComandaBarra);
-		scrollPaneBarra.setBounds(53, 226, 386, 231);
-		barra.getContentPane().add(scrollPaneBarra);
-		tableComandaBarra.getColumnModel().getColumn(3).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-		tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
-		 
-		
-		 
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

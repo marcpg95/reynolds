@@ -3,11 +3,26 @@
 <Comanda>
   
     <mesa id="1">
-    	<producto cantidad="2">Agua grande</producto>
-    	<producto cantidad="1">Entrecot</producto>
-    	<producto cantidad="3">Lejia</producto>
-    	<producto cantidad="4">Guindillas</producto>
-    	<producto cantidad="10">Bravas</producto>
+    	<producto cantidad="2">
+    		<nombre>Agua grande</nombre>
+    		<precio>1</precio>
+    	</producto>
+    	<producto cantidad="1">
+    		<nombre>Entrecot</nombre>
+    		<precio>8</precio>
+    	</producto>
+    	<producto cantidad="3">
+			<nombre>Lejia</nombre>
+    		<precio>3</precio>
+		</producto>
+    	<producto cantidad="4">
+			<nombre>Guindillas</nombre>
+    		<precio>20</precio>
+		</producto>
+    	<producto cantidad="10">
+			<nombre>Chocos</nombre>
+    		<precio>8</precio>
+		</producto>
     	
     
     
