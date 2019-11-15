@@ -55,10 +55,12 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	private JTable table;
+	
 	private JPanel contentPane;
-	private JTable table_1;
+	
 	int numeroMesa = 1;
+	
+	
 
 	/**
 	 * Launch the application.
@@ -176,6 +178,7 @@ public class Principal extends JFrame {
 				panelMesas.add(btnTaula);
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
 
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						//System.out.println(nombreMesa);
@@ -189,9 +192,20 @@ public class Principal extends JFrame {
 						int contadorProducto = 0;
 						int contadorCantidad = 1;
 						int contadorPrecio=2;
+						int tamanoBucle=0;
+						if(arrayComandaBarra.size()%2!=0) {
+							tamanoBucle=((arrayComandaBarra.size() / 3)-1);
+						}
+						else {
+							tamanoBucle=((arrayComandaBarra.size() / 3)+2);
+							
+						}
+						for (String aaaa:arrayComandaBarra) {
+							System.out.print(aaaa+" ");
+						}
 						
 						Object[][] o = new Object[arrayComandaBarra.size() / 3][4];
-						for (int i = 0; i < ((arrayComandaBarra.size() / 3)-1); i++) {
+						for (int i = 0; i < tamanoBucle; i++) {
 							
 							o[i][0] = arrayComandaBarra.get(i + contadorProducto);
 
@@ -206,6 +220,7 @@ public class Principal extends JFrame {
 							
 
 						}
+						
 						JTable tableComandaBarra = new JTable();
 						tableComandaBarra.setShowVerticalLines(false);
 
@@ -220,8 +235,11 @@ public class Principal extends JFrame {
 						tableComandaBarra.getColumnModel().getColumn(3)
 								.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 						tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
-
+							
 						tableComandaBarra.setVisible(true);
+						
+						
+						
 
 					}
 				});

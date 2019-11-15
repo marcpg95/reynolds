@@ -23,29 +23,9 @@ public class GenerarComanda {
 			documentComanda.getDocumentElement().normalize();
 			NodeList listaComanda = documentComanda.getElementsByTagName("producto");
 
-			System.out.println(listaComanda.getLength());
+			//System.out.println(listaComanda.getLength());
 
-			/*
-			 * for (int i = 0; i < listaComanda.getLength(); i++) { Element elementoMesa =
-			 * (Element) listaComanda.item(i); NodeList elementoProducto =
-			 * elementoMesa.getElementsByTagName("nombre"); for (int j = 0; j <
-			 * elementoProducto.getLength(); j++) {
-			 * 
-			 * Element elementoCantidad = (Element)
-			 * elementoMesa.getElementsByTagName("nombre").item(j); String nombreProducto =
-			 * elementoCantidad.getTextContent(); Element elementoPrecio = (Element)
-			 * elementoMesa.getElementsByTagName("precio").item(j); String precio =
-			 * elementoPrecio.getTextContent(); System.out.println(nombreProducto); Element
-			 * listaCantidad = (Element)
-			 * elementoMesa.getElementsByTagName("producto").item(0);
-			 * 
-			 * System.out.println(precio); String cantidadProducto =
-			 * listaCantidad.getAttribute("cantidad"); System.out.println(cantidadProducto);
-			 * arrayComandaBarra.add(nombreProducto);
-			 * arrayComandaBarra.add(cantidadProducto);
-			 * 
-			 * } }
-			 */
+		
 			for (int temp = 0; temp < listaComanda.getLength(); temp++) {
 
 				Node nNode = listaComanda.item(temp);
@@ -65,9 +45,9 @@ public class GenerarComanda {
 
 					String cantidad = eElement.getAttribute("cantidad");
 					String precio = eElement.getElementsByTagName("precio").item(0).getTextContent();
-					System.out.println(nombre);
-					System.out.println(cantidad);
-					System.out.println(precio);
+					//System.out.println(nombre);
+					//System.out.println(cantidad);
+					//System.out.println(precio);
 					arrayComandaBarra.add(nombre);
 					arrayComandaBarra.add(cantidad);
 					arrayComandaBarra.add(precio);
