@@ -11,7 +11,7 @@
     		<nombre>Entrecot</nombre>
     		<precio>8</precio>
     	</producto>
-    	<producto cantidad="3">
+    	<producto cantidad="5">
 			<nombre>Lejia</nombre>
     		<precio>3</precio>
 		</producto>

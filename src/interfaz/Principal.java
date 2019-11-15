@@ -189,16 +189,20 @@ public class Principal extends JFrame {
 						int contadorProducto = 0;
 						int contadorCantidad = 1;
 						int contadorPrecio=2;
-						Object[][] o = new Object[arrayComandaBarra.size() / 2][4];
-						for (int i = 0; i < arrayComandaBarra.size() / 2; i++) {
-
+						
+						Object[][] o = new Object[arrayComandaBarra.size() / 3][4];
+						for (int i = 0; i < ((arrayComandaBarra.size() / 3)-1); i++) {
+							
 							o[i][0] = arrayComandaBarra.get(i + contadorProducto);
 
 							o[i][1] = arrayComandaBarra.get(i + contadorCantidad);
-							o[i][2] =  null;
+							o[i][2] =  arrayComandaBarra.get(i + contadorPrecio);;
 							o[i][3] = false;
-							contadorCantidad++;
-							contadorProducto++;
+							
+							contadorCantidad+=2;
+							contadorProducto+=2;
+							contadorPrecio+=2;
+							
 							
 
 						}
