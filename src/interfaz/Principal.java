@@ -55,12 +55,10 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	
+	ArrayList<JTable> arrayTablaBarra = new ArrayList();
 	private JPanel contentPane;
-	
+
 	int numeroMesa = 1;
-	
-	
 
 	/**
 	 * Launch the application.
@@ -134,6 +132,9 @@ public class Principal extends JFrame {
 		internalFrames.add(taules);
 		taules.setClosable(true);
 		taules.getContentPane().setLayout(null);
+		File verComandas = new File("Comandas");
+		String[] comandas = verComandas.list();
+		int cantidadComandas = comandas.length;
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
@@ -155,8 +156,6 @@ public class Principal extends JFrame {
 		tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 		tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
 
-		
-
 		try {
 			File archivo = new File("archivos/config.xml");
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -168,6 +167,7 @@ public class Principal extends JFrame {
 			Element cantidadMesas = (Element) mesasXML;
 
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
+			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa, barra, cantidadComandas);
 
 			for (int i = 0; i < totalMesas; i++) {
 
@@ -176,70 +176,22 @@ public class Principal extends JFrame {
 
 				JButton btnTaula = new JButton("Mesa " + Integer.toString(i + 1));
 				panelMesas.add(btnTaula);
+
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						
 
 						String nombreMesa = ((JButton) e.getSource()).getText();
-						//System.out.println(nombreMesa);
+						// System.out.println(nombreMesa);
 						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
-						//System.out.println(numeroMesa);
-						ArrayList<String> arrayComandaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa);
+						// System.out.println(numeroMesa);
 
-						//for (int i = 0; i < arrayComandaBarra.size(); i++) {
-						//	System.out.print(arrayComandaBarra.get(i));
-						//}
-						int contadorProducto = 0;
-						int contadorCantidad = 1;
-						int contadorPrecio=2;
-						int tamanoBucle=0;
-						if(arrayComandaBarra.size()%2!=0) {
-							tamanoBucle=((arrayComandaBarra.size() / 3)-1);
+						System.out.println(numeroMesa - 1);
+						for (int i = 0; i < cantidadComandas; i++) {
+							if ((numeroMesa - 1) != i) {
+								arrayTablaBarra.get(i).setVisible(false);
+							} else
+								arrayTablaBarra.get(i).setVisible(true);
 						}
-						else {
-							tamanoBucle=((arrayComandaBarra.size() / 3)+2);
-							
-						}
-						for (String aaaa:arrayComandaBarra) {
-							System.out.print(aaaa+" ");
-						}
-						
-						Object[][] o = new Object[arrayComandaBarra.size() / 3][4];
-						for (int i = 0; i < tamanoBucle; i++) {
-							
-							o[i][0] = arrayComandaBarra.get(i + contadorProducto);
-
-							o[i][1] = arrayComandaBarra.get(i + contadorCantidad);
-							o[i][2] =  arrayComandaBarra.get(i + contadorPrecio);;
-							o[i][3] = false;
-							
-							contadorCantidad+=2;
-							contadorProducto+=2;
-							contadorPrecio+=2;
-							
-							
-
-						}
-						
-						JTable tableComandaBarra = new JTable();
-						tableComandaBarra.setShowVerticalLines(false);
-
-						tableComandaBarra.setBounds(10, 153, 441, 263);
-						barra.getContentPane().add(tableComandaBarra);
-						tableComandaBarra.setModel(
-								new DefaultTableModel(o, new String[] { "Producto", "Cantidad", "Precio", "Cobrar" }));
-
-						JScrollPane scrollPaneBarra = new JScrollPane(tableComandaBarra);
-						scrollPaneBarra.setBounds(53, 226, 386, 231);
-						barra.getContentPane().add(scrollPaneBarra);
-						tableComandaBarra.getColumnModel().getColumn(3)
-								.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-						tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
-							
-						tableComandaBarra.setVisible(true);
-						
-						
-						
 
 					}
 				});
