@@ -13,6 +13,7 @@ import org.w3c.dom.NodeList;
 
 import conexion.ServidorTCP;
 import funciones.GenerarComanda;
+import funciones.GenerarInternalFrames;
 import tablaConCheckBox.JCheckBox_Cell;
 import tablaConCheckBox.JCheckBox_Rendered;
 
@@ -55,7 +56,7 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
+	ArrayList<JInternalFrame> arrayTablaBarra = new ArrayList<JInternalFrame> ();
 	ArrayList<JInternalFrame> arrayInternalFrames = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
 	
@@ -155,6 +156,9 @@ public class Principal extends JFrame {
 		taules.getContentPane().add(scrollPane);
 		tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 		tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
+		JButton btnCobrar = new JButton("Cobrar");
+		btnCobrar.setBounds(450, 315, 80, 30);
+		barra.add(btnCobrar);
 		
 		try {
 			File archivo = new File("archivos/config.xml");
@@ -167,8 +171,9 @@ public class Principal extends JFrame {
 			Element cantidadMesas = (Element) mesasXML;
 
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
-			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa, barra, cantidadComandas);
 			
+			arrayInternalFrames= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra);
+			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa,arrayInternalFrames, cantidadComandas);
 			
 			for (int i = 0; i < totalMesas; i++) {
 

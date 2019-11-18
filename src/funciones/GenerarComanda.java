@@ -20,7 +20,7 @@ import tablaConCheckBox.JCheckBox_Rendered;
 
 public class GenerarComanda {
 
-	public ArrayList<JTable> GenerarComandaBarra(int numeroMesa,JInternalFrame barra,int cantidadComandas) {
+	public ArrayList<JInternalFrame> GenerarComandaBarra(int numeroMesa,ArrayList<JInternalFrame> arrayInternalFrames,int cantidadComandas) {
 		ArrayList<JTable> arrayTablaBarra = new ArrayList<>();
 		ArrayList<String> arrayComandaBarra = new ArrayList<>();
 		try {
@@ -108,14 +108,14 @@ public class GenerarComanda {
 			
 			tableComandaBarra.setShowVerticalLines(false);
 
-			tableComandaBarra.setBounds(10, 153, 441, 263);
-			barra.getContentPane().add(tableComandaBarra);
+			tableComandaBarra.setBounds(0, 0, 441, 263);
+			arrayInternalFrames.get(x).getContentPane().add(tableComandaBarra);
 			tableComandaBarra.setModel(
 					new DefaultTableModel(o, new String[] { "Producto", "Cantidad", "Precio", "Cobrar" }));
 
 			JScrollPane scrollPaneBarra = new JScrollPane(tableComandaBarra);
-			scrollPaneBarra.setBounds(53, 226, 386, 231);
-			barra.getContentPane().add(scrollPaneBarra);
+			scrollPaneBarra.setBounds(0,0, 386, 231);
+			arrayInternalFrames.get(x).getContentPane().add(scrollPaneBarra);
 			tableComandaBarra.getColumnModel().getColumn(3)
 					.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 			tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
@@ -133,7 +133,7 @@ public class GenerarComanda {
 		 * } catch (Exception e) { e.printStackTrace(); }
 		 */
 		
-		return arrayTablaBarra;
+		return arrayInternalFrames;
 	}
 	
 }
