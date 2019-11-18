@@ -55,9 +55,10 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<JTable> arrayTablaBarra = new ArrayList();
+	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
+	ArrayList<JInternalFrame> arrayInternalFrames = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
-
+	
 	int numeroMesa = 1;
 
 	/**
@@ -81,7 +82,6 @@ public class Principal extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	@SuppressWarnings("unchecked")
 	public Principal() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -155,7 +155,7 @@ public class Principal extends JFrame {
 		taules.getContentPane().add(scrollPane);
 		tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 		tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
-
+		
 		try {
 			File archivo = new File("archivos/config.xml");
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
@@ -168,7 +168,8 @@ public class Principal extends JFrame {
 
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
 			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa, barra, cantidadComandas);
-
+			
+			
 			for (int i = 0; i < totalMesas; i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
@@ -179,7 +180,7 @@ public class Principal extends JFrame {
 
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-
+						
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						// System.out.println(nombreMesa);
 						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
@@ -189,8 +190,10 @@ public class Principal extends JFrame {
 						for (int i = 0; i < cantidadComandas; i++) {
 							if ((numeroMesa - 1) != i) {
 								arrayTablaBarra.get(i).setVisible(false);
+								
 							} else
 								arrayTablaBarra.get(i).setVisible(true);
+							   
 						}
 
 					}
