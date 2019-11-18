@@ -1,5 +1,6 @@
 package funciones;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.swing.JInternalFrame;
@@ -12,7 +13,10 @@ public class Cobrar {
 		
 			
 			
-			
+		 File borrarComanda = new File("Comandas/comanda" + (numeroMesa) + ".xml");
+		 System.out.println(numeroMesa);
+	        borrarComanda.delete();
+
 		
 		
 		

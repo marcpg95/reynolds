@@ -67,6 +67,7 @@ public class Principal extends JFrame {
 	private JPanel contentPane;
 	static GenerarComanda gc;
 	int numeroMesa = 1;
+	int mesaParaBorrar=0;
 	
 	public static GenerarComanda getGC() {
 		return gc;
@@ -157,7 +158,7 @@ public class Principal extends JFrame {
 		
 		arrayInternalFramesCocina= new GenerarInternalFrames().GenerarInternalCocina(cantidadComandas,taules,arrayTablaCocina);
 		
-		arrayInternalFramesCocina.get(0).setVisible(true);
+		
 		
 
 		
@@ -213,10 +214,10 @@ public class Principal extends JFrame {
 						
 			        }
 			    });
-
+				
 				JButton btnTaula = new JButton("Mesa " + arrayNumeroMesa.get(i));
 				panelMesas.add(btnTaula);
-
+				
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 
@@ -253,6 +254,7 @@ public class Principal extends JFrame {
 							 System.out.println(numeroMesa);
 								if((numeroMesa)==Integer.parseInt(arrayNumeroMesa.get(i))){
 								arrayInternalFramesBarra.get(i).setVisible(true);
+								mesaParaBorrar=Integer.parseInt(arrayNumeroMesa.get(i));
 								}
 								else arrayInternalFramesBarra.get(i).setVisible(false);
 						
@@ -269,10 +271,12 @@ public class Principal extends JFrame {
 			e.printStackTrace();
 		}
 		
+		
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
-				 new Cobrar().CobrarBarra(arrayNumeroMesa,numeroMesa);
+				 new Cobrar().CobrarBarra(arrayNumeroMesa,mesaParaBorrar);
+				 
 			}
 
 			

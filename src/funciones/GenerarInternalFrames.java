@@ -96,6 +96,7 @@ public ArrayList<JInternalFrame> GenerarInternalCocina(int cantidadComandas,JInt
 			arrayTablaCocina.get(i).getColumnModel().getColumn(2).setCellRenderer(new JCheckBox_Rendered());
 			
 		}
+		arrayInternalFramesCocina.get(0).setVisible(true);
 		
 		return arrayInternalFramesCocina;
 		
