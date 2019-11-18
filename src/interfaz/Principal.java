@@ -25,6 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -57,8 +59,15 @@ public class Principal extends JFrame {
 	private static final long serialVersionUID = 1L;
 
 	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable> ();
-	ArrayList<JInternalFrame> arrayInternalFrames = new ArrayList<JInternalFrame>();
+	ArrayList<JTable> arrayTablaCocina = new ArrayList<JTable> ();
+	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
+	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
+	static GenerarComanda gc;
+	
+	public static GenerarComanda getGC() {
+		return gc;
+	}
 	
 	int numeroMesa = 1;
 
@@ -140,22 +149,15 @@ public class Principal extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
-		JTable tableComanda = new JTable();
-		tableComanda.setShowVerticalLines(false);
+		gc=new GenerarComanda();
+		arrayTablaCocina = gc.GenerarComandaCocina(numeroMesa, cantidadComandas);
+		
+		arrayInternalFramesCocina= new GenerarInternalFrames().GenerarInternalCocina(cantidadComandas,taules,arrayTablaCocina);
+		
+		arrayInternalFramesCocina.get(0).setVisible(true);
+		
 
-		tableComanda.setBounds(10, 153, 441, 263);
-		taules.getContentPane().add(tableComanda);
-
-		tableComanda.setModel(new DefaultTableModel(new Object[][] { { "CocaCola", false }, { "Cerveza", false },
-				{ "Bravas", false }, { "Chocos", false }, { "Fanta", false }, { "Entrecot", false },
-
-		}, new String[] { "Producto", "Listo" }));
-
-		JScrollPane scrollPane = new JScrollPane(tableComanda);
-		scrollPane.setBounds(45, 83, 276, 314);
-		taules.getContentPane().add(scrollPane);
-		tableComanda.getColumnModel().getColumn(1).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-		tableComanda.getColumnModel().getColumn(1).setCellRenderer(new JCheckBox_Rendered());
+		
 		JButton btnCobrar = new JButton("Cobrar");
 		btnCobrar.setBounds(450, 315, 80, 30);
 		barra.add(btnCobrar);
@@ -173,13 +175,29 @@ public class Principal extends JFrame {
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
 			
 			
-			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa, cantidadComandas);
-			arrayInternalFrames= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra,arrayTablaBarra);
+			arrayTablaBarra = gc.GenerarComandaBarra(numeroMesa, cantidadComandas);
+			arrayInternalFramesBarra= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra,arrayTablaBarra);
 			
 			for (int i = 0; i < totalMesas; i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
 				tabbedPane.addTab("Mesa " + (i + 1), null, tabbedPaneMesa, null);
+				tabbedPane.addChangeListener(new ChangeListener() {
+			        public void stateChanged(ChangeEvent e) {
+			            System.out.println("Tab: " + tabbedPane.getSelectedIndex());
+			           
+							for(int j=0;j<cantidadComandas;j++)
+							if (tabbedPane.getSelectedIndex() != j) {
+								arrayInternalFramesCocina.get(j).setVisible(false);
+								
+							} else {
+								arrayInternalFramesCocina.get(j).setVisible(true);
+							}
+							
+							
+						
+			        }
+			    });
 
 				JButton btnTaula = new JButton("Mesa " + Integer.toString(i + 1));
 				panelMesas.add(btnTaula);
@@ -196,10 +214,10 @@ public class Principal extends JFrame {
 						for (int i = 0; i < cantidadComandas; i++) {
 							if(cantidadComandas>numeroMesa-1) {
 							if ((numeroMesa - 1) != i) {
-								arrayInternalFrames.get(i).setVisible(false);
+								arrayInternalFramesBarra.get(i).setVisible(false);
 								
 							} else {
-								arrayInternalFrames.get(i).setVisible(true);
+								arrayInternalFramesBarra.get(i).setVisible(true);
 							}
 							}
 							else {
