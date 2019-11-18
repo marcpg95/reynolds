@@ -4,9 +4,6 @@ import java.io.File;
 import org.w3c.dom.Node;
 import java.util.ArrayList;
 
-import javax.swing.JCheckBox;
-import javax.swing.JInternalFrame;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
@@ -15,12 +12,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
-import tablaConCheckBox.JCheckBox_Cell;
-import tablaConCheckBox.JCheckBox_Rendered;
-
 public class GenerarComanda {
 
-	public ArrayList<JInternalFrame> GenerarComandaBarra(int numeroMesa,ArrayList<JInternalFrame> arrayInternalFrames,int cantidadComandas) {
+	public ArrayList<JTable> GenerarComandaBarra(int numeroMesa,int cantidadComandas) {
 		ArrayList<JTable> arrayTablaBarra = new ArrayList<>();
 		ArrayList<String> arrayComandaBarra = new ArrayList<>();
 		try {
@@ -109,19 +103,13 @@ public class GenerarComanda {
 			tableComandaBarra.setShowVerticalLines(false);
 
 			tableComandaBarra.setBounds(0, 0, 441, 263);
-			arrayInternalFrames.get(x).getContentPane().add(tableComandaBarra);
+			
 			tableComandaBarra.setModel(
 					new DefaultTableModel(o, new String[] { "Producto", "Cantidad", "Precio", "Cobrar" }));
 
-			JScrollPane scrollPaneBarra = new JScrollPane(tableComandaBarra);
-			scrollPaneBarra.setBounds(0,0, 386, 231);
-			arrayInternalFrames.get(x).getContentPane().add(scrollPaneBarra);
-			tableComandaBarra.getColumnModel().getColumn(3)
-					.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-			tableComandaBarra.getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
 			
 			
-			tableComandaBarra.setVisible(false);
+			tableComandaBarra.setVisible(true);
 			arrayTablaBarra.add(tableComandaBarra);
 			arrayComandaBarra.clear();
 			}
@@ -133,7 +121,7 @@ public class GenerarComanda {
 		 * } catch (Exception e) { e.printStackTrace(); }
 		 */
 		
-		return arrayInternalFrames;
+		return arrayTablaBarra;
 	}
 	
 }

@@ -56,7 +56,7 @@ public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 
-	ArrayList<JInternalFrame> arrayTablaBarra = new ArrayList<JInternalFrame> ();
+	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable> ();
 	ArrayList<JInternalFrame> arrayInternalFrames = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
 	
@@ -172,8 +172,9 @@ public class Principal extends JFrame {
 
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
 			
-			arrayInternalFrames= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra);
-			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa,arrayInternalFrames, cantidadComandas);
+			
+			arrayTablaBarra = new GenerarComanda().GenerarComandaBarra(numeroMesa, cantidadComandas);
+			arrayInternalFrames= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra,arrayTablaBarra);
 			
 			for (int i = 0; i < totalMesas; i++) {
 
@@ -193,12 +194,18 @@ public class Principal extends JFrame {
 
 						System.out.println(numeroMesa - 1);
 						for (int i = 0; i < cantidadComandas; i++) {
+							if(cantidadComandas>numeroMesa-1) {
 							if ((numeroMesa - 1) != i) {
-								arrayTablaBarra.get(i).setVisible(false);
+								arrayInternalFrames.get(i).setVisible(false);
 								
-							} else
-								arrayTablaBarra.get(i).setVisible(true);
-							   
+							} else {
+								arrayInternalFrames.get(i).setVisible(true);
+							}
+							}
+							else {
+								JOptionPane.showMessageDialog(null, "No hay comandas en esta mesa");
+								break;
+							}
 						}
 
 					}
