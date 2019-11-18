@@ -5,7 +5,7 @@
     <mesa id="3">
     	<producto cantidad="2">
     		<nombre>Agua Mediana</nombre>
-    		<precio>0,75</precio>
+    		<precio>0.75</precio>
     	</producto>
     	<producto cantidad="1">
     		<nombre>Caldó</nombre>

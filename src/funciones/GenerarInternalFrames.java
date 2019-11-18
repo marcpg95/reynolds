@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
 import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -16,17 +17,21 @@ public class GenerarInternalFrames {
 	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
 	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	
+	String precioTotal="0";
+	int auxPrecioTotal=0;
+	int precio=0;
 	
 	public ArrayList<JInternalFrame> GenerarInternalBarra(int cantidadComandas,JInternalFrame barra,ArrayList<JTable> arrayTablaBarra) {
 		GenerarComanda gc = Principal.getGC();
 		ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
+		
 		
 		for(int i=0;i<arrayNumeroMesa.size();i++) {
 			System.out.println(arrayNumeroMesa.get(i)+"hey");
 		}
 		for (int i=0;i<cantidadComandas;i++) {
 			
-			JInternalFrame comanda = new JInternalFrame("Comanda"+(i+1));
+			JInternalFrame comanda = new JInternalFrame("Comanda"+(arrayNumeroMesa.get(i)));
 			comanda.setBounds(20, 220, 390, 270);
 			barra.add(comanda);
 			
@@ -42,6 +47,8 @@ public class GenerarInternalFrames {
 			arrayTablaBarra.get(i).getColumnModel().getColumn(3)
 					.setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 			arrayTablaBarra.get(i).getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
+			
+			
 			
 		}
 		

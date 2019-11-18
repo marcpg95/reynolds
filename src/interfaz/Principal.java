@@ -53,6 +53,7 @@ import java.awt.SystemColor;
 import java.awt.Rectangle;
 import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
+import javax.swing.JLabel;
 
 public class Principal extends JFrame {
 
@@ -160,7 +161,18 @@ public class Principal extends JFrame {
 		
 		JButton btnCobrar = new JButton("Cobrar");
 		btnCobrar.setBounds(450, 315, 80, 30);
-		barra.add(btnCobrar);
+		barra.getContentPane().add(btnCobrar);
+		
+		JLabel lblTextoTotal = new JLabel("PRECIO CON IVA :");
+		lblTextoTotal.setBounds(436, 261, 103, 23);
+		barra.getContentPane().add(lblTextoTotal);
+		
+		JLabel lblPrecio = new JLabel("");
+		lblPrecio.setBounds(471, 281, 80, 23);
+		barra.getContentPane().add(lblPrecio);
+		ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
+		
+		
 		
 		try {
 			File archivo = new File("archivos/config.xml");
@@ -177,11 +189,12 @@ public class Principal extends JFrame {
 			
 			arrayTablaBarra = gc.GenerarComandaBarra(numeroMesa, cantidadComandas);
 			arrayInternalFramesBarra= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra,arrayTablaBarra);
+			ArrayList<Float> arrayPrecioMesa = gc.usarPrecioMesa();
 			
-			for (int i = 0; i < totalMesas; i++) {
+			for (int i = 0; i < arrayNumeroMesa.size(); i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
-				tabbedPane.addTab("Mesa " + (i + 1), null, tabbedPaneMesa, null);
+				tabbedPane.addTab("Mesa " + (arrayNumeroMesa.get(i)), null, tabbedPaneMesa, null);
 				tabbedPane.addChangeListener(new ChangeListener() {
 			        public void stateChanged(ChangeEvent e) {
 			            System.out.println("Tab: " + tabbedPane.getSelectedIndex());
@@ -199,32 +212,36 @@ public class Principal extends JFrame {
 			        }
 			    });
 
-				JButton btnTaula = new JButton("Mesa " + Integer.toString(i + 1));
+				JButton btnTaula = new JButton("Mesa " + arrayNumeroMesa.get(i));
 				panelMesas.add(btnTaula);
 
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+
 						
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						// System.out.println(nombreMesa);
 						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
 						// System.out.println(numeroMesa);
-
-						System.out.println(numeroMesa - 1);
-						for (int i = 0; i < cantidadComandas; i++) {
-							if(cantidadComandas>numeroMesa-1) {
-							if ((numeroMesa - 1) != i) {
-								arrayInternalFramesBarra.get(i).setVisible(false);
-								
-							} else {
-								arrayInternalFramesBarra.get(i).setVisible(true);
-							}
-							}
-							else {
-								JOptionPane.showMessageDialog(null, "No hay comandas en esta mesa");
-								break;
-							}
+						
+						if(numeroMesa<cantidadComandas+1) {
+						String precioMesa= arrayPrecioMesa.get(numeroMesa-1).toString();
+						lblPrecio.setText(precioMesa);
 						}
+						
+						
+						
+						for (int i = 0; i < arrayInternalFramesBarra.size();i++) {
+							 System.out.println(arrayNumeroMesa.get(i));
+							 System.out.println(numeroMesa);
+								if((numeroMesa)==Integer.parseInt(arrayNumeroMesa.get(i))){
+								arrayInternalFramesBarra.get(i).setVisible(true);
+								}
+								else arrayInternalFramesBarra.get(i).setVisible(false);
+						
+							}
+						
+						
 
 					}
 				});
@@ -234,6 +251,13 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		btnCobrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				
+			}
+		});
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

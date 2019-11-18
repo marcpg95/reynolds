@@ -4,6 +4,7 @@ import java.io.File;
 import org.w3c.dom.Node;
 import java.util.ArrayList;
 
+import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.xml.parsers.DocumentBuilder;
@@ -23,6 +24,7 @@ public class GenerarComanda {
 		ArrayList<String> arrayComandaBarra = new ArrayList<>();
 		int comandasCreadas=0;
 		int contadorComanda=0;
+		
 		try {
 			
 			
@@ -89,7 +91,7 @@ public class GenerarComanda {
 			int contadorProducto = 0;
 			int contadorCantidad = 1;
 			int contadorPrecio=2;
-			
+			float precioTotal=0;
 			
 			
 			
@@ -99,7 +101,8 @@ public class GenerarComanda {
 				o[i][0] = arrayComandaBarra.get((i) + contadorProducto);
 
 				o[i][1] = arrayComandaBarra.get((i) + contadorCantidad);
-				o[i][2] =  arrayComandaBarra.get((i) + contadorPrecio);;
+				o[i][2] =  arrayComandaBarra.get((i) + contadorPrecio);
+				precioTotal+= Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio));
 				o[i][3] = false;
 				
 				contadorCantidad+=2;
@@ -109,9 +112,13 @@ public class GenerarComanda {
 				
 
 			}
+			precioTotal*=1.21;
+			guardarPrecioMesa(precioTotal);
+			
 			contadorCantidad=0;
 			contadorProducto=0;
 			contadorPrecio=0;
+			precioTotal=0;
 			
 			
 			tableComandaBarra.setShowVerticalLines(false);
@@ -139,17 +146,36 @@ public class GenerarComanda {
 		
 		return arrayTablaBarra;
 	}
+	ArrayList<Float> precioMesa= new ArrayList<>();
+	public void guardarPrecioMesa(Float precioMesa){
+			
+			
+			this.precioMesa.add(precioMesa);
+			
+			
+	}
+	public ArrayList<Float> usarPrecioMesa(){
+			
+		System.out.println("entrausar");
+		for(int i=0;i<precioMesa.size();i++) {
+			System.out.println(precioMesa.get(i));
+		}
+			
+			return precioMesa;
+			
+		}
+		
 ArrayList<String> numeroMesaCocina= new ArrayList<>();
 public void guardarNumeroMesa(String numeroMesa){
 		
 		
 		this.numeroMesaCocina.add(numeroMesa);
-		System.out.println("entraguardar");
+		
 		
 }
 public ArrayList<String> usarNumeroMesa(){
 		
-	System.out.println("entrausar");
+		
 	
 		return numeroMesaCocina;
 		
