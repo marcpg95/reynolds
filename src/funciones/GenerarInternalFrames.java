@@ -58,18 +58,32 @@ public class GenerarInternalFrames {
 	
 public ArrayList<JInternalFrame> GenerarInternalCocina(int cantidadComandas,JInternalFrame barra,ArrayList<JTable> arrayTablaCocina) {
 		
-		
+	GenerarComanda gc = Principal.getGC();
+	ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
+	
 		
 		
 		for (int i=0;i<cantidadComandas;i++) {
 			
 			
-			JInternalFrame comandaCocina = new JInternalFrame("Comanda"+(i+1));
-			comandaCocina.setBounds(175, 100, 390, 270);
+			JInternalFrame comandaCocina = new JInternalFrame("Comanda"+(arrayNumeroMesa.get(i)));
+			comandaCocina.setBounds(0, 25, 825, 450);
 			barra.add(comandaCocina);
 			
 			comandaCocina.setClosable(true);
 			comandaCocina.getContentPane().setLayout(null);
+			JLabel lblCamarero = new JLabel("Camarero :");
+			lblCamarero.setBounds(400, 25, 103, 23);
+			comandaCocina.getContentPane().add(lblCamarero);
+			
+			JLabel lblNumeroMesa = new JLabel("Numero Mesa : "+(arrayNumeroMesa.get(i)));
+			lblNumeroMesa.setBounds(400, 50, 103, 23);
+			comandaCocina.getContentPane().add(lblNumeroMesa);
+			
+			JLabel lblFecha = new JLabel("Hora entrada pedido :");
+			lblFecha.setBounds(400, 75, 160, 23);
+			comandaCocina.getContentPane().add(lblFecha);
+			
 			arrayInternalFramesCocina.add(comandaCocina);
 			
 			arrayInternalFramesCocina.get(i).getContentPane().add(arrayTablaCocina.get(i));

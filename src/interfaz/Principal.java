@@ -16,6 +16,7 @@ import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import tablaConCheckBox.JCheckBox_Cell;
 import tablaConCheckBox.JCheckBox_Rendered;
+import funciones.Cobrar;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -65,12 +66,13 @@ public class Principal extends JFrame {
 	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
 	static GenerarComanda gc;
+	int numeroMesa = 1;
 	
 	public static GenerarComanda getGC() {
 		return gc;
 	}
 	
-	int numeroMesa = 1;
+	
 
 	/**
 	 * Launch the application.
@@ -197,7 +199,7 @@ public class Principal extends JFrame {
 				tabbedPane.addTab("Mesa " + (arrayNumeroMesa.get(i)), null, tabbedPaneMesa, null);
 				tabbedPane.addChangeListener(new ChangeListener() {
 			        public void stateChanged(ChangeEvent e) {
-			            System.out.println("Tab: " + tabbedPane.getSelectedIndex());
+			            
 			           
 							for(int j=0;j<cantidadComandas;j++)
 							if (tabbedPane.getSelectedIndex() != j) {
@@ -224,10 +226,25 @@ public class Principal extends JFrame {
 						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
 						// System.out.println(numeroMesa);
 						
-						if(numeroMesa<cantidadComandas+1) {
+						if (numeroMesa<=arrayPrecioMesa.size()) {
 						String precioMesa= arrayPrecioMesa.get(numeroMesa-1).toString();
 						lblPrecio.setText(precioMesa);
 						}
+						else {
+							int numeroMesaAux=numeroMesa;
+							boolean mesaExiste=false;
+							while(!mesaExiste) {
+								if (numeroMesaAux>arrayPrecioMesa.size()) {
+									numeroMesaAux--;
+								}
+								else {
+									String precioMesa= arrayPrecioMesa.get(numeroMesaAux-1).toString();
+									lblPrecio.setText(precioMesa);
+									mesaExiste=true;
+								}
+							}
+						}
+						
 						
 						
 						
@@ -254,9 +271,11 @@ public class Principal extends JFrame {
 		
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
-				
+					
+				 new Cobrar().CobrarBarra(arrayNumeroMesa,numeroMesa);
 			}
+
+			
 		});
 
 		menuCocina.addActionListener(new ActionListener() {

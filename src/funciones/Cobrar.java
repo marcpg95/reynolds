@@ -7,8 +7,16 @@ import javax.swing.JTable;
 
 public class Cobrar {
 	
-	public ArrayList<JTable> CobrarBarra(){
-		return null;
+	public void CobrarBarra(ArrayList<String> arrayNumeroMesa,int numeroMesa){
+		
+		
+			
+			
+			
+		
+		
+		
+		
 		
 	}
 
