@@ -19,6 +19,7 @@ public class GenerarComanda {
 
 	}
 
+//*Genera las comandas leyendo los ficheros xml
 	public ArrayList<JTable> GenerarComandaBarra(int numeroMesa, int cantidadComandas) {
 		ArrayList<JTable> arrayTablaBarra = new ArrayList<>();
 		ArrayList<String> arrayComandaBarra = new ArrayList<>();
@@ -98,8 +99,8 @@ public class GenerarComanda {
 						precioTotal += Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio));
 
 						precioTotal *= Float.parseFloat(arrayComandaBarra.get((i) + contadorCantidad));
-						System.out.println((arrayComandaBarra.get((i) + contadorCantidad)));
-						System.out.println((arrayComandaBarra.get((i) + contadorPrecio)));
+						// System.out.println((arrayComandaBarra.get((i) + contadorCantidad)));
+						// System.out.println((arrayComandaBarra.get((i) + contadorPrecio)));
 						auxPrecioTotal += precioTotal;
 						o[i][3] = false;
 
@@ -143,15 +144,17 @@ public class GenerarComanda {
 
 	ArrayList<Float> precioMesa = new ArrayList<>();
 
+//* Guarda el precio de las comandas de cada mesa
 	public <ArrayList> void guardarPrecioMesa(Float precioMesa) {
 
 		this.precioMesa.add(precioMesa);
 
 	}
 
+//* Usa el precio almacenado anteriormente
 	public ArrayList<Float> usarPrecioMesa() {
 
-		System.out.println("entrausar");
+		// System.out.println("entrausar");
 		for (int i = 0; i < precioMesa.size(); i++) {
 			System.out.println(precioMesa.get(i));
 		}
@@ -160,6 +163,7 @@ public class GenerarComanda {
 
 	}
 
+//*Guarda el numero de la mesa de las comandas
 	ArrayList<String> numeroMesaCocina = new ArrayList<>();
 
 	public void guardarNumeroMesa(String numeroMesa) {
@@ -168,12 +172,14 @@ public class GenerarComanda {
 
 	}
 
+//* Usa el numero de mesa de las comandas
 	public ArrayList<String> usarNumeroMesa() {
 
 		return numeroMesaCocina;
 
 	}
 
+//* Genera las comandas para cocina sin el precio
 	public ArrayList<JTable> GenerarComandaCocina(int numeroMesa, int cantidadComandas) {
 		ArrayList<JTable> arrayTablaCocina = new ArrayList<>();
 		ArrayList<String> arrayComandaCocina = new ArrayList<>();
@@ -182,15 +188,15 @@ public class GenerarComanda {
 		try {
 
 			while (comandasCreadas < cantidadComandas) {
-				System.out.println("1");
+				// System.out.println("1");
 				File archivoComanda = new File("Comandas/comanda" + (contadorComanda + 1) + ".xml");
 
 				contadorComanda++;
-				System.out.println(comandasCreadas);
-				System.out.println(cantidadComandas);
+				// System.out.println(comandasCreadas);
+				// System.out.println(cantidadComandas);
 				if (archivoComanda.exists()) {
 					comandasCreadas++;
-					
+
 					DocumentBuilderFactory dbfComanda = DocumentBuilderFactory.newInstance();
 					DocumentBuilder documentBuilderComanda = dbfComanda.newDocumentBuilder();
 					Document documentComanda = documentBuilderComanda.parse(archivoComanda);

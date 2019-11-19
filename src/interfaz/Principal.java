@@ -59,21 +59,24 @@ import javax.swing.JLabel;
 public class Principal extends JFrame {
 
 	private static final long serialVersionUID = 1L;
-
-	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable> ();
-	ArrayList<JTable> arrayTablaCocina = new ArrayList<JTable> ();
+	// *Crea los array list que se van a utilizar
+	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
+	ArrayList<JTable> arrayTablaCocina = new ArrayList<JTable>();
 	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
 	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
 	static GenerarComanda gc;
+	// static GenerarInternalFrames gi;
 	int numeroMesa = 1;
-	int mesaParaBorrar=0;
-	
+	int mesaParaBorrar = 0;
+
 	public static GenerarComanda getGC() {
 		return gc;
 	}
-	
-	
+
+	/*
+	 * public static GenerarInternalFrames getGI() { return gi; }
+	 */
 
 	/**
 	 * Launch the application.
@@ -153,38 +156,41 @@ public class Principal extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
-		
-		gc=new GenerarComanda();
-		
+		// gi=new GenerarInternalFrames();
+		gc = new GenerarComanda();
+		// *Rellena los arrays
 		arrayTablaCocina = gc.GenerarComandaCocina(numeroMesa, cantidadComandas);
-		
-		arrayInternalFramesCocina= new GenerarInternalFrames().GenerarInternalCocina(cantidadComandas,taules,arrayTablaCocina);
-		
-		
-		
 
-		
+		arrayInternalFramesCocina = new GenerarInternalFrames().GenerarInternalCocina(cantidadComandas, taules,
+				arrayTablaCocina);
+
+		ArrayList<String> arrayNumeroMesa = gc.usarNumeroMesa();
+
+		arrayTablaBarra = gc.GenerarComandaBarra(numeroMesa, cantidadComandas);
+		arrayInternalFramesBarra = new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas, barra,
+				arrayTablaBarra);
+		ArrayList<Float> arrayPrecioMesa = gc.usarPrecioMesa();
+
 		JButton btnCobrar = new JButton("Cobrar");
 		btnCobrar.setBounds(450, 315, 80, 30);
 		barra.getContentPane().add(btnCobrar);
-		
+
 		JButton btnRecuperarUltimoCobro = new JButton("Recuperar");
 		btnRecuperarUltimoCobro.setBounds(450, 345, 80, 30);
 		barra.getContentPane().add(btnRecuperarUltimoCobro);
-		
+
 		JLabel lblTextoTotal = new JLabel("PRECIO CON IVA :");
 		lblTextoTotal.setBounds(436, 261, 103, 23);
 		barra.getContentPane().add(lblTextoTotal);
-		
+
 		JLabel lblPrecio = new JLabel("");
 		lblPrecio.setBounds(471, 281, 80, 23);
 		barra.getContentPane().add(lblPrecio);
-		
-		ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
-		
-		
-		
+
 		try {
+
+			// *Lee el archivo config.xml para sacar la cantidad de mesas y en un futuro
+			// algunas configuraciones
 			File archivo = new File("archivos/config.xml");
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			DocumentBuilder documentBuilder = dbf.newDocumentBuilder();
@@ -193,81 +199,72 @@ public class Principal extends JFrame {
 			NodeList listaConfig = document.getElementsByTagName("mesas");
 			Node mesasXML = listaConfig.item(0);
 			Element cantidadMesas = (Element) mesasXML;
-			
+
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
-			
-			
-			arrayTablaBarra = gc.GenerarComandaBarra(numeroMesa, cantidadComandas);
-			arrayInternalFramesBarra= new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas,barra,arrayTablaBarra);
-			ArrayList<Float> arrayPrecioMesa = gc.usarPrecioMesa();
-			
+
+			// *Mira la cantidad de mesas que hay y genera botones(barra) y pestañas(cocina)
+			// para las mesas
+
 			for (int i = 0; i < arrayNumeroMesa.size(); i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
 				tabbedPane.addTab("Mesa " + (arrayNumeroMesa.get(i)), null, tabbedPaneMesa, null);
 				tabbedPane.addChangeListener(new ChangeListener() {
-			        public void stateChanged(ChangeEvent e) {
-			            
-			           
-							for(int j=0;j<cantidadComandas;j++)
+					public void stateChanged(ChangeEvent e) {
+
+						// *Hace visible un frame u otro en la parte de coicna segun la pestaña clicada
+
+						for (int j = 0; j < cantidadComandas; j++)
 							if (tabbedPane.getSelectedIndex() != j) {
 								arrayInternalFramesCocina.get(j).setVisible(false);
-								
+
 							} else {
 								arrayInternalFramesCocina.get(j).setVisible(true);
 							}
-							
-							
-						
-			        }
-			    });
-				
+
+					}
+				});
+
 				JButton btnTaula = new JButton("Mesa " + arrayNumeroMesa.get(i));
 				panelMesas.add(btnTaula);
-				
+
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 
-						
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						// System.out.println(nombreMesa);
 						numeroMesa = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
 						// System.out.println(numeroMesa);
-						
-						if (numeroMesa<=arrayPrecioMesa.size()) {
-						String precioMesa= arrayPrecioMesa.get(numeroMesa-1).toString();
-						lblPrecio.setText(precioMesa);
-						}
-						else {
-							int numeroMesaAux=numeroMesa;
-							boolean mesaExiste=false;
-							while(!mesaExiste) {
-								if (numeroMesaAux>arrayPrecioMesa.size()) {
+
+						// *Añade el precio de la mesa en la zona de barra
+						if (numeroMesa <= arrayPrecioMesa.size()) {
+							String precioMesa = arrayPrecioMesa.get(numeroMesa - 1).toString();
+							lblPrecio.setText(precioMesa);
+						} else {
+							int numeroMesaAux = numeroMesa;
+							boolean mesaExiste = false;
+							while (!mesaExiste) {
+								if (numeroMesaAux > arrayPrecioMesa.size()) {
 									numeroMesaAux--;
-								}
-								else {
-									String precioMesa= arrayPrecioMesa.get(numeroMesaAux-1).toString();
+								} else {
+									String precioMesa = arrayPrecioMesa.get(numeroMesaAux - 1).toString();
 									lblPrecio.setText(precioMesa);
-									mesaExiste=true;
+									mesaExiste = true;
 								}
 							}
 						}
-						
-						
-						
-						
-						for (int i = 0; i < arrayInternalFramesBarra.size();i++) {
-							 System.out.println(arrayNumeroMesa.get(i));
-							 System.out.println(numeroMesa);
-								if((numeroMesa)==Integer.parseInt(arrayNumeroMesa.get(i))){
+
+						// Hace visible en barrra la comanda de la mesa que clicas
+						for (int i = 0; i < arrayInternalFramesBarra.size(); i++) {
+							// System.out.println(arrayNumeroMesa.get(i));
+							// System.out.println(numeroMesa);
+							if ((numeroMesa) == Integer.parseInt(arrayNumeroMesa.get(i))) {
 								arrayInternalFramesBarra.get(i).setVisible(true);
-								mesaParaBorrar=Integer.parseInt(arrayNumeroMesa.get(i));
-								}
-								else arrayInternalFramesBarra.get(i).setVisible(false);
-						
-							}
-						
-						
+								mesaParaBorrar = Integer.parseInt(arrayNumeroMesa.get(i));
+							} else
+								arrayInternalFramesBarra.get(i).setVisible(false);
+
+						}
 
 					}
 				});
@@ -277,32 +274,36 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-					
-				 new Cobrar().CobrarBarra(mesaParaBorrar);
-				 arrayInternalFramesBarra.get(numeroMesa-1).setVisible(false);
+				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
+				new Cobrar().CobrarBarra(mesaParaBorrar);
+				arrayInternalFramesBarra.get(numeroMesa - 1).setVisible(false);
+				arrayInternalFramesBarra.remove(numeroMesa - 1);
 			}
 
-			
 		});
-		btnRecuperarUltimoCobro.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-					
-				 new Cobrar().RecuperarCobrarBarra(mesaParaBorrar);
-				 arrayInternalFramesBarra.get(numeroMesa-1).setVisible(true);
-				 
-				 
-			}
-
-			
-		});
+		/*
+		 * btnRecuperarUltimoCobro.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) {
+		 * 
+		 * new Cobrar().RecuperarCobrarBarra(mesaParaBorrar);
+		 * //arrayInternalFramesBarra=gi.GenerarInternalBarra(cantidadComandas,barra,
+		 * arrayTablaBarra);
+		 * arrayInternalFramesBarra.get(numeroMesa-1).setVisible(true);
+		 * 
+		 * 
+		 * 
+		 * }
+		 * 
+		 * 
+		 * });
+		 */
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				// *hace visible el internal frame de cocina
 				if (!taules.isVisible()) {
 					taules.setVisible(true);
 					barra.setVisible(false);
@@ -316,7 +317,7 @@ public class Principal extends JFrame {
 
 		menuBarra.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				// *hace visible el internal frame de barra
 				if (!barra.isVisible()) {
 					barra.setVisible(true);
 					taules.setVisible(false);

@@ -10,7 +10,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JTable;
 
 public class Cobrar {
-	
+	//* Mueve el fichero de comandas a facturas
 	public void CobrarBarra(int numeroMesa){
 		
 		
@@ -30,7 +30,7 @@ public class Cobrar {
 		
 		
 	}
-
+	//Recupera el fichero de Facturas a comandas
 	public void RecuperarCobrarBarra(int numeroMesa){
 		
 		
@@ -48,29 +48,8 @@ public class Cobrar {
 		
 		
 	}
-	public class FileCopy {
-	    public FileCopy(String sourceFile, String destinationFile) {
-	        System.out.println("Desde: " + sourceFile);
-	        System.out.println("Hacia: " + destinationFile);
-
-	        try {
-	            File inFile = new File(sourceFile);
-	            File outFile = new File(destinationFile);
-
-	            FileInputStream in = new FileInputStream(inFile);
-	            FileOutputStream out = new FileOutputStream(outFile);
-
-	            int c;
-	            while( (c = in.read() ) != -1)
-	                out.write(c);
-
-	            in.close();
-	            out.close();
-	        } catch(IOException e) {
-	            System.err.println("Hubo un error de entrada/salida!!!");
-	        }
-	    }
+	
 
 
-   }
+   
 }
