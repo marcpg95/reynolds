@@ -3,6 +3,7 @@ package interfaz;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -11,6 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import baseDeDatos.SubirFactura;
+import clases.ProductosFactura;
 import conexion.ServidorTCP;
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
@@ -57,6 +60,8 @@ import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 
 public class Principal extends JFrame {
+	
+	public static HashMap<Integer, ArrayList<ProductosFactura>> facturar = new HashMap<Integer, ArrayList<ProductosFactura>>();
 
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
@@ -277,6 +282,8 @@ public class Principal extends JFrame {
 
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				SubirFactura sf = new SubirFactura(facturar.get(mesaParaBorrar - 1), "Marc", mesaParaBorrar);
+				sf.enviarFactura();
 				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
 				new Cobrar().CobrarBarra(mesaParaBorrar);
 				arrayInternalFramesBarra.get(numeroMesa - 1).setVisible(false);

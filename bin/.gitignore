@@ -1,8 +1,4 @@
-/conexion/
-/deprecated/
-/estructura/
-/funciones/
+/baseDeDatos/
+/clases/
 /interfaz/
-/objetos/
-/tablaConCheckBox/
-/Comandas/
+/funciones/

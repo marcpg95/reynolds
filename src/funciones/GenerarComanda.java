@@ -13,6 +13,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import clases.ProductosFactura;
+import interfaz.Principal;
+
 public class GenerarComanda {
 
 	public GenerarComanda() {
@@ -76,6 +79,7 @@ public class GenerarComanda {
 							arrayComandaBarra.add(nombre);
 							arrayComandaBarra.add(cantidad);
 							arrayComandaBarra.add(precio);
+							
 						}
 					}
 					JTable tableComandaBarra = new JTable();
@@ -88,6 +92,8 @@ public class GenerarComanda {
 					int contadorPrecio = 2;
 					float precioTotal = 0;
 					float auxPrecioTotal = 0;
+					
+					ArrayList<ProductosFactura> p = new ArrayList<ProductosFactura>();
 
 					Object[][] o = new Object[(arrayComandaBarra.size()) / 3][4];
 					for (int i = 0; i < (arrayComandaBarra.size()) / 3; i++) {
@@ -96,6 +102,10 @@ public class GenerarComanda {
 
 						o[i][1] = arrayComandaBarra.get((i) + contadorCantidad);
 						o[i][2] = arrayComandaBarra.get((i) + contadorPrecio);
+											
+						ProductosFactura pf = new ProductosFactura(Integer.parseInt(arrayComandaBarra.get((i) + contadorCantidad)), arrayComandaBarra.get((i) + contadorProducto), Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio)));
+						p.add(pf);
+												
 						precioTotal += Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio));
 
 						precioTotal *= Float.parseFloat(arrayComandaBarra.get((i) + contadorCantidad));
@@ -110,6 +120,15 @@ public class GenerarComanda {
 						precioTotal = 0;
 
 					}
+					
+					System.out.println("-> MESA: " + (contadorComanda-1));
+					for(int pl = 0; pl < p.size(); pl++) {
+						System.out.println(p.get(pl).getNombreProducto());
+					}
+					System.out.println("");
+					
+					Principal.facturar.put(contadorComanda - 1, p);
+
 					auxPrecioTotal *= 1.21;
 					guardarPrecioMesa(auxPrecioTotal);
 
