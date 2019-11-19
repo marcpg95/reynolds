@@ -26,9 +26,7 @@ public class GenerarInternalFrames {
 		ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
 		
 		
-		for(int i=0;i<arrayNumeroMesa.size();i++) {
-			System.out.println(arrayNumeroMesa.get(i)+"hey");
-		}
+		
 		for (int i=0;i<cantidadComandas;i++) {
 			
 			JInternalFrame comanda = new JInternalFrame("Comanda"+(arrayNumeroMesa.get(i)));

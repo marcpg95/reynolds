@@ -153,7 +153,9 @@ public class Principal extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
+		
 		gc=new GenerarComanda();
+		
 		arrayTablaCocina = gc.GenerarComandaCocina(numeroMesa, cantidadComandas);
 		
 		arrayInternalFramesCocina= new GenerarInternalFrames().GenerarInternalCocina(cantidadComandas,taules,arrayTablaCocina);
@@ -166,6 +168,10 @@ public class Principal extends JFrame {
 		btnCobrar.setBounds(450, 315, 80, 30);
 		barra.getContentPane().add(btnCobrar);
 		
+		JButton btnRecuperarUltimoCobro = new JButton("Recuperar");
+		btnRecuperarUltimoCobro.setBounds(450, 345, 80, 30);
+		barra.getContentPane().add(btnRecuperarUltimoCobro);
+		
 		JLabel lblTextoTotal = new JLabel("PRECIO CON IVA :");
 		lblTextoTotal.setBounds(436, 261, 103, 23);
 		barra.getContentPane().add(lblTextoTotal);
@@ -173,6 +179,7 @@ public class Principal extends JFrame {
 		JLabel lblPrecio = new JLabel("");
 		lblPrecio.setBounds(471, 281, 80, 23);
 		barra.getContentPane().add(lblPrecio);
+		
 		ArrayList<String>arrayNumeroMesa = gc.usarNumeroMesa();
 		
 		
@@ -186,7 +193,7 @@ public class Principal extends JFrame {
 			NodeList listaConfig = document.getElementsByTagName("mesas");
 			Node mesasXML = listaConfig.item(0);
 			Element cantidadMesas = (Element) mesasXML;
-
+			
 			int totalMesas = Integer.parseInt(cantidadMesas.getElementsByTagName("num").item(0).getTextContent());
 			
 			
@@ -275,7 +282,18 @@ public class Principal extends JFrame {
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 					
-				 new Cobrar().CobrarBarra(arrayNumeroMesa,mesaParaBorrar);
+				 new Cobrar().CobrarBarra(mesaParaBorrar);
+				 arrayInternalFramesBarra.get(numeroMesa-1).setVisible(false);
+			}
+
+			
+		});
+		btnRecuperarUltimoCobro.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+					
+				 new Cobrar().RecuperarCobrarBarra(mesaParaBorrar);
+				 arrayInternalFramesBarra.get(numeroMesa-1).setVisible(true);
+				 
 				 
 			}
 
