@@ -12,6 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.mms.mms.conexion.TestServer;
+
 import baseDeDatos.SubirFactura;
 import clases.ProductosFactura;
 import conexion.ServidorTCP;
@@ -88,6 +90,7 @@ public class Principal extends JFrame {
 	 */
 
 	public static void main(String[] args) {
+		TestServer testServer = new TestServer();
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {

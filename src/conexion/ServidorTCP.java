@@ -1,6 +1,7 @@
 package conexion;
 
 import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -14,45 +15,56 @@ import javax.swing.JOptionPane;
 
 public class ServidorTCP {
 
-	ServerSocket ss;
-	private static final int puerto = 1234; // PUERTO A TRAVES DEL CUAL HACEMOS LA CONEXION
-	int numeroComanda = 0;
-
 	public ServidorTCP() {
 		super();
 	}
 
 	public void conexion() {
+		// INDICO LA IP LOCAL
 		try {
-			System.out.println("LocalHost = " + InetAddress.getLocalHost().toString()); // MUESTRO LA IP DEL SERVER
+			System.out.println("LocalHost = " + InetAddress.getLocalHost().toString());
 		} catch (UnknownHostException uhe) {
-
+			System.err.println("No puedo saber la dirección IP local : " + uhe);
 		}
 
-		// CREAMOS UN SOCKET DE SERVIDOR
+		// Abrimos un "Socket de Servidor" TCP en el puerto 1234.
 		ServerSocket ss = null;
 		try {
-			ss = new ServerSocket(puerto);
+			ss = new ServerSocket(1234);
 		} catch (IOException ioe) {
-
+			System.err.println("Error al abrir el socket de servidor : " + ioe);
 		}
 
 		int entrada;
-
+		long salida;
+		// Bucle infinito
 		while (true) {
 			try {
-				// ESPERAMOS QUE EL MOVIL ENVIE DATOS
-				Socket sock = ss.accept();
-
-				// LEO LOS DATOS
-				DataInputStream dis = new DataInputStream(sock.getInputStream());
+				// Esperamos a que alguien se conecte a nuestro Socket
+				Socket sckt = ss.accept();
+				// Extraemos los Streams de entrada y de salida
+				DataInputStream dis = new DataInputStream(sckt.getInputStream());
+				DataOutputStream dos = new DataOutputStream(sckt.getOutputStream());
+				// Podemos extraer información del socket
+				// Nº de puerto remoto
+				int puerto = sckt.getPort();
+				// Dirección de Internet remota
+				InetAddress direcc = sckt.getInetAddress();
+				// Leemos datos de la peticion
 				entrada = dis.readInt();
-
-				System.out.println("ENTRADA: " + entrada);
+				// Calculamos resultado
+				salida = (long) entrada * (long) entrada;
+				// Escribimos el resultado
+				dos.writeLong(salida);
+				// Cerramos los streams
 				dis.close();
-				sock.close();
+				dos.close();
+				sckt.close();
+				// Registramos en salida estandard
+				System.out.println(
+						"Cliente = " + direcc + ":" + puerto + "\tEntrada = " + entrada + "\tSalida = " + salida);
 			} catch (Exception e) {
-				
+				System.err.println("Se ha producido la excepción : " + e);
 			}
 		}
 	}

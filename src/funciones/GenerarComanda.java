@@ -120,13 +120,7 @@ public class GenerarComanda {
 						precioTotal = 0;
 
 					}
-					
-					System.out.println("-> MESA: " + (contadorComanda-1));
-					for(int pl = 0; pl < p.size(); pl++) {
-						System.out.println(p.get(pl).getNombreProducto());
-					}
-					System.out.println("");
-					
+
 					Principal.facturar.put(contadorComanda - 1, p);
 
 					auxPrecioTotal *= 1.21;
