@@ -285,7 +285,11 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		JInternalFrame vacio= new JInternalFrame("Mesa Vacia");
+		vacio.setBounds(20,220,390,270);
+		barra.add(vacio);
+		vacio.setClosable(true);
+		vacio.getContentPane().setLayout(null);
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				SubirFactura sf = new SubirFactura(facturar.get(mesaParaBorrar - 1), "Marc", mesaParaBorrar);
@@ -293,7 +297,7 @@ public class Principal extends JFrame {
 				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
 				new Cobrar().CobrarBarra(mesaParaBorrar);
 				arrayInternalFramesBarra.get(numeroMesa - 1).setVisible(false);
-				arrayInternalFramesBarra.remove(numeroMesa - 1);
+				arrayInternalFramesBarra.set(numeroMesa - 1,vacio);
 			}
 
 		});
