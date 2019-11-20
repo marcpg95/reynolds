@@ -1,6 +1,5 @@
 package com.mms.mms.conexion;
 
-import java.io.File;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -34,10 +33,6 @@ public class TestServer implements TestService {
 		}
 	}
 
-	@Override
-	public void enviarComanda(File data) {
-		System.out.println(" called");
-	}
 
 	@Override
 	public ArrayList<String> cogerCamareros() {
@@ -45,5 +40,14 @@ public class TestServer implements TestService {
 		System.out.println("Se ha solicitado la lista de camareros.");
 		return cc.getCamareros();
 	}
+
+
+	@Override
+	public void enviarComanda(ArrayList<String> dataProducts, String camarero, int numeroMesa) {
+		System.out.println(camarero + " atiende mesa " + numeroMesa);		
+	}
+
+
+
 
 }
