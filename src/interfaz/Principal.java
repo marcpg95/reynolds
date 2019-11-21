@@ -12,12 +12,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.mms.mms.clases.Categories;
+import com.mms.mms.clases.Productes;
 import com.mms.mms.conexion.TestServer;
 
 import baseDeDatos.ConsultarCamareros;
+import baseDeDatos.ConsultarProductos;
 import baseDeDatos.SubirFactura;
 import clases.ProductosFactura;
-import conexion.ServidorTCP;
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import tablaConCheckBox.JCheckBox_Cell;
@@ -65,7 +67,8 @@ import javax.swing.JLabel;
 public class Principal extends JFrame {
 	
 	public static HashMap<Integer, ArrayList<ProductosFactura>> facturar = new HashMap<Integer, ArrayList<ProductosFactura>>();
-
+	public static HashMap<String, Categories> categorias = new ConsultarProductos().getProductos(); //RECOJO LOS PRODUCTOS DE LA BASE DE DATOS
+	
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
 	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
