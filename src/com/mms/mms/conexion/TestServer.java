@@ -2,8 +2,12 @@ package com.mms.mms.conexion;
 
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import com.mms.mms.clases.Categories;
 
 import baseDeDatos.ConsultarCamareros;
+import interfaz.Principal;
 import lipermi.handler.CallHandler;
 import lipermi.net.IServerListener;
 import lipermi.net.Server;
@@ -44,10 +48,15 @@ public class TestServer implements TestService {
 
 	@Override
 	public void enviarComanda(ArrayList<String> dataProducts, String camarero, int numeroMesa) {
-		System.out.println(camarero + " atiende mesa " + numeroMesa);		
+		System.out.println(camarero + " atiende mesa " + numeroMesa);
 	}
 
 
+	@Override
+	public HashMap<String, Categories> cogerProductos() {
+		System.out.println("Se ha solicitado el listado de productos.");
+		return Principal.categorias;
+	}
 
 
 }

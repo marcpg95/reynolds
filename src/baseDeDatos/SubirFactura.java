@@ -27,9 +27,9 @@ public class SubirFactura {
 	public void enviarFactura() {
 		
 		//DATOS DE CONEXION A LA BASE DE DATOS
-		String usuari = "nPw4P4Sluk";
-		String clau = "QkBR0CyA6s";
-		String urlDades = "jdbc:mysql://remotemysql.com/nPw4P4Sluk?serverTimezone=UTC";
+		String usuari = DatosConexion.usuari;
+		String clau = DatosConexion.clau;
+		String urlDades = DatosConexion.urlDades;
 		
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
