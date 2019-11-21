@@ -61,6 +61,7 @@ import java.awt.Rectangle;
 import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
 
 public class Principal extends JFrame {
 	
@@ -93,6 +94,11 @@ public class Principal extends JFrame {
 	
 	
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+		} catch (Throwable e) {
+			e.printStackTrace();
+		}
 		TestServer testServer = new TestServer();
 
 		EventQueue.invokeLater(new Runnable() {
@@ -163,6 +169,9 @@ public class Principal extends JFrame {
 		File verComandas = new File("Comandas");
 		String[] comandas = verComandas.list();
 		int cantidadComandas = comandas.length;
+		JButton btnServir = new JButton("Servir");
+		btnServir.setBounds(362, 210, 90, 28);
+		taules.getContentPane().add(btnServir);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
@@ -300,7 +309,7 @@ public class Principal extends JFrame {
 		}
 		JInternalFrame vacio= new JInternalFrame("Mesa Vacia");
 		vacio.setBounds(20,220,390,270);
-		barra.add(vacio);
+		barra.getContentPane().add(vacio);
 		vacio.setClosable(true);
 		vacio.getContentPane().setLayout(null);
 		btnCobrar.addActionListener(new ActionListener() {
