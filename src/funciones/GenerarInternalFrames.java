@@ -61,21 +61,30 @@ public class GenerarInternalFrames {
 	// *Genera los internal frames de cocina
 	public ArrayList<JInternalFrame> GenerarInternalCocina(int cantidadComandas, JInternalFrame barra,
 			ArrayList<JTable> arrayTablaCocina) {
-
+       
 		GenerarComanda gc = Principal.getGC();
 		ArrayList<String> arrayNumeroMesa = gc.usarNumeroMesa();
-
+		
 		// *Crea tantos internal frames como comandas haya y le asigna un JTABLE de su
 		// comanda
-
+int contadorComanda=0;
+int contadorServido=1;
 		for (int i = 0; i < cantidadComandas; i++) {
 
 			JInternalFrame comandaCocina = new JInternalFrame("Comanda" + (arrayNumeroMesa.get(i)));
-			comandaCocina.setBounds(0, 25, 825, 450);
+			comandaCocina.setBounds(0, 25, 825, 175);
 			barra.add(comandaCocina);
 
 			comandaCocina.setClosable(true);
 			comandaCocina.getContentPane().setLayout(null);
+			
+			JInternalFrame servirCocina = new JInternalFrame("Servido Mesa: " + (arrayNumeroMesa.get(i)));
+			servirCocina.setBounds(0, 250, 825, 225);
+			barra.add(servirCocina);
+
+			servirCocina.setClosable(true);
+			servirCocina.getContentPane().setLayout(null);
+			
 			JLabel lblCamarero = new JLabel("Camarero :");
 			lblCamarero.setBounds(400, 25, 103, 23);
 			comandaCocina.getContentPane().add(lblCamarero);
@@ -89,17 +98,27 @@ public class GenerarInternalFrames {
 			comandaCocina.getContentPane().add(lblFecha);
 
 			arrayInternalFramesCocina.add(comandaCocina);
-
-			arrayInternalFramesCocina.get(i).getContentPane().add(arrayTablaCocina.get(i));
-
-			JScrollPane scrollPaneBarra = new JScrollPane(arrayTablaCocina.get(i));
+			arrayInternalFramesCocina.add(servirCocina);
+			
+			arrayInternalFramesCocina.get(i+contadorComanda).getContentPane().add(arrayTablaCocina.get(i+contadorComanda));
+			JScrollPane scrollPaneBarra = new JScrollPane(arrayTablaCocina.get(i+contadorComanda));
 			scrollPaneBarra.setBounds(0, 0, 386, 231);
-			arrayInternalFramesCocina.get(i).getContentPane().add(scrollPaneBarra);
-			arrayTablaCocina.get(i).getColumnModel().getColumn(2).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-			arrayTablaCocina.get(i).getColumnModel().getColumn(2).setCellRenderer(new JCheckBox_Rendered());
-
+			arrayInternalFramesCocina.get(i+contadorComanda).getContentPane().add(scrollPaneBarra);
+			arrayTablaCocina.get(i+contadorComanda).getColumnModel().getColumn(2).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
+			arrayTablaCocina.get(i+contadorComanda).getColumnModel().getColumn(2).setCellRenderer(new JCheckBox_Rendered());
+           
+			
+			arrayInternalFramesCocina.get(i+contadorServido).getContentPane().add(arrayTablaCocina.get(i+contadorServido));
+			JScrollPane scrollPaneBarra2 = new JScrollPane(arrayTablaCocina.get(i+contadorServido));
+			scrollPaneBarra2.setBounds(0, 0, 386, 231);
+			arrayInternalFramesCocina.get(i+contadorServido).getContentPane().add(scrollPaneBarra2);
+			arrayTablaCocina.get(i+contadorServido).getColumnModel().getColumn(2).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
+			arrayTablaCocina.get(i+contadorServido).getColumnModel().getColumn(2).setCellRenderer(new JCheckBox_Rendered());
+			contadorComanda++;
+			contadorServido++;
 		}
 		arrayInternalFramesCocina.get(0).setVisible(true);
+		arrayInternalFramesCocina.get(1).setVisible(true);
 
 		return arrayInternalFramesCocina;
 

@@ -224,15 +224,28 @@ public class Principal extends JFrame {
 					public void stateChanged(ChangeEvent e) {
 
 						// *Hace visible un frame u otro en la parte de coicna segun la pestaña clicada
-
-						for (int j = 0; j < cantidadComandas; j++)
+						int contadorComanda=0;
+						int contadorServido=1;
+						for (int j = 0; j < arrayInternalFramesCocina.size()/2; j++) {
 							if (tabbedPane.getSelectedIndex() != j) {
-								arrayInternalFramesCocina.get(j).setVisible(false);
+								arrayInternalFramesCocina.get(j+contadorComanda).setVisible(false);
+								arrayInternalFramesCocina.get(j+contadorServido).setVisible(false);
 
 							} else {
-								arrayInternalFramesCocina.get(j).setVisible(true);
+								arrayInternalFramesCocina.get(j+contadorComanda).setVisible(true);
+								arrayInternalFramesCocina.get(j+contadorServido).setVisible(true);
 							}
-
+						contadorComanda++;
+						contadorServido++;
+						
+						}
+						
+						
+						
+						
+						
+						
+						
 					}
 				});
 
