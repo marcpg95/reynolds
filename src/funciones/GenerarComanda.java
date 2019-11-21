@@ -253,6 +253,7 @@ public class GenerarComanda {
 						}
 					}
 					JTable tableComandaCocina = new JTable();
+					JTable tableServidoCocina = new JTable();
 
 					// for (int i = 0; i < arrayComandaBarra.size(); i++) {
 					// System.out.print(arrayComandaBarra.get(i));
@@ -260,14 +261,14 @@ public class GenerarComanda {
 					int contadorProducto = 0;
 					int contadorCantidad = 1;
 
-					Object[][] o = new Object[(arrayComandaCocina.size()) / 2][3];
+					Object[][] comandao = new Object[(arrayComandaCocina.size()) / 2][3];
 					for (int i = 0; i < (arrayComandaCocina.size()) / 2; i++) {
 
-						o[i][0] = arrayComandaCocina.get((i) + contadorProducto);
+						comandao[i][0] = arrayComandaCocina.get((i) + contadorProducto);
 
-						o[i][1] = arrayComandaCocina.get((i) + contadorCantidad);
+						comandao[i][1] = arrayComandaCocina.get((i) + contadorCantidad);
 
-						o[i][2] = false;
+						comandao[i][2] = true;
 
 						contadorCantidad++;
 						contadorProducto++;
@@ -275,16 +276,39 @@ public class GenerarComanda {
 					}
 					contadorCantidad = 0;
 					contadorProducto = 0;
+					Object[][] servido = new Object[(arrayComandaCocina.size()) / 2][3];
+					for (int i = 0; i < (arrayComandaCocina.size()) / 2; i++) {
+
+						servido[i][0] = null;
+
+						servido[i][1] = null;
+
+						servido[i][2] = null;
+
+						
+
+					}
+					tableServidoCocina.setShowVerticalLines(false);
+
+					tableServidoCocina.setBounds(0, 0, 441, 263);
+
+					tableServidoCocina
+							.setModel(new DefaultTableModel(servido, new String[] { "Producto", "Cantidad", "Listo" }));
+
+					tableServidoCocina.setVisible(true);
+					
+					
 
 					tableComandaCocina.setShowVerticalLines(false);
 
 					tableComandaCocina.setBounds(0, 0, 441, 263);
 
 					tableComandaCocina
-							.setModel(new DefaultTableModel(o, new String[] { "Producto", "Cantidad", "Listo" }));
+							.setModel(new DefaultTableModel(comandao, new String[] { "Producto", "Cantidad", "Listo" }));
 
 					tableComandaCocina.setVisible(true);
 					arrayTablaCocina.add(tableComandaCocina);
+					arrayTablaCocina.add(tableServidoCocina);
 					arrayComandaCocina.clear();
 				}
 			}
@@ -297,6 +321,12 @@ public class GenerarComanda {
 		 */
 
 		return arrayTablaCocina;
+	}
+	public  ArrayList<JTable> tableServido(JTable arrayTablaCocina) {
+		
+		
+		return null;
+		
 	}
 
 }
