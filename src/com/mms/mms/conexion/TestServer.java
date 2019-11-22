@@ -5,8 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.mms.mms.clases.Categories;
+import com.mms.mms.clases.comandas.Comanda;
+import com.mms.mms.clases.comandas.ProductosComanda;
 
 import baseDeDatos.ConsultarCamareros;
+import funciones.GenerarInternalFrames;
+import funciones.GenerarXMLComanda;
 import interfaz.Principal;
 import lipermi.handler.CallHandler;
 import lipermi.net.IServerListener;
@@ -47,15 +51,30 @@ public class TestServer implements TestService {
 
 
 	@Override
-	public void enviarComanda(ArrayList<String> dataProducts, String camarero, int numeroMesa) {
-		System.out.println(camarero + " atiende mesa " + numeroMesa);
+	public HashMap<String, Categories> cogerProductos() {
+		System.out.println("Se ha solicitado el listado de productos.");
+		return Principal.categorias;
 	}
 
 
 	@Override
-	public HashMap<String, Categories> cogerProductos() {
-		System.out.println("Se ha solicitado el listado de productos.");
-		return Principal.categorias;
+	public void enviarComanda(HashMap<Integer, Comanda> comandas, int numeroMesa) {
+		System.out.println("Se ha recibido una comanda en la mesa " + numeroMesa + ".");
+		Principal.comandas = comandas;
+		
+		//CREO EL XML CON LOS PRODUCTOS DE LA COMANDA
+		GenerarXMLComanda cxc = new GenerarXMLComanda(comandas.get(numeroMesa).getProductosPedidos(), numeroMesa);
+		cxc.crearXML();
+		
+		//ACTUALIZO LAS COMANDAS
+		
+	}
+
+
+	@Override
+	public HashMap<Integer, Comanda> cogerComandas() {
+		System.out.println("Se han solicitado las comandas.");
+		return Principal.comandas;
 	}
 
 

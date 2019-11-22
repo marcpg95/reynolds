@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 
 import com.mms.mms.clases.Categories;
 import com.mms.mms.clases.Productes;
+import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.conexion.TestServer;
 
 import baseDeDatos.ConsultarCamareros;
