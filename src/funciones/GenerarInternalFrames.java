@@ -112,8 +112,7 @@ int contadorServido=1;
 			JScrollPane scrollPaneBarra2 = new JScrollPane(arrayTablaCocina.get(i+contadorServido));
 			scrollPaneBarra2.setBounds(0, 0, 386, 231);
 			arrayInternalFramesCocina.get(i+contadorServido).getContentPane().add(scrollPaneBarra2);
-			arrayTablaCocina.get(i+contadorServido).getColumnModel().getColumn(2).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
-			arrayTablaCocina.get(i+contadorServido).getColumnModel().getColumn(2).setCellRenderer(new JCheckBox_Rendered());
+			
 			contadorComanda++;
 			contadorServido++;
 		}

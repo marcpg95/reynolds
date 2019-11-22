@@ -54,6 +54,7 @@ import javax.swing.JCheckBox;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 
 import javax.swing.AbstractButton;
 import javax.swing.GroupLayout;
@@ -66,10 +67,12 @@ import javax.swing.JLabel;
 import javax.swing.UIManager;
 
 public class Principal extends JFrame {
-	
+
 	public static HashMap<Integer, ArrayList<ProductosFactura>> facturar = new HashMap<Integer, ArrayList<ProductosFactura>>();
-	public static HashMap<String, Categories> categorias = new ConsultarProductos().getProductos(); //RECOJO LOS PRODUCTOS DE LA BASE DE DATOS
-	
+	public static HashMap<String, Categories> categorias = new ConsultarProductos().getProductos(); // RECOJO LOS
+																									// PRODUCTOS DE LA
+																									// BASE DE DATOS
+
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
 	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
@@ -94,8 +97,6 @@ public class Principal extends JFrame {
 	 * Launch the application.
 	 */
 
-	
-	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
@@ -236,28 +237,22 @@ public class Principal extends JFrame {
 					public void stateChanged(ChangeEvent e) {
 
 						// *Hace visible un frame u otro en la parte de coicna segun la pestaña clicada
-						int contadorComanda=0;
-						int contadorServido=1;
-						for (int j = 0; j < arrayInternalFramesCocina.size()/2; j++) {
+						int contadorComanda = 0;
+						int contadorServido = 1;
+						for (int j = 0; j < arrayInternalFramesCocina.size() / 2; j++) {
 							if (tabbedPane.getSelectedIndex() != j) {
-								arrayInternalFramesCocina.get(j+contadorComanda).setVisible(false);
-								arrayInternalFramesCocina.get(j+contadorServido).setVisible(false);
+								arrayInternalFramesCocina.get(j + contadorComanda).setVisible(false);
+								arrayInternalFramesCocina.get(j + contadorServido).setVisible(false);
 
 							} else {
-								arrayInternalFramesCocina.get(j+contadorComanda).setVisible(true);
-								arrayInternalFramesCocina.get(j+contadorServido).setVisible(true);
+								arrayInternalFramesCocina.get(j + contadorComanda).setVisible(true);
+								arrayInternalFramesCocina.get(j + contadorServido).setVisible(true);
 							}
-						contadorComanda++;
-						contadorServido++;
-						
+							contadorComanda++;
+							contadorServido++;
+
 						}
-						
-						
-						
-						
-						
-						
-						
+
 					}
 				});
 
@@ -310,8 +305,8 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		JInternalFrame vacio= new JInternalFrame("Mesa Vacia");
-		vacio.setBounds(20,220,390,270);
+		JInternalFrame vacio = new JInternalFrame("Mesa Vacia");
+		vacio.setBounds(20, 220, 390, 270);
 		barra.getContentPane().add(vacio);
 		vacio.setClosable(true);
 		vacio.getContentPane().setLayout(null);
@@ -322,7 +317,7 @@ public class Principal extends JFrame {
 				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
 				new Cobrar().CobrarBarra(mesaParaBorrar);
 				arrayInternalFramesBarra.get(numeroMesa - 1).setVisible(false);
-				arrayInternalFramesBarra.set(numeroMesa - 1,vacio);
+				arrayInternalFramesBarra.set(numeroMesa - 1, vacio);
 			}
 
 		});
@@ -342,6 +337,37 @@ public class Principal extends JFrame {
 		 * 
 		 * });
 		 */
+		btnServir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				int contadorComanda = 0;
+				int contadorServido = 1;
+				for (int x = 0; x < arrayInternalFramesCocina.size() / 2; x++) {
+					if (tabbedPane.getSelectedIndex() != x) {
+
+					} else {
+						DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina.get(tabbedPane.getSelectedIndex()+contadorComanda).getModel();
+						DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina.get(tabbedPane.getSelectedIndex() +contadorServido).getModel();
+						System.out.println(tabbedPane.getSelectedIndex()+contadorComanda);
+						System.out.println(tabbedPane.getSelectedIndex() + contadorServido);
+
+						for (int i = 0; i < modeloCocina.getRowCount(); i++) {
+							Object fila[] = new Object[modeloCocina.getColumnCount()];
+							for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
+								fila[j] = modeloCocina.getValueAt(i, j);
+							}
+							modeloServir.addRow(fila);
+						}
+					}
+					contadorComanda++;
+					contadorServido++;
+				}
+				
+
+			}
+
+		});
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

@@ -276,15 +276,10 @@ public class GenerarComanda {
 					}
 					contadorCantidad = 0;
 					contadorProducto = 0;
-					Object[][] servido = new Object[(arrayComandaCocina.size()) / 2][3];
+					Object[][] servido = new Object[0][2];
 					for (int i = 0; i < (arrayComandaCocina.size()) / 2; i++) {
 
-						servido[i][0] = null;
-
-						servido[i][1] = null;
-
-						servido[i][2] = null;
-
+						
 						
 
 					}
@@ -293,7 +288,7 @@ public class GenerarComanda {
 					tableServidoCocina.setBounds(0, 0, 441, 263);
 
 					tableServidoCocina
-							.setModel(new DefaultTableModel(servido, new String[] { "Producto", "Cantidad", "Listo" }));
+							.setModel(new DefaultTableModel(servido, new String[] { "Producto", "Cantidad"}));
 
 					tableServidoCocina.setVisible(true);
 					
