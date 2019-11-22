@@ -174,8 +174,11 @@ public class Principal extends JFrame {
 		String[] comandas = verComandas.list();
 		int cantidadComandas = comandas.length;
 		JButton btnServir = new JButton("Servir");
-		btnServir.setBounds(362, 210, 90, 28);
+		btnServir.setBounds(295, 210, 90, 28);
 		taules.getContentPane().add(btnServir);
+		JButton btnDevolver = new JButton("Devolver");
+		btnDevolver.setBounds(395, 210, 90, 28);
+		taules.getContentPane().add(btnDevolver);
 
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
@@ -298,7 +301,7 @@ public class Principal extends JFrame {
 						}
 
 					}
-				 });
+				});
 
 			}
 
@@ -352,31 +355,105 @@ public class Principal extends JFrame {
 						DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina
 								.get(tabbedPane.getSelectedIndex() + contadorServido).getModel();
 
-						for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
-							
-								modeloServir.removeRow(i);
-							
+						/*
+						 * for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+						 * 
+						 * modeloServir.removeRow(i);
+						 * 
+						 * 
+						 * }
+						 */
 
-						}
-						for (int i = 0; i < modeloCocina.getRowCount(); i++) {
+						for (int i =  modeloCocina.getRowCount()-1; i >=0 ; i--) {
 							Object fila[] = new Object[modeloCocina.getColumnCount()];
+							boolean mover = true;
+							boolean borrar = false;
 							for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
-								boolean mover = (boolean) modeloCocina.getValueAt(i, 2);
+								mover = (boolean) modeloCocina.getValueAt(i, 2);
 								if (mover == false) {
 									fila[j] = modeloCocina.getValueAt(i, j);
-
+									borrar=true;
 									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
 								}
+
 							}
 
 							modeloServir.addRow(fila);
+							if (borrar == true) {
+
+								modeloCocina.removeRow(i);
+
+							}
 
 						}
-						
-						for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
-							
+
+						for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
+
 							if (modeloServir.getValueAt(i, 0) == null) {
 								modeloServir.removeRow(i);
+							}
+
+						}
+					}
+					contadorComanda++;
+					contadorServido++;
+				}
+
+			}
+
+		});
+		
+		btnDevolver.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+
+				int contadorComanda = 0;
+				int contadorServido = 1;
+				for (int x = 0; x < arrayInternalFramesCocina.size() / 2; x++) {
+					if (tabbedPane.getSelectedIndex() != x) {
+
+					} else {
+
+						DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina
+								.get(tabbedPane.getSelectedIndex() + contadorComanda).getModel();
+						DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina
+								.get(tabbedPane.getSelectedIndex() + contadorServido).getModel();
+
+						/*
+						 * for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+						 * 
+						 * modeloServir.removeRow(i);
+						 * 
+						 * 
+						 * }
+						 */
+
+						for (int i =  modeloServir.getRowCount()-1; i >=0 ; i--) {
+							Object fila[] = new Object[modeloServir.getColumnCount()];
+							boolean mover = true;
+							boolean borrar = false;
+							for (int j = 0; j < modeloServir.getColumnCount(); j++) {
+								mover = (boolean) modeloServir.getValueAt(i, 2);
+								if (mover == false) {
+									fila[j] = modeloServir.getValueAt(i, j);
+									borrar=true;
+									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
+								}
+
+							}
+
+							modeloCocina.addRow(fila);
+							if (borrar == true) {
+
+								modeloServir.removeRow(i);
+
+							}
+
+						}
+
+						for (int i = modeloCocina.getRowCount() - 1; i >= 0; i--) {
+
+							if (modeloCocina.getValueAt(i, 0) == null) {
+								modeloCocina.removeRow(i);
 							}
 
 						}
