@@ -339,31 +339,51 @@ public class Principal extends JFrame {
 		 */
 		btnServir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
-				
+
 				int contadorComanda = 0;
 				int contadorServido = 1;
 				for (int x = 0; x < arrayInternalFramesCocina.size() / 2; x++) {
 					if (tabbedPane.getSelectedIndex() != x) {
 
 					} else {
-						DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina.get(tabbedPane.getSelectedIndex()+contadorComanda).getModel();
-						DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina.get(tabbedPane.getSelectedIndex() +contadorServido).getModel();
-						System.out.println(tabbedPane.getSelectedIndex()+contadorComanda);
-						System.out.println(tabbedPane.getSelectedIndex() + contadorServido);
 
+						DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina
+								.get(tabbedPane.getSelectedIndex() + contadorComanda).getModel();
+						DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina
+								.get(tabbedPane.getSelectedIndex() + contadorServido).getModel();
+
+						for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+							
+								modeloServir.removeRow(i);
+							
+
+						}
 						for (int i = 0; i < modeloCocina.getRowCount(); i++) {
 							Object fila[] = new Object[modeloCocina.getColumnCount()];
 							for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
-								fila[j] = modeloCocina.getValueAt(i, j);
+								boolean mover = (boolean) modeloCocina.getValueAt(i, 2);
+								if (mover == false) {
+									fila[j] = modeloCocina.getValueAt(i, j);
+
+									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
+								}
 							}
+
 							modeloServir.addRow(fila);
+
+						}
+						
+						for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+							
+							if (modeloServir.getValueAt(i, 0) == null) {
+								modeloServir.removeRow(i);
+							}
+
 						}
 					}
 					contadorComanda++;
 					contadorServido++;
 				}
-				
 
 			}
 
