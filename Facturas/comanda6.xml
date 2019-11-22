@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<Comanda>
+  
+    <mesa id="6">
+    	<producto cantidad="1">
+    		<nombre>Kobe</nombre>
+    		<precio>200</precio>
+    	</producto>
+    	<producto cantidad="1">
+    		<nombre>Ciroc</nombre>
+    		<precio>25</precio>
+    	</producto>
+    	<producto cantidad="1">
+			<nombre>Caviar</nombre>
+    		<precio>50</precio>
+		</producto>
+		<producto cantidad="1">
+			<nombre>McAllan</nombre>
+    		<precio>50</precio>
+		</producto>
+    	
+    	
+    	
+    
+    
+    
+    </mesa>
+       
+</Comanda>

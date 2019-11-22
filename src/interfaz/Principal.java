@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 
 import com.mms.mms.clases.Categories;
 import com.mms.mms.clases.Productes;
+import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.conexion.TestServer;
 
 import baseDeDatos.ConsultarCamareros;
@@ -69,6 +70,7 @@ public class Principal extends JFrame {
 	
 	public static HashMap<Integer, ArrayList<ProductosFactura>> facturar = new HashMap<Integer, ArrayList<ProductosFactura>>();
 	public static HashMap<String, Categories> categorias = new ConsultarProductos().getProductos(); //RECOJO LOS PRODUCTOS DE LA BASE DE DATOS
+	public static HashMap<Integer, Comanda> comandas = new HashMap<Integer, Comanda>(); //LA KEY ES EL NUMERO DE LA MESA
 	
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
