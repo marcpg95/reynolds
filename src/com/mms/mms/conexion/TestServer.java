@@ -18,6 +18,7 @@ import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.clases.comandas.ProductosComanda;
 
 import baseDeDatos.ConsultarCamareros;
+import baseDeDatos.SubirComanda;
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import funciones.GenerarXMLComanda;
@@ -45,12 +46,11 @@ public class TestServer implements TestService {
 					System.out.println("Cliente conectado: " + socket.getInetAddress());
 				}
 			});
-			System.out.println("Server Listening");
+			System.out.println("Servidor iniciado.");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
 
 	@Override
 	public ArrayList<String> cogerCamareros() {
@@ -59,33 +59,46 @@ public class TestServer implements TestService {
 		return cc.getCamareros();
 	}
 
-
 	@Override
 	public HashMap<String, Categories> cogerProductos() {
 		System.out.println("Se ha solicitado el listado de productos.");
 		return Principal.categorias;
 	}
 
-
 	@Override
 	public void enviarComanda(HashMap<Integer, Comanda> comandas, int numeroMesa) {
 		System.out.println("Se ha recibido una comanda en la mesa " + numeroMesa + ".");
-		Principal.comandas = comandas;
-		
-		//CREO EL XML CON LOS PRODUCTOS DE LA COMANDA
-		GenerarXMLComanda cxc = new GenerarXMLComanda(comandas.get(numeroMesa).getProductosPedidos(), numeroMesa);
-		cxc.crearXML();
-		
-		//ACTUALIZO LAS COMANDAS
-		
-	}
 
+		// COMPRUEBO SI ESTA COMANDA ES UNA ACTUALIZACION DE UNA COMANDA PREVIA
+		boolean actualizacion = false;
+		if (Principal.comandas.containsKey(numeroMesa)) {
+			actualizacion = true;
+		}
+		Principal.comandas = comandas;
+
+		// COMPRUEBO SI LA COMANDA TIENE PRODUCTOS
+		if (comandas.get(numeroMesa).getProductosPedidos().size() == 0) {
+			comandas.remove(numeroMesa); // SI NO TIENE PRODUCTOS LA BORRO
+		} else {
+			// CREO EL XML CON LOS PRODUCTOS DE LA COMANDA
+			GenerarXMLComanda cxc = new GenerarXMLComanda(comandas.get(numeroMesa).getProductosPedidos(), numeroMesa);
+			cxc.crearXML();
+
+			SubirComanda sc = new SubirComanda(comandas.get(numeroMesa), numeroMesa);
+			if (actualizacion == false) {
+				// SUBO LA COMANDA A LA BASE DE DATOS
+				sc.subir();
+			} else {
+				sc.actualizarProductos(); //ACUALIZO LA COMANDA DE LA BASE DE DATOS
+			}
+		}
+
+	}
 
 	@Override
 	public HashMap<Integer, Comanda> cogerComandas() {
 		System.out.println("Se han solicitado las comandas.");
 		return Principal.comandas;
 	}
-
 
 }

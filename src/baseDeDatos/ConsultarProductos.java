@@ -60,7 +60,7 @@ public class ConsultarProductos {
 
 				auxiliarCategoria = categoria;
 
-				Productes p = new Productes(nom, descripcion, image, preu);
+				Productes p = new Productes(nom, descripcion, image, preu, id);
 				productos.put(id, p);
 			}
 			Categories c = new Categories(productos);

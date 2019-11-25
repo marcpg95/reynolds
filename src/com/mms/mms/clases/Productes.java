@@ -11,12 +11,14 @@ public class Productes implements Serializable {
 	
 	private String nom, descripcion, image;
     private float preu;
+    private int id;
 
-    public Productes(String nom, String descripcion, String image, float preu) {
+    public Productes(String nom, String descripcion, String image, float preu, int id) {
         this.nom = nom;
         this.descripcion = descripcion;
         this.image = image;
         this.preu = preu;
+        this.id = id;
     }
 
     public String getNom() {
@@ -49,5 +51,9 @@ public class Productes implements Serializable {
 
     public void setPreu(float preu) {
         this.preu = preu;
+    }
+    
+    public int getId() {
+    	return this.id;
     }
 }

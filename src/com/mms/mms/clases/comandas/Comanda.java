@@ -18,6 +18,11 @@ public class Comanda implements Serializable {
         this.camarero = camarero;
     }
 
+    public Comanda(ArrayList<ProductosComanda> array, String camarero) {
+    	this.productosPedidos = array;
+        this.camarero = camarero;
+    }
+
     public ArrayList<ProductosComanda> getProductosPedidos() {
         return productosPedidos;
     }

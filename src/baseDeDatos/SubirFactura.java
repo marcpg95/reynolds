@@ -3,6 +3,7 @@ package baseDeDatos;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import com.mysql.jdbc.Connection;
@@ -44,12 +45,18 @@ public class SubirFactura {
 			while(resul.next()) {
 				id = resul.getInt("id") + 1; //LA ID QUE TENDRÁ LA NUEVA FACTURA
 			}
+			
+			//COJO LA FECHA DEL DIA ACTUAL
+			java.util.Date d = new java.util.Date();  
+			Timestamp date = new Timestamp(d.getTime());
+			System.out.println("FECHA :" + date);
 						
 			//AÑADO LOS DATOS A LA TABLA FACTURAS
-			PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("INSERT INTO factures (id,numeroMesa,camarero) VALUES (?,?,?)");
+			PreparedStatement stmt = (PreparedStatement) conn.prepareStatement("INSERT INTO factures (id,numeroMesa,camarero, fecha) VALUES (?,?,?,?)");
 			stmt.setString(1, Integer.toString(id));
 			stmt.setString(2, Integer.toString(numeroMesa));
 			stmt.setString(3, camarero);
+			stmt.setTimestamp(4, date);
 			stmt.executeUpdate();
 			
 			//AÑADO LOS DATOS DEL PRODUCTO A LA TABLA PRODUCTOS_FACTURA

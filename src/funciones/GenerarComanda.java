@@ -3,6 +3,7 @@ package funciones;
 import java.io.File;
 import org.w3c.dom.Node;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
@@ -12,6 +13,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+
+import com.mms.mms.clases.comandas.Comanda;
 
 import clases.ProductosFactura;
 import interfaz.Principal;
@@ -31,57 +34,27 @@ public class GenerarComanda {
 
 		try {
 
-			while (comandasCreadas < cantidadComandas) {
+			String nombre, cantidad, mesa, precio;
 
-				File archivoComanda = new File("Comandas/comanda" + (contadorComanda + 1) + ".xml");
+			Integer key;
+			Comanda valor;
 
-				contadorComanda++;
+			for (Entry<Integer, Comanda> entry : Principal.comandas.entrySet()) {
+				key = entry.getKey();
+				valor = entry.getValue();
 
-				if (archivoComanda.exists()) {
-
-					comandasCreadas++;
-					DocumentBuilderFactory dbfComanda = DocumentBuilderFactory.newInstance();
-					DocumentBuilder documentBuilderComanda = dbfComanda.newDocumentBuilder();
-					Document documentComanda = documentBuilderComanda.parse(archivoComanda);
-					documentComanda.getDocumentElement().normalize();
-					NodeList listaComanda = documentComanda.getElementsByTagName("producto");
-					NodeList mesaComanda = documentComanda.getElementsByTagName("mesa");
-
-					// System.out.println(listaComanda.getLength());
-
-					for (int temp = 0; temp < listaComanda.getLength(); temp++) {
-
-						Node nNode = listaComanda.item(temp);
-						Node nNodeMesa = mesaComanda.item(0);
-
-						// System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-						if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-							Element eElement = (Element) nNode;
-							Element eElementMesa = (Element) nNodeMesa;
-
-							// System.out.println("Cantidad : " + eElement.getAttribute("cantidad"));
-							// System.out.println("nombre : " +
-							// eElement.getElementsByTagName("nombre").item(0).getTextContent());
-							// System.out.println("precio : " +
-							// eElement.getElementsByTagName("precio").item(0).getTextContent());
-							String nombre = eElement.getElementsByTagName("nombre").item(0).getTextContent();
-
-							String cantidad = eElement.getAttribute("cantidad");
-							String mesa = eElementMesa.getAttribute("id");
-							String precio = eElement.getElementsByTagName("precio").item(0).getTextContent();
-
-							// System.out.println(nombre);
-							// System.out.println(cantidad);
-							// System.out.println(precio);
-
-							arrayComandaBarra.add(nombre);
-							arrayComandaBarra.add(cantidad);
-							arrayComandaBarra.add(precio);
-							
-						}
-					}
+				mesa = Integer.toString(key);
+				
+				for (int i = 0; i < valor.getProductosPedidos().size(); i++) {
+					nombre = valor.getProductosPedidos().get(i).getProducto().getNom();
+					cantidad = Integer.toString(valor.getProductosPedidos().get(i).getCantidad());
+					precio = Float.toString(valor.getProductosPedidos().get(i).getProducto().getPreu());
+					arrayComandaBarra.add(nombre);
+					arrayComandaBarra.add(cantidad);
+					arrayComandaBarra.add(precio);
+				}
+				
+			
 					JTable tableComandaBarra = new JTable();
 
 					// for (int i = 0; i < arrayComandaBarra.size(); i++) {
@@ -92,7 +65,7 @@ public class GenerarComanda {
 					int contadorPrecio = 2;
 					float precioTotal = 0;
 					float auxPrecioTotal = 0;
-					
+
 					ArrayList<ProductosFactura> p = new ArrayList<ProductosFactura>();
 
 					Object[][] o = new Object[(arrayComandaBarra.size()) / 3][4];
@@ -102,10 +75,13 @@ public class GenerarComanda {
 
 						o[i][1] = arrayComandaBarra.get((i) + contadorCantidad);
 						o[i][2] = arrayComandaBarra.get((i) + contadorPrecio);
-											
-						ProductosFactura pf = new ProductosFactura(Integer.parseInt(arrayComandaBarra.get((i) + contadorCantidad)), arrayComandaBarra.get((i) + contadorProducto), Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio)));
+
+						ProductosFactura pf = new ProductosFactura(
+								Integer.parseInt(arrayComandaBarra.get((i) + contadorCantidad)),
+								arrayComandaBarra.get((i) + contadorProducto),
+								Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio)));
 						p.add(pf);
-												
+
 						precioTotal += Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio));
 
 						precioTotal *= Float.parseFloat(arrayComandaBarra.get((i) + contadorCantidad));
@@ -142,7 +118,7 @@ public class GenerarComanda {
 					arrayTablaBarra.add(tableComandaBarra);
 					arrayComandaBarra.clear();
 
-				}
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -168,10 +144,10 @@ public class GenerarComanda {
 	public ArrayList<Float> usarPrecioMesa() {
 
 		// System.out.println("entrausar");
-		/*for (int i = 0; i < precioMesa.size(); i++) {
-			System.out.println(precioMesa.get(i));
-		}
-*/
+		/*
+		 * for (int i = 0; i < precioMesa.size(); i++) {
+		 * System.out.println(precioMesa.get(i)); }
+		 */
 		return precioMesa;
 
 	}
@@ -199,59 +175,28 @@ public class GenerarComanda {
 		int comandasCreadas = 0;
 		int contadorComanda = 0;
 		try {
+			
+			String nombre, cantidad, mesa;
 
-			while (comandasCreadas < cantidadComandas) {
-				// System.out.println("1");
-				File archivoComanda = new File("Comandas/comanda" + (contadorComanda + 1) + ".xml");
+			Integer key;
+			Comanda valor;
 
-				contadorComanda++;
-				// System.out.println(comandasCreadas);
-				// System.out.println(cantidadComandas);
-				if (archivoComanda.exists()) {
-					comandasCreadas++;
+			for (Entry<Integer, Comanda> entry : Principal.comandas.entrySet()) {
+				key = entry.getKey();
+				valor = entry.getValue();
 
-					DocumentBuilderFactory dbfComanda = DocumentBuilderFactory.newInstance();
-					DocumentBuilder documentBuilderComanda = dbfComanda.newDocumentBuilder();
-					Document documentComanda = documentBuilderComanda.parse(archivoComanda);
-					documentComanda.getDocumentElement().normalize();
-					NodeList listaComanda = documentComanda.getElementsByTagName("producto");
-					NodeList mesaComanda = documentComanda.getElementsByTagName("mesa");
-
-					// System.out.println(listaComanda.getLength());
-
-					for (int temp = 0; temp < listaComanda.getLength(); temp++) {
-
-						Node nNode = listaComanda.item(temp);
-						Node nNodeMesa = mesaComanda.item(0);
-
-						// System.out.println("\nCurrent Element :" + nNode.getNodeName());
-
-						if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
-							Element eElement = (Element) nNode;
-							Element eElementMesa = (Element) nNodeMesa;
-
-							// System.out.println("Cantidad : " + eElement.getAttribute("cantidad"));
-							// System.out.println("nombre : " +
-							// eElement.getElementsByTagName("nombre").item(0).getTextContent());
-							// System.out.println("precio : " +
-							// eElement.getElementsByTagName("precio").item(0).getTextContent());
-							String nombre = eElement.getElementsByTagName("nombre").item(0).getTextContent();
-
-							String cantidad = eElement.getAttribute("cantidad");
-							String mesa = eElementMesa.getAttribute("id");
-
-							// System.out.println(nombre);
-							// System.out.println(cantidad);
-							// System.out.println(precio);
-							if (temp == 0) {
-								guardarNumeroMesa(mesa);
-							}
-							arrayComandaCocina.add(nombre);
-							arrayComandaCocina.add(cantidad);
-
-						}
+				mesa = Integer.toString(key);
+				
+				for (int i = 0; i < valor.getProductosPedidos().size(); i++) {
+					nombre = valor.getProductosPedidos().get(i).getProducto().getNom();
+					cantidad = Integer.toString(valor.getProductosPedidos().get(i).getCantidad());
+					arrayComandaCocina.add(nombre);
+					arrayComandaCocina.add(cantidad);
+					if(i == 0) {
+						guardarNumeroMesa(mesa);
 					}
+				}
+
 					JTable tableComandaCocina = new JTable();
 					JTable tableServidoCocina = new JTable();
 
@@ -279,34 +224,28 @@ public class GenerarComanda {
 					Object[][] servido = new Object[0][3];
 					for (int i = 0; i < (arrayComandaCocina.size()) / 2; i++) {
 
-						
-						
-
 					}
 					tableServidoCocina.setShowVerticalLines(false);
 
 					tableServidoCocina.setBounds(0, 0, 441, 263);
 
-					tableServidoCocina
-							.setModel(new DefaultTableModel(servido, new String[] { "Producto", "Cantidad","Devolver"}));
+					tableServidoCocina.setModel(
+							new DefaultTableModel(servido, new String[] { "Producto", "Cantidad", "Devolver" }));
 
 					tableServidoCocina.setVisible(true);
-					
-					
 
 					tableComandaCocina.setShowVerticalLines(false);
 
 					tableComandaCocina.setBounds(0, 0, 441, 263);
 
-					tableComandaCocina
-							.setModel(new DefaultTableModel(comandao, new String[] { "Producto", "Cantidad", "Listo" }));
+					tableComandaCocina.setModel(
+							new DefaultTableModel(comandao, new String[] { "Producto", "Cantidad", "Listo" }));
 
 					tableComandaCocina.setVisible(true);
 					arrayTablaCocina.add(tableComandaCocina);
 					arrayTablaCocina.add(tableServidoCocina);
 					arrayComandaCocina.clear();
 				}
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -317,11 +256,11 @@ public class GenerarComanda {
 
 		return arrayTablaCocina;
 	}
-	public  ArrayList<JTable> tableServido(JTable arrayTablaCocina) {
-		
-		
+
+	public ArrayList<JTable> tableServido(JTable arrayTablaCocina) {
+
 		return null;
-		
+
 	}
 
 }

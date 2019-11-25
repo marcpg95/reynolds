@@ -13,10 +13,12 @@ public class ProductosComanda implements Serializable {
 	
 	Productes producto;
     int cantidad;
+    boolean listo;
 
-    public ProductosComanda(Productes producto, int cantidad) {
+    public ProductosComanda(Productes producto, int cantidad, boolean listo) {
         this.producto = producto;
         this.cantidad = cantidad;
+        this.listo = listo;
     }
 
     public Productes getProducto() {
@@ -30,4 +32,14 @@ public class ProductosComanda implements Serializable {
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
     }
+
+	public boolean isListo() {
+		return listo;
+	}
+
+	public void setListo(boolean listo) {
+		this.listo = listo;
+	}
+    
+    
 }
