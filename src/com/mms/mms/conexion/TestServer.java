@@ -1,14 +1,24 @@
 package com.mms.mms.conexion;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.swing.JButton;
+import javax.swing.JInternalFrame;
+import javax.swing.JLabel;
+import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import com.mms.mms.clases.Categories;
 import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.clases.comandas.ProductosComanda;
 
 import baseDeDatos.ConsultarCamareros;
+import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import funciones.GenerarXMLComanda;
 import interfaz.Principal;

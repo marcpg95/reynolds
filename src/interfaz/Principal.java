@@ -74,10 +74,15 @@ public class Principal extends JFrame {
 	
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
-	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
-	ArrayList<JTable> arrayTablaCocina = new ArrayList<JTable>();
-	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
-	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
+	public static ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
+	public static ArrayList<JTable> arrayTablaCocina = new ArrayList<JTable>();
+	public static ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
+	public static ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
+	public static Principal frame;
+	public static JPanel internalFrames;
+	public static JInternalFrame barra;
+	public static JTabbedPane tabbedPane;
+	public static JPanel panelMesas;
 	private JPanel contentPane;
 	static GenerarComanda gc;
 	// static GenerarInternalFrames gi;
@@ -109,7 +114,7 @@ public class Principal extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Principal frame = new Principal();
+					frame = new Principal();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -150,18 +155,18 @@ public class Principal extends JFrame {
 		JMenuItem menuItem_4 = new JMenuItem("Salir");
 		mnBarracocina.add(menuItem_4);
 
-		JPanel internalFrames = new JPanel();
+		internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
 
-		JInternalFrame barra = new JInternalFrame("Barra");
+		barra = new JInternalFrame("Barra");
 		barra.setBounds(0, 0, 844, 512);
 		internalFrames.add(barra);
 		barra.setClosable(true);
 		barra.getContentPane().setLayout(null);
 
-		JPanel panelMesas = new JPanel();
+		panelMesas = new JPanel();
 		panelMesas.setBounds(566, 226, 252, 246);
 		barra.getContentPane().add(panelMesas);
 		panelMesas.setLayout(new GridLayout(3, 5, 5, 10));
@@ -178,7 +183,7 @@ public class Principal extends JFrame {
 		btnServir.setBounds(362, 210, 90, 28);
 		taules.getContentPane().add(btnServir);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
 		// gi=new GenerarInternalFrames();
@@ -252,11 +257,7 @@ public class Principal extends JFrame {
 						contadorComanda++;
 						contadorServido++;
 						
-						}
-						
-						
-						
-						
+						}			
 						
 						
 						
