@@ -1,1 +1,30 @@
+<<<<<<< HEAD
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><comanda><mesa id="4"><producto cantidad="1"><nombre>Agua pequeña</nombre><precio>0.75</precio></producto></mesa></comanda>
+=======
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<Comanda>
+  
+    <mesa id="4">
+    	<producto cantidad="2">
+    		<nombre>Estrella Galicia</nombre>
+    		<precio>1.75</precio>
+    	</producto>
+    	<producto cantidad="1">
+    		<nombre>Patatas Fritas</nombre>
+    		<precio>5</precio>
+    	</producto>
+    	<producto cantidad="3">
+			<nombre>ColaCao</nombre>
+    		<precio>2</precio>
+		</producto>
+    	
+    	
+    	
+    
+    
+    
+    </mesa>
+       
+</Comanda>
+>>>>>>> branch 'Marc_Prados' of https://github.com/marcpg95/reynolds
