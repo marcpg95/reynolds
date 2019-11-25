@@ -1,12 +1,13 @@
 package funciones;
 
 import javax.swing.JButton;
+import javax.swing.JInternalFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 
 public class Usuario {
 
-	public static void InputDialog(JMenuItem menuCocina,JMenuItem menuBarra,JButton Servir,JButton Devolver) {
+	public static void InputDialog(JMenuItem menuCocina,JMenuItem menuBarra,JButton Servir,JButton Devolver,JInternalFrame barra) {
 
 			String passwordCocinero="1";
 			String passwordCamarero="2";
@@ -28,13 +29,14 @@ public class Usuario {
 		        	Devolver.setEnabled(false);
 		        	menuCocina.setEnabled(true);
 		        	Servir.setEnabled(true);
+		        	barra.setVisible(false);
 		        	correcto=true;
-		        	System.out.println("entro");
+		        	
 	        	}
 	        	else {
 	        		JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 	        	}
-	        	System.out.println(panePassword);
+	        	
 	        	}
 	        }
 	        else if(n=="Camarero") {

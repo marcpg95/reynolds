@@ -168,10 +168,10 @@ public class GenerarComanda {
 	public ArrayList<Float> usarPrecioMesa() {
 
 		// System.out.println("entrausar");
-		for (int i = 0; i < precioMesa.size(); i++) {
+		/*for (int i = 0; i < precioMesa.size(); i++) {
 			System.out.println(precioMesa.get(i));
 		}
-
+*/
 		return precioMesa;
 
 	}

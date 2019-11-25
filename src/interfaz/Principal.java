@@ -192,12 +192,12 @@ public class Principal extends JFrame {
 		taules.getContentPane().add(btnDevolver);
 		
 		//desactiva ciertas opciones segun el tipo de usuario que seas
-		Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver);
+		Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
 		
 		//Action listener para cambiar tipo de usuario una vez dentro 
 		cambiarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver);
+				Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
 			}
 		});
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
