@@ -23,6 +23,7 @@ import baseDeDatos.SubirFactura;
 import clases.ProductosFactura;
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
+import funciones.Usuario;
 import tablaConCheckBox.JCheckBox_Cell;
 import tablaConCheckBox.JCheckBox_Rendered;
 import funciones.Cobrar;
@@ -81,6 +82,7 @@ public class Principal extends JFrame {
 	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
 	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
+	
 	static GenerarComanda gc;
 	// static GenerarInternalFrames gi;
 	int numeroMesa = 1;
@@ -129,7 +131,8 @@ public class Principal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-
+		
+		
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.menu);
 		menuBar.setBounds(0, 0, 900, 21);
@@ -140,15 +143,22 @@ public class Principal extends JFrame {
 
 		JMenuItem menuCocina = new JMenuItem("Cocina");
 		mnBarracocina.add(menuCocina);
+		
+		
+		
 
 		JMenuItem menuBarra = new JMenuItem("Barra");
 		mnBarracocina.add(menuBarra);
-
+		
+		
+		
+		
 		JSeparator separator = new JSeparator();
-		mnBarracocina.add(separator);
+		//mnBarracocina.add(separator);
 
-		JMenuItem menuItem_4 = new JMenuItem("Salir");
-		mnBarracocina.add(menuItem_4);
+		JMenuItem cambiarUsuario = new JMenuItem("Login");
+		mnBarracocina.add(cambiarUsuario);
+		
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
@@ -180,7 +190,16 @@ public class Principal extends JFrame {
 		JButton btnDevolver = new JButton("Devolver");
 		btnDevolver.setBounds(395, 210, 90, 28);
 		taules.getContentPane().add(btnDevolver);
-
+		
+		//desactiva ciertas opciones segun el tipo de usuario que seas
+		Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver);
+		
+		//Action listener para cambiar tipo de usuario una vez dentro 
+		cambiarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver);
+			}
+		});
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
