@@ -21,8 +21,8 @@ import com.mms.mms.conexion.TestServer;
 import baseDeDatos.ConsultarCamareros;
 import baseDeDatos.ConsultarProductos;
 import baseDeDatos.RecuperarComandas;
+import baseDeDatos.SubirComanda;
 import baseDeDatos.SubirFactura;
-import clases.ProductosFactura;
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import funciones.Usuario;
@@ -72,11 +72,11 @@ import javax.swing.UIManager;
 
 public class Principal extends JFrame {
 
-	public static HashMap<Integer, ArrayList<ProductosFactura>> facturar = new HashMap<Integer, ArrayList<ProductosFactura>>();
 	public static HashMap<String, Categories> categorias = new ConsultarProductos().getProductos(); // RECOJO LOS
 																									// PRODUCTOS DE LA
 																									// BASE DE DATOS
-	public static HashMap<Integer, Comanda> comandas = new HashMap<Integer, Comanda>(); //LA KEY ES EL NUMERO DE LA MESA
+	public static HashMap<Integer, Comanda> comandas = new HashMap<Integer, Comanda>(); // LA KEY ES EL NUMERO DE LA
+																						// MESA
 
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
@@ -85,7 +85,7 @@ public class Principal extends JFrame {
 	ArrayList<JInternalFrame> arrayInternalFramesBarra = new ArrayList<JInternalFrame>();
 	ArrayList<JInternalFrame> arrayInternalFramesCocina = new ArrayList<JInternalFrame>();
 	private JPanel contentPane;
-	
+
 	static GenerarComanda gc;
 	// static GenerarInternalFrames gi;
 	int numeroMesa = 1;
@@ -109,17 +109,17 @@ public class Principal extends JFrame {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
-		
-		//RECUPERO LAS COMANDAS DE LA BASE DE DATOS
+
+		// RECUPERO LAS COMANDAS DE LA BASE DE DATOS
 		RecuperarComandas rc = new RecuperarComandas();
 		rc.consulta();
-				
-		//INICIO EL SERVIDOR
+
+		// INICIO EL SERVIDOR
 		new TestServer();
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
-				
+
 				try {
 					Principal frame = new Principal();
 					frame.setVisible(true);
@@ -141,8 +141,7 @@ public class Principal extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.menu);
 		menuBar.setBounds(0, 0, 900, 21);
@@ -153,22 +152,15 @@ public class Principal extends JFrame {
 
 		JMenuItem menuCocina = new JMenuItem("Cocina");
 		mnBarracocina.add(menuCocina);
-		
-		
-		
 
 		JMenuItem menuBarra = new JMenuItem("Barra");
 		mnBarracocina.add(menuBarra);
-		
-		
-		
-		
+
 		JSeparator separator = new JSeparator();
-		//mnBarracocina.add(separator);
+		// mnBarracocina.add(separator);
 
 		JMenuItem cambiarUsuario = new JMenuItem("Login");
 		mnBarracocina.add(cambiarUsuario);
-		
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
@@ -199,14 +191,14 @@ public class Principal extends JFrame {
 		JButton btnDevolver = new JButton("Devolver");
 		btnDevolver.setBounds(395, 210, 90, 28);
 		taules.getContentPane().add(btnDevolver);
-		
-		//desactiva ciertas opciones segun el tipo de usuario que seas
-		Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
-		
-		//Action listener para cambiar tipo de usuario una vez dentro 
+
+		// desactiva ciertas opciones segun el tipo de usuario que seas
+		Usuario.InputDialog(menuCocina, menuBarra, btnServir, btnDevolver, barra);
+
+		// Action listener para cambiar tipo de usuario una vez dentro
 		cambiarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
+				Usuario.InputDialog(menuCocina, menuBarra, btnServir, btnDevolver, barra);
 			}
 		});
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -247,12 +239,6 @@ public class Principal extends JFrame {
 
 			// *Lee el archivo config.xml para sacar la cantidad de mesas y en un futuro
 			// algunas configuraciones
-			
-			
-			
-			
-
-			
 
 			// *Mira la cantidad de mesas que hay y genera botones(barra) y pestañas(cocina)
 			// para las mesas
@@ -338,14 +324,34 @@ public class Principal extends JFrame {
 		barra.getContentPane().add(vacio);
 		vacio.setClosable(true);
 		vacio.getContentPane().setLayout(null);
+		ArrayList<String> numeroMesaComprobar = gc.usarNumeroMesa();
+		servirMesas(tabbedPane);
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				SubirFactura sf = new SubirFactura(facturar.get(mesaParaBorrar - 1), "Marc", mesaParaBorrar);
-				sf.enviarFactura();
+
+				System.out.println("ENTRAMOS A BORRAR LA MESA " + mesaParaBorrar);
+
+				// SUBO LA FACTURA A LA BASE DE DATOS
+				// SubirFactura sf = new
+				// SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
+				// comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
+				// sf.enviarFactura();
+
+				// BORRO LA COMANDA DE LA BASE DE DATOS
+				// SubirComanda sc = new SubirComanda(comandas.get(mesaParaBorrar),
+				// mesaParaBorrar);
+				// sc.borrarComanda();
+
 				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
-				new Cobrar().CobrarBarra(mesaParaBorrar);
-				arrayInternalFramesBarra.get(numeroMesa - 1).setVisible(false);
-				arrayInternalFramesBarra.set(numeroMesa - 1, vacio);
+				for (int i = 0; i < numeroMesaComprobar.size(); i++) {
+					if (numeroMesaComprobar.get(i).equalsIgnoreCase(Integer.toString(mesaParaBorrar))) {
+						arrayInternalFramesBarra.get(i).setVisible(false);
+						arrayInternalFramesBarra.set(i, vacio);
+						tabbedPane.remove(i);
+
+					}
+				}
+
 			}
 
 		});
@@ -389,7 +395,7 @@ public class Principal extends JFrame {
 						 * }
 						 */
 
-						for (int i =  modeloCocina.getRowCount()-1; i >=0 ; i--) {
+						for (int i = modeloCocina.getRowCount() - 1; i >= 0; i--) {
 							Object fila[] = new Object[modeloCocina.getColumnCount()];
 							boolean mover = true;
 							boolean borrar = false;
@@ -397,10 +403,19 @@ public class Principal extends JFrame {
 								mover = (boolean) modeloCocina.getValueAt(i, 2);
 								if (mover == false) {
 									fila[j] = modeloCocina.getValueAt(i, j);
-									//Principal.comandas.get(arrayNumeroMesa.get(i)).getProductosPedidos().get(2).setListo(true);
-									System.out.println("mesa "+tabbedPane.getName());
-									System.out.println(modeloCocina.getValueAt(i,0));
-									borrar=true;
+									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+									int numeroMesa = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
+									for (int p = 0; i < comandas.get(numeroMesa).getProductosPedidos().size(); p++) {
+										if (comandas.get(numeroMesa).getProductosPedidos().get(p).getProducto().getNom()
+												.equals(modeloCocina.getValueAt(i, 0))) {
+											comandas.get(numeroMesa).getProductosPedidos().get(p).setListo(true);
+											SubirComanda sc = new SubirComanda(comandas.get(numeroMesa), numeroMesa);
+											sc.borrarComanda();
+											sc.subir();
+											break;
+										}
+									}
+									borrar = true;
 									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
 								}
 
@@ -430,7 +445,7 @@ public class Principal extends JFrame {
 			}
 
 		});
-		
+
 		btnDevolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -455,7 +470,7 @@ public class Principal extends JFrame {
 						 * }
 						 */
 
-						for (int i =  modeloServir.getRowCount()-1; i >=0 ; i--) {
+						for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
 							Object fila[] = new Object[modeloServir.getColumnCount()];
 							boolean mover = true;
 							boolean borrar = false;
@@ -463,7 +478,19 @@ public class Principal extends JFrame {
 								mover = (boolean) modeloServir.getValueAt(i, 2);
 								if (mover == false) {
 									fila[j] = modeloServir.getValueAt(i, j);
-									borrar=true;
+									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
+									int numeroMesa = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
+									for (int p = 0; i < comandas.get(numeroMesa).getProductosPedidos().size(); p++) {
+										if (comandas.get(numeroMesa).getProductosPedidos().get(p).getProducto().getNom()
+												.equals(modeloServir.getValueAt(i, 0))) {
+											comandas.get(numeroMesa).getProductosPedidos().get(p).setListo(false);
+											SubirComanda sc = new SubirComanda(comandas.get(numeroMesa), numeroMesa);
+											sc.borrarComanda();
+											sc.subir();
+											break;
+										}
+									}
+									borrar = true;
 									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
 								}
 
@@ -523,5 +550,68 @@ public class Principal extends JFrame {
 			}
 		});
 
+		
+
 	}
+	
+	public void servirMesas(JTabbedPane tabbedPane) {
+		int contadorComanda = 0;
+		int contadorServido = 1;
+		for (int l = 0; l < arrayInternalFramesCocina.size()/2; l++) {
+			
+			
+
+					DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina
+							.get(l + contadorComanda).getModel();
+					DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina
+							.get(l + contadorServido).getModel();
+
+					/*
+					 * for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+					 * 
+					 * modeloServir.removeRow(i);
+					 * 
+					 * 
+					 * }
+					 */
+
+					for (int i = modeloCocina.getRowCount() - 1; i >= 0; i--) {
+						Object fila[] = new Object[modeloCocina.getColumnCount()];
+						boolean mover = true;
+						boolean borrar = false;
+						for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
+							mover = (boolean) modeloCocina.getValueAt(i, 2);
+							if (mover == false) {
+								fila[j] = modeloCocina.getValueAt(i, j);
+								
+								borrar = true;
+								// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
+							}
+
+						}
+
+						modeloServir.addRow(fila);
+						if (borrar == true) {
+
+							modeloCocina.removeRow(i);
+
+						}
+
+					}
+
+					for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
+
+						if (modeloServir.getValueAt(i, 0) == null) {
+							modeloServir.removeRow(i);
+						}
+
+					}
+					contadorComanda++;
+					contadorServido++;
+				}
+				
+			}
+
+		
+	
 }

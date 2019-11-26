@@ -6,19 +6,18 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
+import com.mms.mms.clases.comandas.ProductosComanda;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.PreparedStatement;
 import com.mysql.jdbc.Statement;
 
-import clases.ProductosFactura;
-
 public class SubirFactura {
 		
-	private ArrayList<ProductosFactura> productos;
+	private ArrayList<ProductosComanda> productos;
 	private String camarero;
 	private int numeroMesa;
 	
-	public SubirFactura(ArrayList<ProductosFactura> prod, String cambrer, int mesa) {
+	public SubirFactura(ArrayList<ProductosComanda> prod, String cambrer, int mesa) {
 		super();
 		this.productos = prod;
 		this.camarero = cambrer;
@@ -64,9 +63,9 @@ public class SubirFactura {
 			for(int i = 0; i < productos.size(); i++) {
 			stmt2 = (PreparedStatement) conn.prepareStatement("INSERT INTO productos_factura (factura,producto,cantidad,precio) VALUES (?,?,?,?)");
 			stmt2.setString(1, Integer.toString(id));
-			stmt2.setString(2, productos.get(i).getNombreProducto());
-			stmt2.setString(3, Integer.toString(productos.get(i).getCantidadProducto()));
-			stmt2.setString(4, Float.toString(productos.get(i).getPrecioProducto()));
+			stmt2.setString(2, productos.get(i).getProducto().getNom());
+			stmt2.setString(3, Integer.toString(productos.get(i).getCantidad()));
+			stmt2.setString(4, Float.toString(productos.get(i).getProducto().getPreu()));
 			stmt2.executeUpdate();		
 			}
 		} catch (SQLException e) {

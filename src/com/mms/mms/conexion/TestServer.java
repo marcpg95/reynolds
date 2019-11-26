@@ -89,7 +89,8 @@ public class TestServer implements TestService {
 				// SUBO LA COMANDA A LA BASE DE DATOS
 				sc.subir();
 			} else {
-				sc.actualizarProductos(); //ACUALIZO LA COMANDA DE LA BASE DE DATOS
+				sc.borrarComanda(); //ACUALIZO LA COMANDA DE LA BASE DE DATOS
+				sc.subir();
 			}
 		}
 

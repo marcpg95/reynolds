@@ -49,10 +49,10 @@ public class SubirComanda {
 			PreparedStatement stmt2 = (PreparedStatement) conn.prepareStatement(
 					"INSERT INTO productos_pedidos (comanda,producto,cantidad,listo) VALUES (?,?,?,?)");
 			stmt2.setInt(1, numeroMesa);
-			stmt2.setBoolean(4, false);
 			for (int i = 0; i < pc.size(); i++) {
 				stmt2.setInt(2, pc.get(i).getProducto().getId());
 				stmt2.setInt(3, pc.get(i).getCantidad());
+				stmt2.setBoolean(4, pc.get(i).isListo());
 				stmt2.executeUpdate();
 			}
 			conn.close();
@@ -63,7 +63,8 @@ public class SubirComanda {
 		}
 	}
 
-	public void actualizarProductos() {
+	//BORRA UNA COMANDA
+	public void borrarComanda() {
 		// DATOS DE CONEXION A LA BASE DE DATOS
 		String usuari = DatosConexion.usuari;
 		String clau = DatosConexion.clau;
@@ -82,9 +83,6 @@ public class SubirComanda {
 			
 			stmt2.execute();
 			stmt2.close();
-			
-			//SUBO LOS PRODUCTOS DE NUEVO
-			subir();
 			
 			conn.close();
 		} catch (ClassNotFoundException e) {

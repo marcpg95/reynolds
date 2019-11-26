@@ -16,7 +16,6 @@ import org.w3c.dom.NodeList;
 
 import com.mms.mms.clases.comandas.Comanda;
 
-import clases.ProductosFactura;
 import interfaz.Principal;
 
 public class GenerarComanda {
@@ -35,6 +34,7 @@ public class GenerarComanda {
 		try {
 
 			String nombre, cantidad, mesa, precio;
+			
 
 			Integer key;
 			Comanda valor;
@@ -66,8 +66,6 @@ public class GenerarComanda {
 					float precioTotal = 0;
 					float auxPrecioTotal = 0;
 
-					ArrayList<ProductosFactura> p = new ArrayList<ProductosFactura>();
-
 					Object[][] o = new Object[(arrayComandaBarra.size()) / 3][4];
 					for (int i = 0; i < (arrayComandaBarra.size()) / 3; i++) {
 
@@ -75,12 +73,6 @@ public class GenerarComanda {
 
 						o[i][1] = arrayComandaBarra.get((i) + contadorCantidad);
 						o[i][2] = arrayComandaBarra.get((i) + contadorPrecio);
-
-						ProductosFactura pf = new ProductosFactura(
-								Integer.parseInt(arrayComandaBarra.get((i) + contadorCantidad)),
-								arrayComandaBarra.get((i) + contadorProducto),
-								Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio)));
-						p.add(pf);
 
 						precioTotal += Float.parseFloat(arrayComandaBarra.get((i) + contadorPrecio));
 
@@ -96,8 +88,6 @@ public class GenerarComanda {
 						precioTotal = 0;
 
 					}
-
-					Principal.facturar.put(contadorComanda - 1, p);
 
 					auxPrecioTotal *= 1.21;
 					guardarPrecioMesa(auxPrecioTotal);
@@ -213,9 +203,9 @@ public class GenerarComanda {
 
 						comandao[i][1] = Principal.comandas.get(key).getProductosPedidos().get(i).getCantidad();
 
-						comandao[i][2] = true;
+						comandao[i][2] = !(Principal.comandas.get(key).getProductosPedidos().get(i).isListo());
 						
-						
+						System.out.println(comandao[i][2]);
 
 						contadorCantidad++;
 						contadorProducto++;
