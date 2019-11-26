@@ -373,7 +373,8 @@ public class Principal extends JFrame {
 		 */
 		btnServir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				int numeroMesaAux = 0;
+				boolean actualizarDatos = false;
 				int contadorComanda = 0;
 				int contadorServido = 1;
 				for (int x = 0; x < arrayInternalFramesCocina.size() / 2; x++) {
@@ -404,14 +405,12 @@ public class Principal extends JFrame {
 								if (mover == false) {
 									fila[j] = modeloCocina.getValueAt(i, j);
 									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-									int numeroMesa = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
-									for (int p = 0; i < comandas.get(numeroMesa).getProductosPedidos().size(); p++) {
-										if (comandas.get(numeroMesa).getProductosPedidos().get(p).getProducto().getNom()
+									numeroMesaAux = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
+									for (int p = 0; i < comandas.get(numeroMesaAux).getProductosPedidos().size(); p++) {
+										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto().getNom()
 												.equals(modeloCocina.getValueAt(i, 0))) {
-											comandas.get(numeroMesa).getProductosPedidos().get(p).setListo(true);
-											SubirComanda sc = new SubirComanda(comandas.get(numeroMesa), numeroMesa);
-											sc.borrarComanda();
-											sc.subir();
+											comandas.get(numeroMesaAux).getProductosPedidos().get(p).setListo(true);
+											actualizarDatos = true;
 											break;
 										}
 									}
@@ -442,13 +441,19 @@ public class Principal extends JFrame {
 					contadorServido++;
 				}
 
+				if(actualizarDatos == true) {
+				SubirComanda sco = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
+				sco.borrarComanda();
+				sco.subir();
+				}
 			}
-
+			
 		});
 
 		btnDevolver.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				int numeroMesaAux = 0;
+				boolean actualizarDatos = false;
 				int contadorComanda = 0;
 				int contadorServido = 1;
 				for (int x = 0; x < arrayInternalFramesCocina.size() / 2; x++) {
@@ -479,14 +484,12 @@ public class Principal extends JFrame {
 								if (mover == false) {
 									fila[j] = modeloServir.getValueAt(i, j);
 									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
-									int numeroMesa = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
-									for (int p = 0; i < comandas.get(numeroMesa).getProductosPedidos().size(); p++) {
-										if (comandas.get(numeroMesa).getProductosPedidos().get(p).getProducto().getNom()
+									numeroMesaAux = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
+									for (int p = 0; i < comandas.get(numeroMesaAux).getProductosPedidos().size(); p++) {
+										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto().getNom()
 												.equals(modeloServir.getValueAt(i, 0))) {
-											comandas.get(numeroMesa).getProductosPedidos().get(p).setListo(false);
-											SubirComanda sc = new SubirComanda(comandas.get(numeroMesa), numeroMesa);
-											sc.borrarComanda();
-											sc.subir();
+											comandas.get(numeroMesaAux).getProductosPedidos().get(p).setListo(false);
+											actualizarDatos = true;
 											break;
 										}
 									}
@@ -516,7 +519,12 @@ public class Principal extends JFrame {
 					contadorComanda++;
 					contadorServido++;
 				}
-
+				
+				if(actualizarDatos == true) {
+				SubirComanda sc = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
+				sc.borrarComanda();
+				sc.subir();
+				}
 			}
 
 		});
