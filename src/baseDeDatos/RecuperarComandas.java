@@ -68,6 +68,7 @@ public class RecuperarComandas {
 							c = new Comanda(productos, camarero);
 							Principal.comandas.put(numeroMesa, c);
 						}
+						productos = new ArrayList<ProductosComanda>();
 					}
 					System.out.println("Comandas cargadas de la base de datos.");
 				} catch (SQLException e) {

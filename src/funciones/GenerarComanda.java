@@ -207,13 +207,15 @@ public class GenerarComanda {
 					int contadorCantidad = 1;
 
 					Object[][] comandao = new Object[(arrayComandaCocina.size()) / 2][3];
-					for (int i = 0; i < (arrayComandaCocina.size()) / 2; i++) {
+					for (int i = 0; i < Principal.comandas.get(key).getProductosPedidos().size(); i++) {
 
-						comandao[i][0] = arrayComandaCocina.get((i) + contadorProducto);
+						comandao[i][0] = Principal.comandas.get(key).getProductosPedidos().get(i).getProducto().getNom();
 
-						comandao[i][1] = arrayComandaCocina.get((i) + contadorCantidad);
+						comandao[i][1] = Principal.comandas.get(key).getProductosPedidos().get(i).getCantidad();
 
 						comandao[i][2] = true;
+						
+						
 
 						contadorCantidad++;
 						contadorProducto++;

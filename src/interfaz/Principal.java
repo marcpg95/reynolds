@@ -4,6 +4,7 @@ import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -112,12 +113,13 @@ public class Principal extends JFrame {
 		//RECUPERO LAS COMANDAS DE LA BASE DE DATOS
 		RecuperarComandas rc = new RecuperarComandas();
 		rc.consulta();
-		
+				
 		//INICIO EL SERVIDOR
 		new TestServer();
 
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
+				
 				try {
 					Principal frame = new Principal();
 					frame.setVisible(true);
@@ -395,6 +397,9 @@ public class Principal extends JFrame {
 								mover = (boolean) modeloCocina.getValueAt(i, 2);
 								if (mover == false) {
 									fila[j] = modeloCocina.getValueAt(i, j);
+									//Principal.comandas.get(arrayNumeroMesa.get(i)).getProductosPedidos().get(2).setListo(true);
+									System.out.println("mesa "+tabbedPane.getName());
+									System.out.println(modeloCocina.getValueAt(i,0));
 									borrar=true;
 									// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
 								}
