@@ -1,5 +1,6 @@
 package funciones;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 import javax.swing.JCheckBox;
@@ -85,7 +86,8 @@ int contadorServido=1;
 			servirCocina.setClosable(true);
 			servirCocina.getContentPane().setLayout(null);
 			
-			JLabel lblCamarero = new JLabel("Camarero :");
+			int numero = Integer.parseInt(arrayNumeroMesa.get(i));
+			JLabel lblCamarero = new JLabel("Camarero : " + Principal.comandas.get(numero).getCamarero());
 			lblCamarero.setBounds(400, 25, 103, 23);
 			comandaCocina.getContentPane().add(lblCamarero);
 
@@ -93,8 +95,10 @@ int contadorServido=1;
 			lblNumeroMesa.setBounds(400, 50, 103, 23);
 			comandaCocina.getContentPane().add(lblNumeroMesa);
 
-			JLabel lblFecha = new JLabel("Hora entrada pedido :");
-			lblFecha.setBounds(400, 75, 160, 23);
+			java.util.Date d = new java.util.Date();  
+			Timestamp date = new Timestamp(d.getTime());
+			JLabel lblFecha = new JLabel("Hora entrada pedido : " + date);
+			lblFecha.setBounds(400, 75, 300, 23);
 			comandaCocina.getContentPane().add(lblFecha);
 
 			arrayInternalFramesCocina.add(comandaCocina);

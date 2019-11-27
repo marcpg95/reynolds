@@ -205,8 +205,6 @@ public class GenerarComanda {
 
 						comandao[i][2] = !(Principal.comandas.get(key).getProductosPedidos().get(i).isListo());
 						
-						System.out.println(comandao[i][2]);
-
 						contadorCantidad++;
 						contadorProducto++;
 

@@ -335,15 +335,13 @@ public class Principal extends JFrame {
 				System.out.println("ENTRAMOS A BORRAR LA MESA " + mesaParaBorrar);
 
 				// SUBO LA FACTURA A LA BASE DE DATOS
-				// SubirFactura sf = new
-				// SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
-				// comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
-				// sf.enviarFactura();
+				SubirFactura sf = new SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
+				comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
+				sf.enviarFactura();
 
 				// BORRO LA COMANDA DE LA BASE DE DATOS
-				// SubirComanda sc = new SubirComanda(comandas.get(mesaParaBorrar),
-				// mesaParaBorrar);
-				// sc.borrarComanda();
+				 SubirComanda sc = new SubirComanda(comandas.get(mesaParaBorrar),mesaParaBorrar);
+				 sc.borrarComanda();
 
 				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
 				for (int i = 0; i < numeroMesaComprobar.size(); i++) {
