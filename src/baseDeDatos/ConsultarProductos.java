@@ -42,7 +42,6 @@ public class ConsultarProductos {
 			String nom, descripcion, image, categoria;
 
 			HashMap<Integer, Productes> productos = new HashMap<Integer, Productes>(); // ESTO VA A CATEGORIES
-			String auxiliarCategoria = "";
 
 			while (resul.next()) {
 				id = resul.getInt("id");
@@ -51,20 +50,19 @@ public class ConsultarProductos {
 				image = resul.getString("image");
 				preu = resul.getFloat("preu");
 				categoria = resul.getString("categoria");
-
-				if (!auxiliarCategoria.equals("") && !auxiliarCategoria.equals(categoria)) { //CUANDO CAMBIE DE CATEGORIA
-					Categories c = new Categories(productos);
-					this.categorias.put(auxiliarCategoria, c); //GUARDO LA CATEGORIA Y SUS PRODUCTOS
-					productos = new HashMap<Integer, Productes>(); //REINICIO EL HASHMAP
-				}
-
-				auxiliarCategoria = categoria;
-
+				
 				Productes p = new Productes(nom, descripcion, image, preu, id);
-				productos.put(id, p);
+				
+				if(this.categorias.containsKey(categoria)) {
+					this.categorias.get(categoria).getProductos().put(id, p);
+				} else {
+					productos = new HashMap<Integer, Productes>();
+					productos.put(id, p);
+					Categories c = new Categories(productos);
+					this.categorias.put(categoria, c);
+				}
 			}
-			Categories c = new Categories(productos);
-			this.categorias.put(auxiliarCategoria, c); 
+			System.out.println("Productos cargados de la base de datos.");
 		} catch (SQLException e) {
 			System.out.println("Excepció del tipus SQL");
 
