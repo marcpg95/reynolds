@@ -1,26 +1,17 @@
 package com.mms.mms.conexion;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import javax.swing.JButton;
-import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JTabbedPane;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
+import com.mms.mms.clases.Camarero;
 import com.mms.mms.clases.Categories;
 import com.mms.mms.clases.comandas.Comanda;
-import com.mms.mms.clases.comandas.ProductosComanda;
 
+import baseDeDatos.AddCamarero;
 import baseDeDatos.ConsultarCamareros;
 import baseDeDatos.SubirComanda;
-import funciones.GenerarComanda;
-import funciones.GenerarInternalFrames;
 import funciones.GenerarXMLComanda;
 import interfaz.Principal;
 import lipermi.handler.CallHandler;
@@ -53,7 +44,7 @@ public class TestServer implements TestService {
 	}
 
 	@Override
-	public ArrayList<String> cogerCamareros() {
+	public ArrayList<Camarero> cogerCamareros() {
 		ConsultarCamareros cc = new ConsultarCamareros();
 		System.out.println("Se ha solicitado la lista de camareros.");
 		return cc.getCamareros();
@@ -94,12 +85,19 @@ public class TestServer implements TestService {
 			}
 		}
 
+		//AQUI SE DEBEN RECARGAR LAS COMANDAS
 	}
 
 	@Override
 	public HashMap<Integer, Comanda> cogerComandas() {
 		System.out.println("Se han solicitado las comandas.");
 		return Principal.comandas;
+	}
+
+	@Override
+	public void enviarCamarero(String nombre, String password, byte[] image) {
+		AddCamarero ac = new AddCamarero(nombre, password, image);
+		ac.subir();
 	}
 
 }

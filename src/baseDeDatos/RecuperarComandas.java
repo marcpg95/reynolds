@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.mms.mms.clases.Productes;
 import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.clases.comandas.ProductosComanda;
+import com.mysql.jdbc.Blob;
 import com.mysql.jdbc.Connection;
 import com.mysql.jdbc.Statement;
 
@@ -33,7 +34,9 @@ public class RecuperarComandas {
 					Productes producto;
 					Comanda c;
 					int numeroMesa, cantidad, idProducto;
-					String camarero, nom, descripcion, image;
+					String camarero, nom, descripcion;
+					Blob image;
+					byte[] imagen;
 					float preu;
 					boolean listo;
 					
@@ -59,9 +62,10 @@ public class RecuperarComandas {
 							while(resul3.next()) {
 								nom = resul3.getString("nom");
 								descripcion = resul3.getString("descripcion");
-								image = resul3.getString("image");
+								image = (Blob) resul3.getBlob("image");
+								imagen = image.getBytes(1, (int) image.length());
 								preu = resul3.getFloat("preu");
-								producto = new Productes(nom, descripcion, image, preu, idProducto);
+								producto = new Productes(nom, descripcion, preu, idProducto, imagen);
 								productosPedidos = new ProductosComanda(producto, cantidad, listo);
 								productos.add(productosPedidos);
 							}

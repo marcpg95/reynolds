@@ -20,6 +20,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+import com.mms.mms.clases.Camarero;
+
 import baseDeDatos.ConsultarCamareros;
 
 
@@ -121,7 +123,7 @@ public class Usuario {
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 	
-		ArrayList<String> camareros = cc.getCamareros();
+		ArrayList<Camarero> camareros = cc.getCamareros();
 
 		panelUsuario.setLayout(new FlowLayout());
 		JLabel labelUser = new JLabel("User");
@@ -136,11 +138,11 @@ public class Usuario {
 			public void actionPerformed(ActionEvent e) {
 				String texto = t1.getText();
 				for (int j = 0; j < camareros.size(); j++) {
-					if (camareros.get(j).equalsIgnoreCase(texto)) {
+					if (camareros.get(j).getNombre().equalsIgnoreCase(texto)) {
 						internalLogin.dispose();
 						Usuario.InputDialog(menuCocina, menuBarra, Servir, Devolver, barra, mnBarraCocina);
 						break;
-					} else if (j == (camareros.size() - 1) && !camareros.get(j).equalsIgnoreCase(texto)) {
+					} else if (j == (camareros.size() - 1) && !camareros.get(j).getNombre().equalsIgnoreCase(texto)) {
 						t1.setText(null);
 						JOptionPane.showMessageDialog(null, "Usuario incorrecto", "Error", JOptionPane.WARNING_MESSAGE);
 					}

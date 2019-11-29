@@ -9,14 +9,15 @@ public class Productes implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String nom, descripcion, image;
+	private String nom, descripcion;
     private float preu;
     private int id;
+    byte[] imagen;
 
-    public Productes(String nom, String descripcion, String image, float preu, int id) {
+    public Productes(String nom, String descripcion, float preu, int id, byte[] image) {
         this.nom = nom;
         this.descripcion = descripcion;
-        this.image = image;
+        this.imagen = image;
         this.preu = preu;
         this.id = id;
     }
@@ -37,12 +38,12 @@ public class Productes implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getImage() {
-        return image;
+    public byte[] getImage() {
+        return this.imagen;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImage(byte[] data) {
+        this.imagen = data;
     }
 
     public float getPreu() {
