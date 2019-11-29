@@ -93,7 +93,7 @@ public class TestServer implements TestService {
 				sc.subir();
 			}
 		}
-
+			//AQUI SE TIENE QUE ACTUALIZAR EL DESKTOP
 	}
 
 	@Override
