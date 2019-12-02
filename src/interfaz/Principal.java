@@ -1,18 +1,20 @@
 package interfaz;
 
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-
+import com.mms.mms.clases.Camarero;
 import com.mms.mms.clases.Categories;
+import com.mms.mms.clases.Productes;
 import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.conexion.TestServer;
 
-
+import baseDeDatos.ConsultarCamareros;
 import baseDeDatos.ConsultarProductos;
 import baseDeDatos.RecuperarComandas;
 import baseDeDatos.SubirComanda;
@@ -53,6 +55,8 @@ import javax.swing.ImageIcon;
 import java.awt.SystemColor;
 
 import java.awt.GridLayout;
+import java.awt.Image;
+
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
 import javax.swing.UIManager;
@@ -65,6 +69,8 @@ public class Principal extends JFrame {
 	public static HashMap<Integer, Comanda> comandas = new HashMap<Integer, Comanda>(); // LA KEY ES EL NUMERO DE LA
 																						// MESA
 
+	public static HashMap<String, Camarero> camareros = new HashMap<String, Camarero>();
+	
 	private static final long serialVersionUID = 1L;
 	// *Crea los array list que se van a utilizar
 	ArrayList<JTable> arrayTablaBarra = new ArrayList<JTable>();
@@ -102,6 +108,12 @@ public class Principal extends JFrame {
 		// RECUPERO LAS COMANDAS DE LA BASE DE DATOS
 		RecuperarComandas rc = new RecuperarComandas();
 		rc.consulta();
+		
+		//RECUPERO LOS CAMAREROS DE LA BASE DE DATOS
+		ArrayList<Camarero> cambrers = new ConsultarCamareros().getCamareros();
+		for(int i = 0; i < cambrers.size(); i++) {
+			camareros.put(cambrers.get(i).getNombre(), cambrers.get(i));
+		}
 
 		// INICIO EL SERVIDOR
 		new TestServer();
@@ -239,7 +251,7 @@ public class Principal extends JFrame {
 
 		try {
 			JPanel panelCategorias = new JPanel();
-			panelCategorias.setBounds(20, 300, 400, 50);
+			panelCategorias.setBounds(20, 270, 400, 70);
 			barra.getContentPane().add(panelCategorias);
 			panelCategorias.setLayout(new GridLayout(1, 5, 5, 10));
 
@@ -247,11 +259,15 @@ public class Principal extends JFrame {
 
 			String nombreProductos;
 			Categories categoriaProducto;
-			ImageIcon iconoProductoBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
+			ImageIcon iconoProductoBtn;
+			Image imagenParsearIcono;
+			HashMap<Integer, Productes> productosCategory;
+			Productes productoEscogido;
+			
 			for (Entry<String, Categories> leer : categorias.entrySet()) {
-
+				nombreCategoria = leer.getKey();
 				JInternalFrame panelProductosCategorias = new JInternalFrame(nombreCategoria);
-				panelProductosCategorias.setBounds(20, 25, 400, 250);
+				panelProductosCategorias.setBounds(20, 15, 400, 250);
 				barra.getContentPane().add(panelProductosCategorias);
 				panelProductosCategorias.setLayout(new GridLayout(3, 5, 5, 10));
 				panelProductosCategorias.setVisible(false);
@@ -267,8 +283,17 @@ public class Principal extends JFrame {
 				north1.validate(); 
 				north1.repaint();
 
-				for (int i = 0; i < cantidadProductos; i++) {
-					JButton btnProducto = new JButton(iconoProductoBtn);
+				
+				
+				productosCategory = categorias.get(nombreCategoria).getProductos();
+				for (Entry<Integer, Productes> entry : productosCategory.entrySet()) {
+					productoEscogido = entry.getValue();
+					iconoProductoBtn = new ImageIcon(productoEscogido.getImage());
+					imagenParsearIcono = iconoProductoBtn.getImage();
+					imagenParsearIcono = imagenParsearIcono.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+					iconoProductoBtn = new ImageIcon(imagenParsearIcono);
+					
+					JButton btnProducto = new JButton(productoEscogido.getNom(), iconoProductoBtn);
 
 					panelProductosCategorias.add(btnProducto);
 					btnProducto.addActionListener(new ActionListener() {
@@ -285,33 +310,30 @@ public class Principal extends JFrame {
 			
 			
 			
-			ImageIcon iconoCategoriaBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
+			ImageIcon iconoCategoriaBtn;
 			int contador = 0;
 			String contadorString;
 			ArrayList<String> nombreCategorias = new ArrayList<String>();
-			for (Entry<String, Categories> leer : categorias.entrySet()) {
-
-				
-				
+			for (Entry<String, Categories> leer : categorias.entrySet()) {	
 				contador++;
 				contadorString = Integer.toString(contador);
 				nombreCategoria = leer.getKey();
-				JButton btnCategoria = new JButton(contadorString);
-
+				
+				//CREO EL BOTON CON UNA IMAGEN
+				iconoCategoriaBtn = new ImageIcon(categorias.get(nombreCategoria).getArrayImage());
+				JButton btnCategoria = new JButton(contadorString, iconoCategoriaBtn);
+				
 				panelCategorias.add(btnCategoria);
 				btnCategoria.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String nombreMesa = ((JButton) e.getSource()).getText();
-						System.out.println(nombreMesa);
 						numeroCategoria = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
 
 						for (int i = 0; i < productosDeCategorias.size(); i++) {
-
 							productosDeCategorias.get(i).setVisible(false);
 						}
 
 						productosDeCategorias.get(numeroCategoria - 1).setVisible(true);
-
 					}
 
 				});

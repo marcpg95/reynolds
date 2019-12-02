@@ -2,14 +2,17 @@ package funciones;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
@@ -18,14 +21,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import com.mms.mms.clases.Camarero;
 
 import baseDeDatos.ConsultarCamareros;
-
+import interfaz.Principal;
 
 public class Usuario {
+	static JButton botonCamarero = new JButton();
 	public static void InputDialog(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
 			JInternalFrame barra, JMenu mnBarraCocina) {
 
@@ -98,13 +104,16 @@ public class Usuario {
 
 		ConsultarCamareros cc = new ConsultarCamareros();
 		Font negrita = new Font("Arial", Font.BOLD, 14);
-		
+
 		mnBarraCocina.setEnabled(false);
 		// Se construye el JInternalFrame
 		JInternalFrame internalLogin = new JInternalFrame("Login");
-		internalLogin.setBounds(250, 150, 400, 250);
+		internalLogin.setBounds(250, 150, 400, 450);
 		internalFrames.add(internalLogin);
-		
+
+		JPanel panelFotoCamarero = new JPanel(new GridLayout());
+		panelFotoCamarero.setBounds(100, 100, 150, 150);
+		internalLogin.getContentPane().add(panelFotoCamarero);
 
 		// Se construye el panel que ira dentro del JInternalFrame
 		JPanel panelUsuario = new JPanel();
@@ -122,7 +131,6 @@ public class Usuario {
 		c.weighty = 0;
 		c.fill = GridBagConstraints.HORIZONTAL;
 
-	
 		ArrayList<Camarero> camareros = cc.getCamareros();
 
 		panelUsuario.setLayout(new FlowLayout());
@@ -130,6 +138,31 @@ public class Usuario {
 		labelUser.setFont(negrita);
 		panelUsuario.add(labelUser);
 		JTextField t1 = new JTextField(10);
+
+		t1.getDocument().addDocumentListener(new DocumentListener() {
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				if (Principal.camareros.containsKey(t1.getText().toString())) {
+					ImageIcon imagenCamarero = new ImageIcon(Principal.camareros.get(t1.getText().toString()).getImagen());
+					JButton botonCamarero = new JButton(imagenCamarero);
+					
+				}
+			}
+		});
+
 		panelUsuario.add(t1);
 
 		JButton botonLogin = new JButton("Login");
@@ -196,17 +229,19 @@ public class Usuario {
 		c.gridy = 5;
 		c.gridwidth = 4;
 		teclado.add(espacio, c);
-		
-		//Con  esto quitamos la flecha desplegable superior.
+
+		// Con esto quitamos la flecha desplegable superior.
 		BasicInternalFrameUI ui = (BasicInternalFrameUI) internalLogin.getUI();
-		Container north = (Container)ui.getNorthPane();
+		Container north = (Container) ui.getNorthPane();
 		north.remove(0);
-		north.validate(); //Usamos validate y repaint debido a que el contenedor ya era visible, por lo tanto tienes que llamarlos para validar el cambio.
+		north.validate(); // Usamos validate y repaint debido a que el contenedor ya era visible, por lo
+							// tanto tienes que llamarlos para validar el cambio.
 		north.repaint();
-		
+
 		internalLogin.setClosable(false);// Para que se pueda cerrar.
 		internalLogin.setResizable(false); // Para que se pueda redimensionar el internalFrame.
-		// internalLogin.getContentPane().setLayout(null); //Para modificar la posicion de los componentes internos
+		// internalLogin.getContentPane().setLayout(null); //Para modificar la posicion
+		// de los componentes internos
 		internalFrames.add(internalLogin);
 
 		// Se visualiza el JInternalFrame
