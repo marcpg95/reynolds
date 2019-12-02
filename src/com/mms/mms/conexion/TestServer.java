@@ -84,8 +84,6 @@ public class TestServer implements TestService {
 				sc.subir();
 			}
 		}
-
-		//AQUI SE DEBEN RECARGAR LAS COMANDAS
 	}
 
 	@Override

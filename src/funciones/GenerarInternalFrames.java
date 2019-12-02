@@ -38,7 +38,7 @@ public class GenerarInternalFrames {
 		for (int i = 0; i < cantidadComandas; i++) {
 
 			JInternalFrame comanda = new JInternalFrame("Comanda" + (arrayNumeroMesa.get(i)));
-			comanda.setBounds(20, 220, 390, 270);
+			comanda.setBounds(20, 350, 390, 270);
 			barra.add(comanda);
 
 			comanda.setClosable(true);
