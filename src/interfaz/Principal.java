@@ -1,6 +1,7 @@
 package interfaz;
 
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,6 +30,7 @@ import funciones.Usuario;
 import tablaConCheckBox.JCheckBox_Cell;
 import tablaConCheckBox.JCheckBox_Rendered;
 import funciones.Cobrar;
+import funciones.Devolucion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -51,6 +53,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
@@ -233,6 +236,8 @@ public class Principal extends JFrame {
 		arrayInternalFramesBarra = new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas, barra,
 				arrayTablaBarra);
 		ArrayList<Float> arrayPrecioMesa = gc.usarPrecioMesa();
+		
+		
 
 		JButton btnCobrar = new JButton("Cobrar");
 		btnCobrar.setBounds(450, 465, 80, 30);
@@ -415,6 +420,11 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		
+		
+		Devolucion.DevolucionDinero(barra, lblPrecio,btnCobrar);
+		
 		JInternalFrame vacio = new JInternalFrame("Mesa Vacia");
 		vacio.setBounds(20, 220, 390, 270);
 		barra.getContentPane().add(vacio);
@@ -424,9 +434,10 @@ public class Principal extends JFrame {
 		servirMesas(tabbedPane);
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				
 				System.out.println("ENTRAMOS A BORRAR LA MESA " + mesaParaBorrar);
-
+			
+/*
 				// SUBO LA FACTURA A LA BASE DE DATOS
 				SubirFactura sf = new SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
 				comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
@@ -445,6 +456,8 @@ public class Principal extends JFrame {
 
 					}
 				}
+			*/	
+				
 
 			}
 
@@ -714,6 +727,7 @@ public class Principal extends JFrame {
 				
 			}
 
+	
 		
 	
 }
