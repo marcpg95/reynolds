@@ -291,6 +291,8 @@ public class Principal extends JFrame {
 			ArrayList<String> nombreCategorias = new ArrayList<String>();
 			for (Entry<String, Categories> leer : categorias.entrySet()) {
 
+				
+				
 				contador++;
 				contadorString = Integer.toString(contador);
 				nombreCategoria = leer.getKey();
