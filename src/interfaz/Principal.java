@@ -1,48 +1,41 @@
 package interfaz;
 
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.mms.mms.clases.Categories;
-import com.mms.mms.clases.Productes;
 import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.conexion.TestServer;
 
-import baseDeDatos.ConsultarCamareros;
+
 import baseDeDatos.ConsultarProductos;
 import baseDeDatos.RecuperarComandas;
 import baseDeDatos.SubirComanda;
-import baseDeDatos.SubirFactura;
+
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import funciones.Usuario;
-import tablaConCheckBox.JCheckBox_Cell;
-import tablaConCheckBox.JCheckBox_Rendered;
-import funciones.Cobrar;
+
+import funciones.Devolucion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 
 import javax.swing.JInternalFrame;
 
@@ -51,22 +44,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
+
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.AbstractButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 
 import java.awt.SystemColor;
-import java.awt.Rectangle;
+
 import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -183,8 +168,6 @@ public class Principal extends JFrame {
 		barra.getContentPane().add(panelMesas);
 		panelMesas.setLayout(new GridLayout(3, 5, 5, 10));
 
-		
-
 		JInternalFrame taules = new JInternalFrame("Mesas Cocina");
 		taules.setBounds(10, 11, 844, 512);
 		internalFrames.add(taules);
@@ -198,7 +181,14 @@ public class Principal extends JFrame {
 		JButton btnDevolver = new JButton("Devolver");
 		btnDevolver.setBounds(395, 210, 90, 28);
 		taules.getContentPane().add(btnDevolver);
-
+		
+		BasicInternalFrameUI ui = (BasicInternalFrameUI) taules.getUI();
+		Container north = (Container)ui.getNorthPane();
+		north.remove(0);
+		north.validate(); 
+		north.repaint();
+		
+		
 		// desactiva ciertas opciones segun el tipo de usuario que seas
 		// Usuario.LoginSinAyuda(menuCocina,
 		// menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
@@ -269,11 +259,17 @@ public class Principal extends JFrame {
 				nombreProductos = leer.getKey();
 				categoriaProducto = leer.getValue();
 				int cantidadProductos = categoriaProducto.getProductos().size();
+				
+				
+				BasicInternalFrameUI ui1 = (BasicInternalFrameUI) panelProductosCategorias.getUI();
+				Container north1 = (Container)ui1.getNorthPane();
+				north1.remove(0);
+				north1.validate(); 
+				north1.repaint();
 
 				for (int i = 0; i < cantidadProductos; i++) {
 					JButton btnProducto = new JButton(iconoProductoBtn);
 
-					
 					panelProductosCategorias.add(btnProducto);
 					btnProducto.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
@@ -286,12 +282,17 @@ public class Principal extends JFrame {
 				productosDeCategorias.add(panelProductosCategorias);
 
 			}
+			
+			
+			
 			ImageIcon iconoCategoriaBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
 			int contador = 0;
 			String contadorString;
-			ArrayList <String> nombreCategorias= new ArrayList <String>();
+			ArrayList<String> nombreCategorias = new ArrayList<String>();
 			for (Entry<String, Categories> leer : categorias.entrySet()) {
 
+				
+				
 				contador++;
 				contadorString = Integer.toString(contador);
 				nombreCategoria = leer.getKey();
@@ -303,12 +304,11 @@ public class Principal extends JFrame {
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						System.out.println(nombreMesa);
 						numeroCategoria = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
-						
 
 						for (int i = 0; i < productosDeCategorias.size(); i++) {
-							
-								productosDeCategorias.get(i).setVisible(false);
-							}
+
+							productosDeCategorias.get(i).setVisible(false);
+						}
 
 						productosDeCategorias.get(numeroCategoria - 1).setVisible(true);
 
@@ -394,6 +394,9 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		Devolucion.DevolucionDinero(barra, lblPrecio, btnCobrar);
+
 		JInternalFrame vacio = new JInternalFrame("Mesa Vacia");
 		vacio.setBounds(20, 220, 390, 270);
 		barra.getContentPane().add(vacio);
@@ -406,24 +409,24 @@ public class Principal extends JFrame {
 
 				System.out.println("ENTRAMOS A BORRAR LA MESA " + mesaParaBorrar);
 
-				// SUBO LA FACTURA A LA BASE DE DATOS
-				SubirFactura sf = new SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
-						comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
-				sf.enviarFactura();
-
-				// BORRO LA COMANDA DE LA BASE DE DATOS
-				SubirComanda sc = new SubirComanda(comandas.get(mesaParaBorrar), mesaParaBorrar);
-				sc.borrarComanda();
-
-				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
-				for (int i = 0; i < numeroMesaComprobar.size(); i++) {
-					if (numeroMesaComprobar.get(i).equalsIgnoreCase(Integer.toString(mesaParaBorrar))) {
-						arrayInternalFramesBarra.get(i).setVisible(false);
-						arrayInternalFramesBarra.set(i, vacio);
-						tabbedPane.remove(i);
-
-					}
-				}
+				/*
+				 * // SUBO LA FACTURA A LA BASE DE DATOS SubirFactura sf = new
+				 * SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
+				 * comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
+				 * sf.enviarFactura();
+				 * 
+				 * // BORRO LA COMANDA DE LA BASE DE DATOS SubirComanda sc = new
+				 * SubirComanda(comandas.get(mesaParaBorrar), mesaParaBorrar);
+				 * sc.borrarComanda();
+				 * 
+				 * // *Borra la comanda de comandas y del internal frame y la pasa a facturas
+				 * for (int i = 0; i < numeroMesaComprobar.size(); i++) { if
+				 * (numeroMesaComprobar.get(i).equalsIgnoreCase(Integer.toString(mesaParaBorrar)
+				 * )) { arrayInternalFramesBarra.get(i).setVisible(false);
+				 * arrayInternalFramesBarra.set(i, vacio); tabbedPane.remove(i);
+				 * 
+				 * } }
+				 */
 
 			}
 
@@ -548,6 +551,8 @@ public class Principal extends JFrame {
 						 * }
 						 */
 
+						
+						
 						for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
 							Object fila[] = new Object[modeloServir.getColumnCount()];
 							boolean mover = true;
@@ -601,6 +606,12 @@ public class Principal extends JFrame {
 			}
 
 		});
+		
+		BasicInternalFrameUI ui1 = (BasicInternalFrameUI) barra.getUI();
+		Container north1 = (Container)ui1.getNorthPane();
+		north1.remove(0);
+		north1.validate(); 
+		north1.repaint();
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -632,6 +643,7 @@ public class Principal extends JFrame {
 		});
 
 	}
+	
 
 	public void servirMesas(JTabbedPane tabbedPane) {
 		int contadorComanda = 0;
@@ -686,5 +698,4 @@ public class Principal extends JFrame {
 		}
 
 	}
-
 }
