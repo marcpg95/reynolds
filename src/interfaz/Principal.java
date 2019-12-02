@@ -273,6 +273,7 @@ public class Principal extends JFrame {
 				for (int i = 0; i < cantidadProductos; i++) {
 					JButton btnProducto = new JButton(iconoProductoBtn);
 
+					
 					panelProductosCategorias.add(btnProducto);
 					btnProducto.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
