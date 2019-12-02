@@ -1,5 +1,6 @@
 package funciones;
 
+import java.awt.Container;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -8,6 +9,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import interfaz.Principal;
 import tablaConCheckBox.JCheckBox_Cell;
@@ -53,6 +55,12 @@ public class GenerarInternalFrames {
 			arrayTablaBarra.get(i).getColumnModel().getColumn(3).setCellEditor(new JCheckBox_Cell(new JCheckBox()));
 			arrayTablaBarra.get(i).getColumnModel().getColumn(3).setCellRenderer(new JCheckBox_Rendered());
 
+			BasicInternalFrameUI ui = (BasicInternalFrameUI) comanda.getUI();
+			Container north = (Container)ui.getNorthPane();
+			north.remove(0);
+			north.validate(); 
+			north.repaint();
+			
 		}
 
 		return arrayInternalFramesBarra;
@@ -121,9 +129,24 @@ int contadorServido=1;
 			
 			contadorComanda++;
 			contadorServido++;
+			
+			BasicInternalFrameUI ui = (BasicInternalFrameUI) servirCocina.getUI();
+			Container north = (Container)ui.getNorthPane();
+			north.remove(0);
+			north.validate(); 
+			north.repaint();
+			
+			BasicInternalFrameUI ui1 = (BasicInternalFrameUI) comandaCocina.getUI();
+			Container north1 = (Container)ui1.getNorthPane();
+			north1.remove(0);
+			north1.validate(); 
+			north1.repaint();
+			
 		}
 		arrayInternalFramesCocina.get(0).setVisible(true);
 		arrayInternalFramesCocina.get(1).setVisible(true);
+		
+		
 
 		return arrayInternalFramesCocina;
 

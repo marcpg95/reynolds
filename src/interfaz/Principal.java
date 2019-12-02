@@ -1,50 +1,41 @@
 package interfaz;
 
+import java.awt.Container;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 
 import com.mms.mms.clases.Categories;
-import com.mms.mms.clases.Productes;
 import com.mms.mms.clases.comandas.Comanda;
 import com.mms.mms.conexion.TestServer;
 
-import baseDeDatos.ConsultarCamareros;
+
 import baseDeDatos.ConsultarProductos;
 import baseDeDatos.RecuperarComandas;
 import baseDeDatos.SubirComanda;
-import baseDeDatos.SubirFactura;
+
 import funciones.GenerarComanda;
 import funciones.GenerarInternalFrames;
 import funciones.Usuario;
-import tablaConCheckBox.JCheckBox_Cell;
-import tablaConCheckBox.JCheckBox_Rendered;
-import funciones.Cobrar;
+
 import funciones.Devolucion;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.plaf.basic.BasicInternalFrameUI;
 import javax.swing.table.DefaultTableModel;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
+
 
 import javax.swing.JInternalFrame;
 
@@ -53,23 +44,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
+
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-
-import javax.swing.AbstractButton;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 
 import java.awt.SystemColor;
-import java.awt.Rectangle;
+
 import java.awt.GridLayout;
 import javax.swing.JTabbedPane;
 import javax.swing.JLabel;
@@ -185,13 +167,6 @@ public class Principal extends JFrame {
 		panelMesas.setBounds(566, 400, 252, 246);
 		barra.getContentPane().add(panelMesas);
 		panelMesas.setLayout(new GridLayout(3, 5, 5, 10));
-		
-		
-		
-		JPanel panelProductos= new JPanel();
-		panelProductos.setBounds(20, 150, 400, 50);
-		barra.getContentPane().add(panelProductos);
-		panelProductos.setLayout(new GridLayout(3, 5, 5, 10));
 
 		JInternalFrame taules = new JInternalFrame("Mesas Cocina");
 		taules.setBounds(10, 11, 844, 512);
@@ -206,17 +181,26 @@ public class Principal extends JFrame {
 		JButton btnDevolver = new JButton("Devolver");
 		btnDevolver.setBounds(395, 210, 90, 28);
 		taules.getContentPane().add(btnDevolver);
-
+		
+		BasicInternalFrameUI ui = (BasicInternalFrameUI) taules.getUI();
+		Container north = (Container)ui.getNorthPane();
+		north.remove(0);
+		north.validate(); 
+		north.repaint();
+		
+		
 		// desactiva ciertas opciones segun el tipo de usuario que seas
-	//	Usuario.LoginSinAyuda(menuCocina, menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
+		// Usuario.LoginSinAyuda(menuCocina,
+		// menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
 
 		// Action listener para cambiar tipo de usuario una vez dentro
 		cambiarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				taules.setVisible(false);
 				barra.setVisible(false);
-				Usuario.LoginSinAyuda(menuCocina, menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
-				//Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
+				Usuario.LoginSinAyuda(menuCocina, menuBarra, btnServir, btnDevolver, barra, internalFrames,
+						mnBarracocina);
+				// Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
 			}
 		});
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
@@ -236,8 +220,6 @@ public class Principal extends JFrame {
 		arrayInternalFramesBarra = new GenerarInternalFrames().GenerarInternalBarra(cantidadComandas, barra,
 				arrayTablaBarra);
 		ArrayList<Float> arrayPrecioMesa = gc.usarPrecioMesa();
-		
-		
 
 		JButton btnCobrar = new JButton("Cobrar");
 		btnCobrar.setBounds(450, 465, 80, 30);
@@ -256,94 +238,84 @@ public class Principal extends JFrame {
 		barra.getContentPane().add(lblPrecio);
 
 		try {
-			JPanel panelCategorias= new JPanel();
-			panelCategorias.setBounds(20, 150, 400, 50);
+			JPanel panelCategorias = new JPanel();
+			panelCategorias.setBounds(20, 300, 400, 50);
 			barra.getContentPane().add(panelCategorias);
 			panelCategorias.setLayout(new GridLayout(1, 5, 5, 10));
+
+			ArrayList<JInternalFrame> productosDeCategorias = new ArrayList<JInternalFrame>();
+
+			String nombreProductos;
+			Categories categoriaProducto;
+			ImageIcon iconoProductoBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
+			for (Entry<String, Categories> leer : categorias.entrySet()) {
+
+				JInternalFrame panelProductosCategorias = new JInternalFrame(nombreCategoria);
+				panelProductosCategorias.setBounds(20, 25, 400, 250);
+				barra.getContentPane().add(panelProductosCategorias);
+				panelProductosCategorias.setLayout(new GridLayout(3, 5, 5, 10));
+				panelProductosCategorias.setVisible(false);
+				panelProductosCategorias.setClosable(true);
+				nombreProductos = leer.getKey();
+				categoriaProducto = leer.getValue();
+				int cantidadProductos = categoriaProducto.getProductos().size();
+				
+				
+				BasicInternalFrameUI ui1 = (BasicInternalFrameUI) panelProductosCategorias.getUI();
+				Container north1 = (Container)ui1.getNorthPane();
+				north1.remove(0);
+				north1.validate(); 
+				north1.repaint();
+
+				for (int i = 0; i < cantidadProductos; i++) {
+					JButton btnProducto = new JButton(iconoProductoBtn);
+
+					panelProductosCategorias.add(btnProducto);
+					btnProducto.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+
+							JOptionPane.showMessageDialog(null, "funciona");
+
+						}
+					});
+				}
+				productosDeCategorias.add(panelProductosCategorias);
+
+			}
 			
-			ArrayList<JInternalFrame> productosDeCategorias= new ArrayList<JInternalFrame>();
 			
-			
-			 
 			
 			ImageIcon iconoCategoriaBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
-			int contador=0;
+			int contador = 0;
 			String contadorString;
-			for (Entry<String,Categories> leer : categorias.entrySet()) {
-				
-				
-				
+			ArrayList<String> nombreCategorias = new ArrayList<String>();
+			for (Entry<String, Categories> leer : categorias.entrySet()) {
+
 				contador++;
-				contadorString=Integer.toString(contador);
-				nombreCategoria=leer.getKey();
+				contadorString = Integer.toString(contador);
+				nombreCategoria = leer.getKey();
 				JButton btnCategoria = new JButton(contadorString);
-				
+
 				panelCategorias.add(btnCategoria);
 				btnCategoria.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
 						String nombreMesa = ((JButton) e.getSource()).getText();
-						 System.out.println(nombreMesa);
-						       numeroCategoria = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
-						       System.out.println(numeroCategoria);
-						       	
-						       
-						       for(int i=0;i<productosDeCategorias.size();i++) {
-								
-						    	   if(i==numeroCategoria-1) {
-						    	   productosDeCategorias.get(numeroCategoria-1).setVisible(true);
-						    	   }
-						    	   else {
-						    		   productosDeCategorias.get(numeroCategoria-1).setVisible(false);
-						    	   }
-								
-						
-						       }
-						
+						System.out.println(nombreMesa);
+						numeroCategoria = Integer.parseInt(nombreMesa.substring(nombreMesa.length() - 1));
+
+						for (int i = 0; i < productosDeCategorias.size(); i++) {
+
+							productosDeCategorias.get(i).setVisible(false);
+						}
+
+						productosDeCategorias.get(numeroCategoria - 1).setVisible(true);
 
 					}
-					
-				});
-				
-			
-			}
-			
-			 String nombreProductos;
-			 Categories categoriaProducto;
-			 ImageIcon iconoProductoBtn = new ImageIcon("C:\\Users\\super\\git\\reynolds\\fotos2\\pepethefrog.jpg");
-	         for (Entry<String,Categories> leer : categorias.entrySet()) {
-	        	
-	        	 
-	        	 JInternalFrame panelProductosCategorias= new JInternalFrame(nombreCategoria);
-	        	 panelProductosCategorias.setBounds(20, 25, 400, 150);
-	 			barra.getContentPane().add(panelProductosCategorias);
-	 			panelProductosCategorias.setLayout(new GridLayout(3, 5, 5, 5));
-	 			panelProductosCategorias.setVisible(false);
-	 			panelProductosCategorias.setClosable(true);
-				nombreProductos=leer.getKey();
-				categoriaProducto=leer.getValue();
-				int cantidadProductos=categoriaProducto.getProductos().size();
-				
-				for (int i=0;i<cantidadProductos;i++) {
-				JButton btnProducto = new JButton(iconoProductoBtn);
-				
-				panelProductosCategorias.add(btnProducto);
-				btnProducto.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent e) {
-						
-						
-						JOptionPane.showMessageDialog(null, "funciona");
-						
 
-					}
 				});
-				}
-				productosDeCategorias.add(panelProductosCategorias);
-				
-			
+
 			}
-			
-			
-			
+
 			for (int i = 0; i < arrayNumeroMesa.size(); i++) {
 
 				JTabbedPane tabbedPaneMesa = new JTabbedPane(JTabbedPane.TOP);
@@ -420,11 +392,9 @@ public class Principal extends JFrame {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
-		
-		Devolucion.DevolucionDinero(barra, lblPrecio,btnCobrar);
-		
+
+		Devolucion.DevolucionDinero(barra, lblPrecio, btnCobrar);
+
 		JInternalFrame vacio = new JInternalFrame("Mesa Vacia");
 		vacio.setBounds(20, 220, 390, 270);
 		barra.getContentPane().add(vacio);
@@ -434,30 +404,27 @@ public class Principal extends JFrame {
 		servirMesas(tabbedPane);
 		btnCobrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				System.out.println("ENTRAMOS A BORRAR LA MESA " + mesaParaBorrar);
-			
-/*
-				// SUBO LA FACTURA A LA BASE DE DATOS
-				SubirFactura sf = new SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
-				comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
-				sf.enviarFactura();
 
-				// BORRO LA COMANDA DE LA BASE DE DATOS
-				 SubirComanda sc = new SubirComanda(comandas.get(mesaParaBorrar),mesaParaBorrar);
-				 sc.borrarComanda();
-
-				// *Borra la comanda de comandas y del internal frame y la pasa a facturas
-				for (int i = 0; i < numeroMesaComprobar.size(); i++) {
-					if (numeroMesaComprobar.get(i).equalsIgnoreCase(Integer.toString(mesaParaBorrar))) {
-						arrayInternalFramesBarra.get(i).setVisible(false);
-						arrayInternalFramesBarra.set(i, vacio);
-						tabbedPane.remove(i);
-
-					}
-				}
-			*/	
-				
+				/*
+				 * // SUBO LA FACTURA A LA BASE DE DATOS SubirFactura sf = new
+				 * SubirFactura(comandas.get(mesaParaBorrar).getProductosPedidos(),
+				 * comandas.get(mesaParaBorrar).getCamarero(), mesaParaBorrar);
+				 * sf.enviarFactura();
+				 * 
+				 * // BORRO LA COMANDA DE LA BASE DE DATOS SubirComanda sc = new
+				 * SubirComanda(comandas.get(mesaParaBorrar), mesaParaBorrar);
+				 * sc.borrarComanda();
+				 * 
+				 * // *Borra la comanda de comandas y del internal frame y la pasa a facturas
+				 * for (int i = 0; i < numeroMesaComprobar.size(); i++) { if
+				 * (numeroMesaComprobar.get(i).equalsIgnoreCase(Integer.toString(mesaParaBorrar)
+				 * )) { arrayInternalFramesBarra.get(i).setVisible(false);
+				 * arrayInternalFramesBarra.set(i, vacio); tabbedPane.remove(i);
+				 * 
+				 * } }
+				 */
 
 			}
 
@@ -514,8 +481,8 @@ public class Principal extends JFrame {
 									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
 									numeroMesaAux = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
 									for (int p = 0; i < comandas.get(numeroMesaAux).getProductosPedidos().size(); p++) {
-										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto().getNom()
-												.equals(modeloCocina.getValueAt(i, 0))) {
+										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto()
+												.getNom().equals(modeloCocina.getValueAt(i, 0))) {
 											comandas.get(numeroMesaAux).getProductosPedidos().get(p).setListo(true);
 											actualizarDatos = true;
 											break;
@@ -548,13 +515,13 @@ public class Principal extends JFrame {
 					contadorServido++;
 				}
 
-				if(actualizarDatos == true) {
-				SubirComanda sco = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
-				sco.borrarComanda();
-				sco.subir();
+				if (actualizarDatos == true) {
+					SubirComanda sco = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
+					sco.borrarComanda();
+					sco.subir();
 				}
 			}
-			
+
 		});
 
 		btnDevolver.addActionListener(new ActionListener() {
@@ -582,6 +549,8 @@ public class Principal extends JFrame {
 						 * }
 						 */
 
+						
+						
 						for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
 							Object fila[] = new Object[modeloServir.getColumnCount()];
 							boolean mover = true;
@@ -593,8 +562,8 @@ public class Principal extends JFrame {
 									String mesaNombre = tabbedPane.getTitleAt(tabbedPane.getSelectedIndex());
 									numeroMesaAux = Integer.parseInt(mesaNombre.replaceAll("[^0-9]", ""));
 									for (int p = 0; i < comandas.get(numeroMesaAux).getProductosPedidos().size(); p++) {
-										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto().getNom()
-												.equals(modeloServir.getValueAt(i, 0))) {
+										if (comandas.get(numeroMesaAux).getProductosPedidos().get(p).getProducto()
+												.getNom().equals(modeloServir.getValueAt(i, 0))) {
 											comandas.get(numeroMesaAux).getProductosPedidos().get(p).setListo(false);
 											actualizarDatos = true;
 											break;
@@ -626,15 +595,21 @@ public class Principal extends JFrame {
 					contadorComanda++;
 					contadorServido++;
 				}
-				
-				if(actualizarDatos == true) {
-				SubirComanda sc = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
-				sc.borrarComanda();
-				sc.subir();
+
+				if (actualizarDatos == true) {
+					SubirComanda sc = new SubirComanda(comandas.get(numeroMesaAux), numeroMesaAux);
+					sc.borrarComanda();
+					sc.subir();
 				}
 			}
 
 		});
+		
+		BasicInternalFrameUI ui1 = (BasicInternalFrameUI) barra.getUI();
+		Container north1 = (Container)ui1.getNorthPane();
+		north1.remove(0);
+		north1.validate(); 
+		north1.repaint();
 
 		menuCocina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -665,69 +640,60 @@ public class Principal extends JFrame {
 			}
 		});
 
-		
-
 	}
 	
+
 	public void servirMesas(JTabbedPane tabbedPane) {
 		int contadorComanda = 0;
 		int contadorServido = 1;
-		for (int l = 0; l < arrayInternalFramesCocina.size()/2; l++) {
-			
-			
+		for (int l = 0; l < arrayInternalFramesCocina.size() / 2; l++) {
 
-					DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina
-							.get(l + contadorComanda).getModel();
-					DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina
-							.get(l + contadorServido).getModel();
+			DefaultTableModel modeloCocina = (DefaultTableModel) arrayTablaCocina.get(l + contadorComanda).getModel();
+			DefaultTableModel modeloServir = (DefaultTableModel) arrayTablaCocina.get(l + contadorServido).getModel();
 
-					/*
-					 * for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
-					 * 
-					 * modeloServir.removeRow(i);
-					 * 
-					 * 
-					 * }
-					 */
+			/*
+			 * for (int i = modeloServir.getRowCount()-1; i >=0 ; i--) {
+			 * 
+			 * modeloServir.removeRow(i);
+			 * 
+			 * 
+			 * }
+			 */
 
-					for (int i = modeloCocina.getRowCount() - 1; i >= 0; i--) {
-						Object fila[] = new Object[modeloCocina.getColumnCount()];
-						boolean mover = true;
-						boolean borrar = false;
-						for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
-							mover = (boolean) modeloCocina.getValueAt(i, 2);
-							if (mover == false) {
-								fila[j] = modeloCocina.getValueAt(i, j);
-								
-								borrar = true;
-								// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
-							}
+			for (int i = modeloCocina.getRowCount() - 1; i >= 0; i--) {
+				Object fila[] = new Object[modeloCocina.getColumnCount()];
+				boolean mover = true;
+				boolean borrar = false;
+				for (int j = 0; j < modeloCocina.getColumnCount(); j++) {
+					mover = (boolean) modeloCocina.getValueAt(i, 2);
+					if (mover == false) {
+						fila[j] = modeloCocina.getValueAt(i, j);
 
-						}
-
-						modeloServir.addRow(fila);
-						if (borrar == true) {
-
-							modeloCocina.removeRow(i);
-
-						}
-
+						borrar = true;
+						// System.out.println("hola "+ modeloCocina.getValueAt(i, 2));
 					}
 
-					for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
-
-						if (modeloServir.getValueAt(i, 0) == null) {
-							modeloServir.removeRow(i);
-						}
-
-					}
-					contadorComanda++;
-					contadorServido++;
 				}
-				
+
+				modeloServir.addRow(fila);
+				if (borrar == true) {
+
+					modeloCocina.removeRow(i);
+
+				}
+
 			}
 
-	
-		
-	
+			for (int i = modeloServir.getRowCount() - 1; i >= 0; i--) {
+
+				if (modeloServir.getValueAt(i, 0) == null) {
+					modeloServir.removeRow(i);
+				}
+
+			}
+			contadorComanda++;
+			contadorServido++;
+		}
+
+	}
 }
