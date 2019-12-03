@@ -46,7 +46,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JSeparator;
 import javax.swing.JTable;
-
+import javax.swing.JTextField;
 import javax.swing.JMenuBar;
 import javax.swing.JButton;
 
@@ -137,7 +137,7 @@ public class Principal extends JFrame {
 	public Principal() {
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(250, 10, 880, 700);
+		setBounds(250, 10, 880, 750);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -167,11 +167,15 @@ public class Principal extends JFrame {
 		internalFrames.setBounds(0, 22, 900, 687);
 		contentPane.add(internalFrames);
 		internalFrames.setLayout(null);
+		
+		JTextField fldCambio = new JTextField();
+		
+		JTextField fldPagado = new JTextField();
 
 		JInternalFrame barra = new JInternalFrame("Barra");
-		barra.setBounds(0, 0, 850, 650);
+		barra.setBounds(0, 0, 850, 700);
 		internalFrames.add(barra);
-		barra.setClosable(true);
+		barra.setClosable(true); 
 		barra.getContentPane().setLayout(null);
 		barra.setResizable(true);
 
@@ -372,6 +376,10 @@ public class Principal extends JFrame {
 
 				btnTaula.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						
+						fldPagado.setText("");
+						fldCambio.setText("");
+						fldPagado.setEnabled(true);
 
 						String nombreMesa = ((JButton) e.getSource()).getText();
 						// System.out.println(nombreMesa);
@@ -417,7 +425,7 @@ public class Principal extends JFrame {
 			e.printStackTrace();
 		}
 
-		Devolucion.DevolucionDinero(barra, lblPrecio, btnCobrar);
+		Devolucion.DevolucionDinero(barra, lblPrecio, btnCobrar,fldCambio, fldPagado);
 
 		JInternalFrame vacio = new JInternalFrame("Mesa Vacia");
 		vacio.setBounds(20, 220, 390, 270);
