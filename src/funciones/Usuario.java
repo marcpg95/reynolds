@@ -48,7 +48,6 @@ public class Usuario {
 			while (!correcto) {
 				panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
 				panePassword = DigestUtils.sha1Hex(panePassword); //ENCRIPTO LA PASSWORD
-				System.out.println(panePassword);
 				if (panePassword.equals(password)) { //COMPRUEBO SI SON LA MISMA
 					JOptionPane.showMessageDialog(null, "Bienvenido " + nombreCamarero + "!");
 					menuBarra.setEnabled(true);
