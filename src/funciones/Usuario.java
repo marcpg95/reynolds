@@ -27,6 +27,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
+import org.apache.commons.codec.digest.DigestUtils;
+
 import com.mms.mms.clases.Camarero;
 import com.mms.mms.clases.Categories;
 
@@ -37,61 +39,30 @@ public class Usuario {
 	static JButton botonCamarero = new JButton();
 
 	public static void InputDialog(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
-			JInternalFrame barra, JMenu mnBarraCocina) {
+			JInternalFrame barra, JMenu mnBarraCocina, String nombreCamarero,JInternalFrame internalLogin) {
 
-		String password = "1";
+		String password = Principal.camareros.get(nombreCamarero).getPassword(); //COJO LA PASSWORD DEL CAMARERO
 		
 		boolean correcto = false;
-
-		
+		String panePassword;
 			while (!correcto) {
-				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
-
-				if (panePassword.equalsIgnoreCase(password)) {
-					JOptionPane.showMessageDialog(null, "Te has conectado como cocinero");
-					menuBarra.setEnabled(false);
-					Devolver.setEnabled(false);
-					menuCocina.setEnabled(true);
-					Servir.setEnabled(true);
-					barra.setVisible(false);
-					mnBarraCocina.setEnabled(true);
-					correcto = true;
-
-				} else {
-					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
-				}
-			
-		} 
-			while (!correcto) {
-				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
-				if (panePassword.equalsIgnoreCase(password)) {
-					JOptionPane.showMessageDialog(null, "Te has conectado como camarero");
-					menuCocina.setEnabled(true);
-					Servir.setEnabled(false);
-					menuBarra.setEnabled(true);
-					Devolver.setEnabled(true);
-					mnBarraCocina.setEnabled(true);
-					correcto = true;
-				} else {
-					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
-				}
-			}
-		
-			while (!correcto) {
-				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
-				if (panePassword.equalsIgnoreCase(password)) {
-					JOptionPane.showMessageDialog(null, "Te has conectado como administrador");
+				panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
+				panePassword = DigestUtils.sha1Hex(panePassword); //ENCRIPTO LA PASSWORD
+				System.out.println(panePassword);
+				if (panePassword.equals(password)) { //COMPRUEBO SI SON LA MISMA
+					JOptionPane.showMessageDialog(null, "Bienvenido " + nombreCamarero + "!");
 					menuBarra.setEnabled(true);
 					Devolver.setEnabled(true);
 					menuCocina.setEnabled(true);
 					Servir.setEnabled(true);
+					barra.setVisible(true);
 					mnBarraCocina.setEnabled(true);
 					correcto = true;
+					internalLogin.setVisible(false);
 				} else {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 				}
-			}
-		
+		} 		
 
 	}
 
@@ -113,6 +84,7 @@ public class Usuario {
 		JPanel panelUsuario = new JPanel();
 		panelUsuario.setBounds(68, 5, 252, 246);
 		panelUsuario.setLayout(new GridLayout(3, 5, 5, 10));
+		internalLogin.setVisible(true);
 		
 		JPanel teclado = new JPanel();
 		teclado.setLayout(new GridBagLayout());
@@ -136,19 +108,19 @@ public class Usuario {
 		JTextField t1 = new JTextField(10);
 
 		Image imagenParsearIcono;
+		Camarero leerCamarero;
 			for (Entry<String, Camarero> leer : Principal.camareros.entrySet()){
-					ImageIcon imagenCamarero = new ImageIcon(leer.getValue().getImagen());
+					leerCamarero = leer.getValue();
+					ImageIcon imagenCamarero = new ImageIcon(leerCamarero.getImagen());
 					imagenParsearIcono = imagenCamarero.getImage();
 					imagenParsearIcono = imagenParsearIcono.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
 					imagenCamarero = new ImageIcon(imagenParsearIcono);
 					JButton btnCamarero = new JButton(imagenCamarero);
 					panelUsuario.add(btnCamarero);
+					final String nombreCamareroLeido = leerCamarero.getNombre();
 					btnCamarero.addActionListener(new ActionListener() {
 						public void actionPerformed(ActionEvent e) {
-							Usuario.InputDialog(menuCocina, menuBarra,Servir,Devolver,barra, mnBarraCocina);
-										System.out.println("hola");
-
-							
+							Usuario.InputDialog(menuCocina, menuBarra,Servir,Devolver,barra, mnBarraCocina, nombreCamareroLeido,internalLogin);							
 						}
 
 					});
