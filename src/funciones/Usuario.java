@@ -43,10 +43,63 @@ public class Usuario {
 
 		String password = Principal.camareros.get(nombreCamarero).getPassword(); //COJO LA PASSWORD DEL CAMARERO
 		
+		JTextField t1 = new JTextField();
+		JPanel teclado = new JPanel();
+		teclado.setLayout(new GridBagLayout());
+		GridBagConstraints c = new GridBagConstraints();
+		c.weightx = 0;
+		c.weighty = 0;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		String row0 = "1234567890qwertyuiopasdfghjklñzxcvbnm,.-";
+		int contadorx = 0;
+		int contadory = 1;
+		for (int i = 0; i < row0.length(); i++) {
+			char[] key0 = row0.toCharArray();
+			JButton button = new JButton(Character.toString(key0[i]));
+			String tecla = Character.toString(key0[i]);
+
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+
+					String datos = t1.getText();
+					t1.setText(datos + tecla);
+
+					JButton obj = (JButton) e.getSource();
+					String boton = obj.getText();
+					if (boton.contentEquals("-")) {
+					}
+				}
+			});
+			c.gridx = contadorx;
+			c.gridy = contadory;
+			c.gridwidth = 1;
+			teclado.add(button, c);
+			contadorx++;
+			if (contadorx == 10) {
+				contadory++;
+				contadorx = 0;
+			}
+		}
+
+		JButton espacio = new JButton(" ");
+		espacio.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String datos = t1.getText();
+				t1.setText(datos + " ");
+			}
+		});
+		c.gridx = 3;
+		c.gridy = 5;
+		c.gridwidth = 4;
+		teclado.add(espacio, c);
+		
 		boolean correcto = false;
 		String panePassword;
 			while (!correcto) {
 				panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
+				
+				
 				panePassword = DigestUtils.sha1Hex(panePassword); //ENCRIPTO LA PASSWORD
 				if (panePassword.equals(password)) { //COMPRUEBO SI SON LA MISMA
 					JOptionPane.showMessageDialog(null, "Bienvenido " + nombreCamarero + "!");
@@ -62,7 +115,6 @@ public class Usuario {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 				}
 		} 		
-
 	}
 
 	public static void LoginSinAyuda(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
