@@ -6,8 +6,8 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="D:/Descargas/Jars/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48/mysql-connector-java-5.1.48.jar"/>
-	<classpathentry kind="lib" path="D:/Descargas/Jars/commons-codec-1.13/commons-codec-1.13.jar"/>
-	<classpathentry kind="lib" path="D:/Descargas/Jars/lipermi-0.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/super/Downloads/mysql-connector-java-5.1.48.jar"/>
+	<classpathentry kind="lib" path="C:/Users/super/Downloads/jar_files.zip"/>
+	<classpathentry kind="lib" path="C:/Users/super/Downloads/lipermi-0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

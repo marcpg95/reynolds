@@ -8,9 +8,11 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -26,30 +28,26 @@ import javax.swing.event.DocumentListener;
 import javax.swing.plaf.basic.BasicInternalFrameUI;
 
 import com.mms.mms.clases.Camarero;
+import com.mms.mms.clases.Categories;
 
 import baseDeDatos.ConsultarCamareros;
 import interfaz.Principal;
 
 public class Usuario {
 	static JButton botonCamarero = new JButton();
+
 	public static void InputDialog(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
 			JInternalFrame barra, JMenu mnBarraCocina) {
 
-		String passwordCocinero = "1";
-		String passwordCamarero = "2";
-		String passwordAdmin = "3";
+		String password = "1";
+		
 		boolean correcto = false;
 
-		String[] options = { "Cocinero", "Camarero", "Administrador" };
-
-		String n = (String) JOptionPane.showInputDialog(null, "Escoge el tipo de usuario", null,
-				JOptionPane.QUESTION_MESSAGE, null, options, null);
-
-		if (n == "Cocinero") {
+		
 			while (!correcto) {
 				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
 
-				if (panePassword.equalsIgnoreCase(passwordCocinero)) {
+				if (panePassword.equalsIgnoreCase(password)) {
 					JOptionPane.showMessageDialog(null, "Te has conectado como cocinero");
 					menuBarra.setEnabled(false);
 					Devolver.setEnabled(false);
@@ -62,11 +60,11 @@ public class Usuario {
 				} else {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 				}
-			}
-		} else if (n == "Camarero") {
+			
+		} 
 			while (!correcto) {
 				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
-				if (panePassword.equalsIgnoreCase(passwordCamarero)) {
+				if (panePassword.equalsIgnoreCase(password)) {
 					JOptionPane.showMessageDialog(null, "Te has conectado como camarero");
 					menuCocina.setEnabled(true);
 					Servir.setEnabled(false);
@@ -78,10 +76,10 @@ public class Usuario {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 				}
 			}
-		} else if (n == "Administrador") {
+		
 			while (!correcto) {
 				String panePassword = (String) JOptionPane.showInputDialog("Escribe la contraseña");
-				if (panePassword.equalsIgnoreCase(passwordAdmin)) {
+				if (panePassword.equalsIgnoreCase(password)) {
 					JOptionPane.showMessageDialog(null, "Te has conectado como administrador");
 					menuBarra.setEnabled(true);
 					Devolver.setEnabled(true);
@@ -93,9 +91,7 @@ public class Usuario {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 				}
 			}
-		} else {
-			JOptionPane.showMessageDialog(null, "Usuario no valido");
-		}
+		
 
 	}
 
@@ -111,13 +107,13 @@ public class Usuario {
 		internalLogin.setBounds(250, 150, 400, 450);
 		internalFrames.add(internalLogin);
 
-		JPanel panelFotoCamarero = new JPanel(new GridLayout());
-		panelFotoCamarero.setBounds(100, 100, 150, 150);
-		internalLogin.getContentPane().add(panelFotoCamarero);
-
+		
 		// Se construye el panel que ira dentro del JInternalFrame
+		
 		JPanel panelUsuario = new JPanel();
-		// panelUsuario.setBounds(68, 5, 252, 246);
+		panelUsuario.setBounds(68, 5, 252, 246);
+		panelUsuario.setLayout(new GridLayout(3, 5, 5, 10));
+		
 		JPanel teclado = new JPanel();
 		teclado.setLayout(new GridBagLayout());
 		// teclado.setBounds(-5, 20, 400, 300);
@@ -133,39 +129,34 @@ public class Usuario {
 
 		ArrayList<Camarero> camareros = cc.getCamareros();
 
-		panelUsuario.setLayout(new FlowLayout());
-		JLabel labelUser = new JLabel("User");
-		labelUser.setFont(negrita);
-		panelUsuario.add(labelUser);
+		
+		//JLabel labelUser = new JLabel("User");
+	//	labelUser.setFont(negrita);
+	//	panelUsuario.add(labelUser);
 		JTextField t1 = new JTextField(10);
 
-		t1.getDocument().addDocumentListener(new DocumentListener() {
+		Image imagenParsearIcono;
+			for (Entry<String, Camarero> leer : Principal.camareros.entrySet()){
+					ImageIcon imagenCamarero = new ImageIcon(leer.getValue().getImagen());
+					imagenParsearIcono = imagenCamarero.getImage();
+					imagenParsearIcono = imagenParsearIcono.getScaledInstance(50, 50,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
+					imagenCamarero = new ImageIcon(imagenParsearIcono);
+					JButton btnCamarero = new JButton(imagenCamarero);
+					panelUsuario.add(btnCamarero);
+					btnCamarero.addActionListener(new ActionListener() {
+						public void actionPerformed(ActionEvent e) {
+							Usuario.InputDialog(menuCocina, menuBarra,Servir,Devolver,barra, mnBarraCocina);
+										System.out.println("hola");
 
-			@Override
-			public void removeUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
+							
+						}
 
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void changedUpdate(DocumentEvent e) {
-				if (Principal.camareros.containsKey(t1.getText().toString())) {
-					ImageIcon imagenCamarero = new ImageIcon(Principal.camareros.get(t1.getText().toString()).getImagen());
-					JButton botonCamarero = new JButton(imagenCamarero);
-					
+					});
 				}
-			}
-		});
 
-		panelUsuario.add(t1);
+	//	panelUsuario.add(t1);
 
-		JButton botonLogin = new JButton("Login");
+			/*	JButton botonLogin = new JButton("Login");
 
 		botonLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -183,7 +174,7 @@ public class Usuario {
 			}
 		});
 		panelUsuario.add(botonLogin);
-
+*/
 		// Creamos el string que usaremos para el teclado.
 		String row0 = "1234567890qwertyuiopasdfghjklñzxcvbnm,.-";
 		int contadorx = 0;
