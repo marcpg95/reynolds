@@ -153,8 +153,12 @@ public class Usuario {
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(t1.getText().length() == 0) {
+				
+				} else {
 				String cadena = t1.getText().substring(0, t1.getText().length() - 1);
 				t1.setText(cadena);
+				}
 			}
 		});
 
@@ -260,7 +264,6 @@ public class Usuario {
 		// teclado.setBounds(-5, 20, 400, 300);
 
 		// Se ponen los panels dentro del internal
-		internalLogin.add(teclado, BorderLayout.SOUTH);
 		internalLogin.add(panelUsuario);
 
 		GridBagConstraints c = new GridBagConstraints();
