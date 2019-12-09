@@ -25,6 +25,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.event.DocumentEvent;
@@ -85,7 +86,7 @@ public class Usuario {
 		JLabel labelPassword = new JLabel("Contraseña");
 		labelPassword.setFont(negrita);
 		panelPassw.add(labelPassword);
-		JTextField t1 = new JTextField(10);
+		JPasswordField t1 = new JPasswordField(10);
 		panelPassw.add(t1);
 
 		JButton botonLogin = new JButton("Login");
