@@ -43,17 +43,13 @@ import interfaz.Principal;
 public class Usuario {
 	static JButton botonCamarero = new JButton();
 	static int contadorTeclado = 0;
+	static Font negrita = new Font("Arial", Font.BOLD, 14);
 
 	public static void InputDialog(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
 			JInternalFrame barra, JMenu mnBarraCocina, String nombreCamarero, JInternalFrame internalLogin,
 			JPanel internalFrames) {
 
 		String password = Principal.camareros.get(nombreCamarero).getPassword(); // COJO LA PASSWORD DEL CAMARERO
-
-		// boolean correcto = false;
-
-		// while (!correcto) {
-		Font negrita = new Font("Arial", Font.BOLD, 14);
 
 		internalLogin.setVisible(true);
 
@@ -72,9 +68,14 @@ public class Usuario {
 		teclado.setLayout(new GridBagLayout());
 		teclado.setBounds(-5, 20, 400, 300);
 
+		JPanel tecladoMayus = new JPanel();
+		tecladoMayus.setLayout(new GridBagLayout());
+		tecladoMayus.setBounds(-5, 70, 400, 150);
+		tecladoMayus.setVisible(false);
 
 		// Se ponen los panels dentro del internal
-		
+
+		internalPassw.add(tecladoMayus, BorderLayout.SOUTH);
 		internalPassw.add(teclado, BorderLayout.SOUTH);
 		internalPassw.add(panelPassw);
 
@@ -86,6 +87,7 @@ public class Usuario {
 		JLabel labelPassword = new JLabel("Contraseña");
 		labelPassword.setFont(negrita);
 		panelPassw.add(labelPassword);
+
 		JPasswordField t1 = new JPasswordField(10);
 		panelPassw.add(t1);
 
@@ -110,7 +112,6 @@ public class Usuario {
 					JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
 					t1.setText("");
 				}
-
 			}
 		});
 		panelPassw.add(botonLogin);
@@ -144,20 +145,15 @@ public class Usuario {
 				contadorx = 0;
 			}
 		}
-
-	
-		
-
 		// Boton de Borrar
-
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(t1.getText().length() == 0) {
-				
+				if (t1.getText().length() == 0) {
+
 				} else {
-				String cadena = t1.getText().substring(0, t1.getText().length() - 1);
-				t1.setText(cadena);
+					String cadena = t1.getText().substring(0, t1.getText().length() - 1);
+					t1.setText(cadena);
 				}
 			}
 		});
@@ -166,17 +162,18 @@ public class Usuario {
 		gbConstraints.gridy = 5;
 		gbConstraints.gridwidth = 2;
 		teclado.add(btnBorrar, gbConstraints);
-
-		
 		// Boton de Mayus
 		JButton btnMayus = new JButton("Mayus");
-		
-
+		btnMayus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				teclado.setVisible(false);
+				tecladoMayus.setVisible(true);
+			}
+		});
 		gbConstraints.gridx = 0;
 		gbConstraints.gridy = 5;
 		gbConstraints.gridwidth = 2;
 		teclado.add(btnMayus, gbConstraints);
-		//tecladoMayus.add(btnMayus, gbConstraints);
 
 		// Boton de espacio
 		JButton espacio = new JButton(" ");
@@ -191,8 +188,63 @@ public class Usuario {
 		gbConstraints.gridy = 5;
 		gbConstraints.gridwidth = 4;
 		teclado.add(espacio, gbConstraints);
-		
-		
+
+		int contadorxMayus = 0;
+		int contadoryMayus = 1;
+		// Teclado mayusculas
+		for (int i = 0; i < row1.length(); i++) {
+			char[] key0 = row1.toCharArray();
+			JButton button = new JButton(Character.toString(key0[i]));
+			String tecla = Character.toString(key0[i]);
+
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					String datos = t1.getText();
+					t1.setText(datos + tecla);
+				}
+			});
+			gbConstraints.gridx = contadorxMayus;
+			gbConstraints.gridy = contadoryMayus;
+			gbConstraints.gridwidth = 1;
+			tecladoMayus.add(button, gbConstraints);
+			contadorxMayus++;
+			if (contadorxMayus == 10) {
+				contadoryMayus++;
+				contadorxMayus = 0;
+			}
+		}
+		// Boton de Borrar
+		JButton btnBorrarMayus = new JButton("Borrar");
+		btnBorrarMayus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (t1.getText().length() == 0) {
+
+				} else {
+					String cadena = t1.getText().substring(0, t1.getText().length() - 1);
+					t1.setText(cadena);
+				}
+			}
+		});
+
+		gbConstraints.gridx = 8;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		tecladoMayus.add(btnBorrarMayus, gbConstraints);
+		// Boton de Mayus
+		JButton btnMinus = new JButton("LCase");
+		btnMinus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tecladoMayus.setVisible(false);
+				teclado.setVisible(true);
+
+			}
+		});
+		gbConstraints.gridx = 0;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		tecladoMayus.add(btnMinus, gbConstraints);
+
+		// Boton de espacio
 		JButton espacioMayus = new JButton(" ");
 		espacioMayus.addActionListener(new ActionListener() {
 			@Override
@@ -204,7 +256,7 @@ public class Usuario {
 		gbConstraints.gridx = 3;
 		gbConstraints.gridy = 5;
 		gbConstraints.gridwidth = 4;
-		
+		tecladoMayus.add(espacio, gbConstraints);
 
 		// Con esto quitamos la flecha desplegable superior.
 		BasicInternalFrameUI ui = (BasicInternalFrameUI) internalPassw.getUI();
@@ -223,28 +275,12 @@ public class Usuario {
 		// Se visualiza el JInternalFrame
 		internalPassw.setVisible(true);
 
-		// panePassword = "";//(String)
-		// JOptionPane.showInputDialog(null,teclado,"Escribe la contraseña");
-		/*
-		 * 
-		 * panePassword = DigestUtils.sha1Hex(panePassword); //ENCRIPTO LA PASSWORD if
-		 * (panePassword.equals(password)) { //COMPRUEBO SI SON LA MISMA
-		 * JOptionPane.showMessageDialog(null, "Bienvenido " + nombreCamarero + "!");
-		 * menuBarra.setEnabled(true); Devolver.setEnabled(true);
-		 * menuCocina.setEnabled(true); Servir.setEnabled(true); barra.setVisible(true);
-		 * mnBarraCocina.setEnabled(true); correcto = true;
-		 * internalLogin.setVisible(false); } else { JOptionPane.showMessageDialog(null,
-		 * "Contraseña incorrecta vuelve a escribirla"); }
-		 * 
-		 * }
-		 */
 	}
 
-	public static void LoginSinAyuda(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
+	public static void LoginComplejo(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
 			JInternalFrame barra, JPanel internalFrames, JMenu mnBarraCocina) {
 
 		ConsultarCamareros cc = new ConsultarCamareros();
-		Font negrita = new Font("Arial", Font.BOLD, 14);
 
 		mnBarraCocina.setEnabled(false);
 		// Se construye el JInternalFrame
@@ -259,24 +295,10 @@ public class Usuario {
 		panelUsuario.setLayout(new GridLayout(3, 5, 5, 10));
 		internalLogin.setVisible(true);
 
-		JPanel teclado = new JPanel();
-		teclado.setLayout(new GridBagLayout());
-		// teclado.setBounds(-5, 20, 400, 300);
-
 		// Se ponen los panels dentro del internal
 		internalLogin.add(panelUsuario);
 
-		GridBagConstraints c = new GridBagConstraints();
-		c.weightx = 0;
-		c.weighty = 0;
-		c.fill = GridBagConstraints.HORIZONTAL;
-
 		ArrayList<Camarero> camareros = cc.getCamareros();
-
-		// JLabel labelUser = new JLabel("User");
-		// labelUser.setFont(negrita);
-		// panelUsuario.add(labelUser);
-		JTextField t1 = new JTextField(10);
 
 		Image imagenParsearIcono;
 		Camarero leerCamarero;
@@ -286,8 +308,6 @@ public class Usuario {
 			imagenParsearIcono = imagenCamarero.getImage();
 			imagenParsearIcono = imagenParsearIcono.getScaledInstance(50, 50, java.awt.Image.SCALE_SMOOTH); // scale it
 																											// the
-																											// smooth
-																											// way
 			imagenCamarero = new ImageIcon(imagenParsearIcono);
 			JButton btnCamarero = new JButton(imagenCamarero);
 			panelUsuario.add(btnCamarero);
@@ -301,68 +321,6 @@ public class Usuario {
 
 			});
 		}
-
-		// panelUsuario.add(t1);
-
-		/*
-		 * JButton botonLogin = new JButton("Login");
-		 * 
-		 * botonLogin.addActionListener(new ActionListener() { public void
-		 * actionPerformed(ActionEvent e) { String texto = t1.getText(); for (int j = 0;
-		 * j < camareros.size(); j++) { if
-		 * (camareros.get(j).getNombre().equalsIgnoreCase(texto)) {
-		 * internalLogin.dispose(); Usuario.InputDialog(menuCocina, menuBarra, Servir,
-		 * Devolver, barra, mnBarraCocina); break; } else if (j == (camareros.size() -
-		 * 1) && !camareros.get(j).getNombre().equalsIgnoreCase(texto)) {
-		 * t1.setText(null); JOptionPane.showMessageDialog(null, "Usuario incorrecto",
-		 * "Error", JOptionPane.WARNING_MESSAGE); } } } });
-		 * panelUsuario.add(botonLogin);
-		 */
-		// Creamos el string que usaremos para el teclado.
-		String row0 = "1234567890qwertyuiopasdfghjklñzxcvbnm,.-";
-		int contadorx = 0;
-		int contadory = 1;
-		for (int i = 0; i < row0.length(); i++) {
-			char[] key0 = row0.toCharArray();
-			JButton button = new JButton(Character.toString(key0[i]));
-			String tecla = Character.toString(key0[i]);
-
-			button.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-
-					String datos = t1.getText();
-					t1.setText(datos + tecla);
-
-					JButton obj = (JButton) e.getSource();
-					String boton = obj.getText();
-					if (boton.contentEquals("-")) {
-					}
-				}
-			});
-			c.gridx = contadorx;
-			c.gridy = contadory;
-			c.gridwidth = 1;
-			teclado.add(button, c);
-			contadorx++;
-			if (contadorx == 10) {
-				contadory++;
-				contadorx = 0;
-			}
-		}
-
-		// Boton de espacio
-		JButton espacio = new JButton(" ");
-		espacio.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String datos = t1.getText();
-				t1.setText(datos + " ");
-			}
-		});
-		c.gridx = 3;
-		c.gridy = 5;
-		c.gridwidth = 4;
-		teclado.add(espacio, c);
 
 		// Con esto quitamos la flecha desplegable superior.
 		BasicInternalFrameUI ui = (BasicInternalFrameUI) internalLogin.getUI();
@@ -382,4 +340,6 @@ public class Usuario {
 		internalLogin.setVisible(true);
 
 	}
+
+	
 }

@@ -162,6 +162,7 @@ public class Principal extends JFrame {
 
 		JMenuItem cambiarUsuario = new JMenuItem("Login");
 		mnBarracocina.add(cambiarUsuario);
+		
 
 		JPanel internalFrames = new JPanel();
 		internalFrames.setBounds(0, 22, 900, 687);
@@ -206,19 +207,22 @@ public class Principal extends JFrame {
 		
 		
 		// desactiva ciertas opciones segun el tipo de usuario que seas
-		// Usuario.LoginSinAyuda(menuCocina,
-		// menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
+		 Usuario.LoginComplejo(menuCocina, menuBarra,btnServir,btnDevolver,barra,internalFrames,mnBarracocina);
 
 		// Action listener para cambiar tipo de usuario una vez dentro
 		cambiarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				taules.setVisible(false);
 				barra.setVisible(false);
-				Usuario.LoginSinAyuda(menuCocina, menuBarra, btnServir, btnDevolver, barra, internalFrames,
+				Usuario.LoginComplejo(menuCocina, menuBarra, btnServir, btnDevolver, barra, internalFrames,
 						mnBarracocina);
 				// Usuario.InputDialog(menuCocina, menuBarra,btnServir,btnDevolver,barra);
 			}
 		});
+		
+		
+		
+		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
 		tabbedPane.setBounds(0, 0, 828, 28);
 		taules.getContentPane().add(tabbedPane);
