@@ -12,6 +12,10 @@ import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -42,8 +46,8 @@ import interfaz.Principal;
 
 public class Usuario {
 	static JButton botonCamarero = new JButton();
-	static int contadorTeclado = 0;
 	static Font negrita = new Font("Arial", Font.BOLD, 14);
+	static int txtFieldSelector = 0;
 
 	public static void InputDialog(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
 			JInternalFrame barra, JMenu mnBarraCocina, String nombreCamarero, JInternalFrame internalLogin,
@@ -105,7 +109,6 @@ public class Usuario {
 					Servir.setEnabled(true);
 					barra.setVisible(true);
 					mnBarraCocina.setEnabled(true);
-					// correcto = true;
 					internalLogin.setVisible(false);
 					internalPassw.setVisible(false);
 				} else {
@@ -256,7 +259,7 @@ public class Usuario {
 		gbConstraints.gridx = 3;
 		gbConstraints.gridy = 5;
 		gbConstraints.gridwidth = 4;
-		tecladoMayus.add(espacio, gbConstraints);
+		tecladoMayus.add(espacioMayus, gbConstraints);
 
 		// Con esto quitamos la flecha desplegable superior.
 		BasicInternalFrameUI ui = (BasicInternalFrameUI) internalPassw.getUI();
@@ -341,5 +344,312 @@ public class Usuario {
 
 	}
 
-	
+	public static void LoginSimple(JMenuItem menuCocina, JMenuItem menuBarra, JButton Servir, JButton Devolver,
+			JInternalFrame barra, JPanel internalFrames, JMenu mnBarraCocina) {
+
+		mnBarraCocina.setEnabled(false);
+		// String password = Principal.camareros.get(nombreCamarero).getPassword(); //
+
+		JInternalFrame internalPassw = new JInternalFrame("Login");
+		internalPassw.setBounds(250, 200, 400, 300);
+		internalFrames.add(internalPassw);
+
+		// Se construye el panel que ira dentro del JInternalFrame
+
+		JPanel panelPassw = new JPanel();
+		panelPassw.setBounds(71, 35, 220, 30);
+		panelPassw.setLayout(new FlowLayout());
+
+		JPanel panelUsuario = new JPanel();
+		panelUsuario.setBounds(68, 5, 200, 30);
+		panelUsuario.setLayout(new FlowLayout());
+		
+		JPanel panelLogin = new JPanel();
+		panelLogin.setBounds(300, 20, 60, 50);
+		
+		JPanel teclado = new JPanel();
+		teclado.setLayout(new GridBagLayout());
+		teclado.setBounds(-5, 70, 400, 150);
+
+		JPanel tecladoMayus = new JPanel();
+		tecladoMayus.setLayout(new GridBagLayout());
+		tecladoMayus.setBounds(-5, 120, 400, 150);
+		tecladoMayus.setVisible(false);
+
+		// Se ponen los panels dentro del internal
+		
+		internalPassw.add(panelLogin);
+		internalPassw.add(tecladoMayus, BorderLayout.SOUTH);
+		internalPassw.add(teclado, BorderLayout.SOUTH);
+		internalPassw.add(panelPassw);
+		internalPassw.add(panelUsuario);
+		
+		
+
+		GridBagConstraints gbConstraints = new GridBagConstraints();
+		gbConstraints.weightx = 0;
+		gbConstraints.weighty = 0;
+		gbConstraints.fill = GridBagConstraints.HORIZONTAL;
+
+		JLabel labelPassword = new JLabel("Contraseña");
+		labelPassword.setFont(negrita);
+		panelPassw.add(labelPassword);
+
+		JPasswordField t1 = new JPasswordField(10);
+		t1.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+			public void focusGained(FocusEvent e) {
+				txtFieldSelector = 1;
+			}
+		});
+		panelPassw.add(t1);
+
+		JLabel lblUser = new JLabel("Usuario");
+		lblUser.setFont(negrita);
+		panelUsuario.add(lblUser);
+
+		JTextField txtfUsuario = new JTextField(10);
+		txtfUsuario.addFocusListener(new FocusListener() {
+			public void focusLost(FocusEvent e) {
+			}
+			public void focusGained(FocusEvent e) {
+				txtFieldSelector = 0;
+			}
+		});
+		panelUsuario.add(txtfUsuario);
+
+		JButton botonLogin = new JButton("Login");
+		botonLogin.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String nameCamarero = txtfUsuario.getText();
+				if (Principal.camareros.containsKey(nameCamarero)) {
+					String panePassword = t1.getText();
+					panePassword = DigestUtils.sha1Hex(panePassword);
+					if (panePassword.contentEquals(Principal.camareros.get(nameCamarero).getPassword())) {
+						JOptionPane.showMessageDialog(null, "Bienvenido " + nameCamarero + "!");
+						menuBarra.setEnabled(true);
+						Devolver.setEnabled(true);
+						menuCocina.setEnabled(true);
+						Servir.setEnabled(true);
+						barra.setVisible(true);
+						mnBarraCocina.setEnabled(true);
+						// internalLogin.setVisible(false);
+						internalPassw.setVisible(false);
+					} else {
+						JOptionPane.showMessageDialog(null, "Contraseña incorrecta vuelve a escribirla");
+						t1.setText("");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Usuario incorrecto");
+					txtfUsuario.setText("");
+					t1.setText("");
+				}
+			}
+		});
+		panelLogin.add(botonLogin);
+		
+		// Creamos el string que usaremos para el teclado.
+		String row0 = "1234567890qwertyuiopasdfghjklñzxcvbnm,.-";
+		String row1 = "1234567890QWERTYUIOPASDFGHJKLÑZXCVBNM,.-";
+
+		int contadorx = 0;
+		int contadory = 1;
+
+		// Teclado minusculas
+		for (int i = 0; i < row0.length(); i++) {
+			char[] key0 = row0.toCharArray();
+			JButton button = new JButton(Character.toString(key0[i]));
+			String tecla = Character.toString(key0[i]);
+
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (txtFieldSelector == 1) {
+						String datos = t1.getText();
+						t1.setText(datos + tecla);
+					}
+					if (txtFieldSelector == 0) {
+						String datos = txtfUsuario.getText();
+						txtfUsuario.setText(datos + tecla);
+					}
+				}
+			});
+			gbConstraints.gridx = contadorx;
+			gbConstraints.gridy = contadory;
+			gbConstraints.gridwidth = 1;
+			teclado.add(button, gbConstraints);
+			contadorx++;
+			if (contadorx == 10) {
+				contadory++;
+				contadorx = 0;
+			}
+		}
+		// Boton de Borrar
+		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtFieldSelector == 1) { // Password
+					if (t1.getText().length() == 0) {
+
+					} else {
+						String cadena = t1.getText().substring(0, t1.getText().length() - 1);
+						t1.setText(cadena);
+					}
+				}
+				if (txtFieldSelector == 0) { // Usuario
+					if (txtfUsuario.getText().length() == 0) {
+
+					} else {
+						String cadena = txtfUsuario.getText().substring(0, txtfUsuario.getText().length() - 1);
+						txtfUsuario.setText(cadena);
+					}
+				}
+			}
+		});
+
+		gbConstraints.gridx = 8;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		teclado.add(btnBorrar, gbConstraints);
+		
+		// Boton de Mayus
+		JButton btnMayus = new JButton("Mayus");
+		btnMayus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				teclado.setVisible(false);
+				tecladoMayus.setVisible(true);
+			}
+		});
+		gbConstraints.gridx = 0;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		teclado.add(btnMayus, gbConstraints);
+
+		
+		// Boton de espacio
+		JButton espacio = new JButton(" ");
+		espacio.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (txtFieldSelector == 1) {
+					String datos = t1.getText();
+					t1.setText(datos + " ");
+				}
+				if (txtFieldSelector == 0) {
+					String datos = txtfUsuario.getText();
+					txtfUsuario.setText(datos + " ");
+				}
+			}
+		});
+		gbConstraints.gridx = 3;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 4;
+		teclado.add(espacio, gbConstraints);
+
+		int contadorxMayus = 0;
+		int contadoryMayus = 1;
+		
+		// Teclado mayusculas
+		for (int i = 0; i < row1.length(); i++) {
+			char[] key0 = row1.toCharArray();
+			JButton button = new JButton(Character.toString(key0[i]));
+			String tecla = Character.toString(key0[i]);
+			button.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if (txtFieldSelector == 1) {
+						String datos = t1.getText();
+						t1.setText(datos + tecla);
+					}
+					if (txtFieldSelector == 0) {
+						String datos = txtfUsuario.getText();
+						txtfUsuario.setText(datos + tecla);
+					}
+				}
+			});
+			gbConstraints.gridx = contadorxMayus;
+			gbConstraints.gridy = contadoryMayus;
+			gbConstraints.gridwidth = 1;
+			tecladoMayus.add(button, gbConstraints);
+			contadorxMayus++;
+			if (contadorxMayus == 10) {
+				contadoryMayus++;
+				contadorxMayus = 0;
+			}
+		}
+		// Boton de Borrar Mayus
+		JButton btnBorrarMayus = new JButton("Borrar");
+		btnBorrarMayus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (txtFieldSelector == 1) { // Password
+					if (t1.getText().length() == 0) {
+					} else {
+						String cadena = t1.getText().substring(0, t1.getText().length() - 1);
+						t1.setText(cadena);
+					}
+				}
+				if (txtFieldSelector == 0) { // Usuario
+					if (txtfUsuario.getText().length() == 0) {
+
+					} else {
+						String cadena = txtfUsuario.getText().substring(0, txtfUsuario.getText().length() - 1);
+						txtfUsuario.setText(cadena);
+					}
+				}
+
+			}
+		});
+
+		gbConstraints.gridx = 8;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		tecladoMayus.add(btnBorrarMayus, gbConstraints);
+		// Boton de Mayus
+		JButton btnMinus = new JButton("LCase");
+		btnMinus.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tecladoMayus.setVisible(false);
+				teclado.setVisible(true);
+
+			}
+		});
+		gbConstraints.gridx = 0;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 2;
+		tecladoMayus.add(btnMinus, gbConstraints);
+
+		// Boton de espacio
+		JButton espacioMayus = new JButton(" ");
+		espacioMayus.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (txtFieldSelector == 1) {
+					String datos = t1.getText();
+					t1.setText(datos + " ");
+				}
+				if (txtFieldSelector == 0) {
+					String datos = txtfUsuario.getText();
+					txtfUsuario.setText(datos + " ");
+				}
+			}
+		});
+		gbConstraints.gridx = 3;
+		gbConstraints.gridy = 5;
+		gbConstraints.gridwidth = 4;
+		tecladoMayus.add(espacioMayus, gbConstraints);
+
+		// Con esto quitamos la flecha desplegable superior.
+		BasicInternalFrameUI ui = (BasicInternalFrameUI) internalPassw.getUI();
+		Container north = (Container) ui.getNorthPane();
+		north.remove(0);
+		north.validate(); 
+		north.repaint();
+
+		internalPassw.setClosable(false);
+		internalPassw.setResizable(false); 
+		internalFrames.add(internalPassw);
+
+		// Se visualiza el JInternalFrame
+		internalPassw.setVisible(true);
+
+	}
 }
